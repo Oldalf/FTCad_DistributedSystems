@@ -1,5 +1,5 @@
 # FTCad_DistributedSystems
-Distributed systems assignment
+Assignment in distributed systems according to [assignment pdf](https://github.com/Oldalf/FTCad_DistributedSystems/blob/master/docs/FTCad+2019.pdf)
 
 ## design v1
 
