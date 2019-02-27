@@ -208,6 +208,7 @@ public class GUI extends JFrame implements WindowListener, ActionListener, Mouse
 
 	public void setCadState(LinkedList<GObject> state) {
 		this.objectList = state;
+		repaint();
 	}
 
 	public LinkedList<GObject> getCadState() {
