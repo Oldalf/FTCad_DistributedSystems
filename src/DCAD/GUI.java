@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 
 public class GUI extends JFrame implements WindowListener, ActionListener, MouseListener, MouseMotionListener {
 
+	private static final long serialVersionUID = -2630210430475554979L;
 	JButton ovalButton = new JButton("Oval");
 	JButton rectangleButton = new JButton("Rect");
 	JButton lineButton = new JButton("Line");
@@ -200,4 +201,22 @@ public class GUI extends JFrame implements WindowListener, ActionListener, Mouse
 						// components.
 		update(g);
 	}
+
+	public void callRepaint() {
+		repaint();
+	}
+
+	public void setCadState(LinkedList<GObject> state) {
+		this.objectList = state;
+	}
+
+	public LinkedList<GObject> getCadState() {
+		return this.objectList;
+	}
+
+	public void addObjectToState(GObject newObject) {
+		this.objectList.add(newObject);
+		repaint();
+	}
+
 }
