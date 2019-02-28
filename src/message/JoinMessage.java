@@ -2,7 +2,11 @@ package message;
 
 import java.util.UUID;
 
-import se.his.drts.message.MessagePayload;
+import src.se.his.drts.message.MessagePayload;
+
+
+	
+
 
 public class JoinMessage extends MessagePayload{
 	private static UUID uuid = UUID.fromString("fe28ead0-3b38-11e9-b210-d663bd873d93");
@@ -18,7 +22,10 @@ public class JoinMessage extends MessagePayload{
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
-	
+	public JoinMessage(String name) {
+		super(JoinMessage.uuid);
+		this.name = name;
+	}
 	
 	@Override
 	public String toString() {

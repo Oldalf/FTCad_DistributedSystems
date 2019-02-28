@@ -2,7 +2,7 @@ package message;
 
 import java.util.UUID;
 
-import se.his.drts.message.MessagePayload;
+import src.se.his.drts.message.MessagePayload;
 
 public class UniqueMessage extends MessagePayload {
 
