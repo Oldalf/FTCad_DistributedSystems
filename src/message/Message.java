@@ -16,6 +16,7 @@ public abstract class Message extends MessagePayload {
 	
 	protected abstract void makeReplyMessage();
 	protected abstract void makeRequestMessage();
+	protected abstract MessageStatus getMessageStatus();
 	
 	/*
 	 * Used to identify the message type
@@ -45,8 +46,7 @@ public abstract class Message extends MessagePayload {
 	public static Message deserializeMessage(byte[] byteMessage) {
 		Message msg2 = (Message) MessagePayload.getPrototypeMessage(MessagePayload.getUUIDFromJSONObject(byteMessage));
 		Optional<MessagePayload> msg =  msg2.deserialize(byteMessage);
-		Message msg1 = (Message)msg.get();
-		return msg1;
+		return (Message)msg.get();
 	}
 	
 	/*
@@ -58,6 +58,8 @@ public abstract class Message extends MessagePayload {
 		messageClass = messageClass.replaceAll("class message.", ""); //remove everything except the class name.
 		return messageClass;
 	}
+	
+	
 	
 	
 }

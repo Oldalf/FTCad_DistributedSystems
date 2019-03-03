@@ -72,4 +72,10 @@ public class DrawMessage extends Message{
 		
 	}
 
+	@Override
+	protected MessageStatus getMessageStatus() {
+		// TODO Auto-generated method stub
+		return this.messageStatus;
+	}
+
 }
