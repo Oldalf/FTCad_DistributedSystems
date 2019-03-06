@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.jgroups.Address;
 import org.jgroups.JChannel;
@@ -25,27 +25,29 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	private boolean eventLoopBool = true;
 	private boolean threadLoopBool = true;
 	private boolean primaryMissing = true;
-	private Address primaryAddress;
+	private Address primaryAddress = null;
+	private Address frontendAddress = null;
 	private View previousView;
-
+	private Thread receiveLogicThread; 
+	
+	private volatile LinkedBlockingQueue<message.Message> messageQueue = new LinkedBlockingQueue<message.Message>();
 	// private final LinkedList<GObject> cadState = new LinkedList<GObject>();
 	private final LinkedList<String> cadState = new LinkedList<String>();
-
-	/*
-	 * replica manager id stuff FIXME address + port + process id instead of this
-	 * solution, this only works if all replica managers are run on the same
-	 * machine.
-	 */
-	static final AtomicLong NEXT_ID = new AtomicLong(0);
-	private final long id = NEXT_ID.getAndIncrement();
+	private String id;
 
 	public ReplicaManager() {
 		try {
+			// FIXME channel.close() någon gång tror jag.
 			this.channel = new JChannel().setReceiver(this);
 			this.channel.connect("replicaManagerCluster");
 			channel.getState(null, 10000);
-			eventLoop();
-			channel.close();
+			id = channel.getAddressAsString();
+			receiveLogicThread = new Thread(new ReplicaManagerReceiveLogicThread(messageQueue));
+			receiveLogicThread.start();
+			//FIXME skapa och starta tråd för sender.
+			
+			
+			// eventLoop();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -67,8 +69,8 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 					break;
 				}
 				line = "[" + user_name + "]" + line;
-				// null = broadcast line = string som vi ska konvertera
-				Message msg = new Message(null, line);
+				// null = broadcast, line = string som vi ska konvertera
+				org.jgroups.Message msg = new Message(null, line);
 				channel.send(msg);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -82,6 +84,7 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 			List<Address> leavingMembers = View.leftMembers(previousView, new_view);
 			if (leavingMembers.contains(primaryAddress)) {
 				primaryMissing = true;
+				primaryAddress = null;
 			}
 		}
 		previousView = new_view;
@@ -120,9 +123,21 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 
 	@Override
 	public void run() {
-		while (threadLoopBool) {
-
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+
+		while (threadLoopBool) {
+			if (primaryAddress == null) {
+				callElection();
+			}
+		}
+
+	}
+
+	private void callElection() {
 
 	}
 
