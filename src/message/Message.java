@@ -3,8 +3,14 @@ package message;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class Message extends MessagePayload {
 
+public abstract class Message extends MessagePayload {
+	private static UUID messageUUID = UUID.fromString("e2cf5202-4027-11e9-b210-d663bd873d93");
+	
+	protected Message() {
+		super(Message.messageUUID);
+	}
+	
 	protected Message(UUID uuid) {
 		super(uuid);
 		// TODO Auto-generated constructor stub
@@ -50,30 +56,23 @@ public abstract class Message extends MessagePayload {
 	public static String defineMessageClassWithUUID(UUID id) {
 		MessagePayload message = MessagePayload.getPrototypeMessage(id); //create a temp message
 		String messageClass = message.getClass().toString(); //get the class of message
+		System.out.println(messageClass.toString());
 		messageClass = messageClass.replaceAll("class message.", ""); //remove everything except the class name.
 		return messageClass;
 	}
 	
-	public static void executeFrontend() {
-		
-	}
+	protected abstract void executeForFrontend();
 	/*
 	 *Use this when backup and Primary want's to do the same thing.  
 	 */
-	public static void executeForReplicaManager() {
-		
-	}
+	protected abstract void executeForReplicaManager();
 	/*
 	 *Unique execute for backup 
 	 */
 	
-	public static void executeForBackupReplicaManager() {
-		
-	}
+	public abstract void executeForBackupReplicaManager();
 	/*
 	 *Unique execute for primary 
 	 */
-	public static void executeForPrimaryReplicaManager() {
-		
-	}
+	public abstract void executeForPrimaryReplicaManager();
 }

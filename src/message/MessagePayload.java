@@ -2,11 +2,9 @@ package message;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
@@ -18,7 +16,6 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 /** The purpose of this class is to serve as a base class for message types. Essentially, it handles serialization and deserialization
  *  from java objects to JSON objects and vice versa. 
@@ -154,7 +151,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 								// removes the .class extension
 								String classname = files[i].substring(0,files[i].length()-6);
 								try {
-									// Try to create an instance of the object
+									// Try to create an instance of the object	
 									Object o = Class.forName(p.getName()+"."+classname).newInstance();
 									if (o instanceof MessagePayload) {
 										final MessagePayload m = (MessagePayload)o;
