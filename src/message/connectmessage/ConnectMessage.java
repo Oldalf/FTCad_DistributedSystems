@@ -1,7 +1,10 @@
-package message;
+package message.connectmessage;
 
 import java.util.Optional;
 import java.util.UUID;
+
+import message.Message;
+import message.MessagePayload;
 
 
 	
@@ -9,7 +12,7 @@ import java.util.UUID;
 
 public class ConnectMessage extends Message{
 	private static UUID messageUUID = UUID.fromString("fe28ead0-3b38-11e9-b210-d663bd873d93");
-	private String name;
+	private UUID m_id;
 	private MessageStatus messageStatus; 
 	//Used by jackson to create prototype objects.
 	protected ConnectMessage() {
@@ -21,9 +24,9 @@ public class ConnectMessage extends Message{
 	protected ConnectMessage(MessagePayload message) {
 		super(message);
 	}
-	public ConnectMessage(String id, MessageStatus status) {
+	public ConnectMessage(UUID id, MessageStatus status) {
 		super(ConnectMessage.messageUUID);
-		this.name = id;
+		this.m_id = id;
 		
 		if(status.equals(MessageStatus.REPLY)) {
 			makeReplyMessage();
@@ -33,8 +36,8 @@ public class ConnectMessage extends Message{
 		}
 	}
 
-	public final String getName() {
-		return this.name;
+	public final UUID getUUID() {
+		return this.m_id;
 	}
 	public MessageStatus getMessageStatus() {
 		return this.messageStatus;
@@ -42,14 +45,14 @@ public class ConnectMessage extends Message{
 	
 	@Override
 	public String toString() {
-		return "ConnectMessage [ClientID=" + this.name + ", toString()=" + super.toString() + "]";
+		return "ConnectMessage [ClientID=" + this.m_id + ", toString()=" + super.toString() + "]";
 	}
 	/* (non-Javadoc)
 	 * @see se.his.drts.message.MessagePayload#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		return super.equals(obj) && this.name.equals(((ConnectMessage)obj).name);
+		return super.equals(obj) && this.m_id.equals(((ConnectMessage)obj).m_id);
 	}
 	/* (non-Javadoc)
 	 * @see se.his.drts.message.MessagePayload#compareTo(se.his.drts.message.MessagePayload)
@@ -60,14 +63,14 @@ public class ConnectMessage extends Message{
 		if (n!=0) {
 			return n;
 		}
-		return this.name.compareTo(((ConnectMessage)arg0).name);
+		return this.m_id.compareTo(((ConnectMessage)arg0).m_id);
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
-		return super.hashCode()+name.hashCode();
+		return super.hashCode()+m_id.hashCode();
 	}
 	@Override
 	protected void makeReplyMessage() {
