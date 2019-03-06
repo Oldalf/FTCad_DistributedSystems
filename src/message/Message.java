@@ -14,10 +14,6 @@ public abstract class Message extends MessagePayload {
 		super(message);
 	}
 	
-	protected abstract void makeReplyMessage();
-	protected abstract void makeRequestMessage();
-	protected abstract MessageStatus getMessageStatus();
-	
 	/*
 	 * Used to identify the message type
 	 * Reutrn: a String with the message class name. 
@@ -44,8 +40,7 @@ public abstract class Message extends MessagePayload {
 	 * All other messages classes extends Message so no need to cast to other messages types. 
 	 */
 	public static Message deserializeMessage(byte[] byteMessage) {
-		Message msg2 = (Message) MessagePayload.getPrototypeMessage(MessagePayload.getUUIDFromJSONObject(byteMessage));
-		Optional<MessagePayload> msg =  msg2.deserialize(byteMessage);
+		Optional<MessagePayload> msg = MessagePayload.createMessage(byteMessage);
 		return (Message)msg.get();
 	}
 	
@@ -59,7 +54,26 @@ public abstract class Message extends MessagePayload {
 		return messageClass;
 	}
 	
+	public static void executeFrontend() {
+		
+	}
+	/*
+	 *Use this when backup and Primary want's to do the same thing.  
+	 */
+	public static void executeForReplicaManager() {
+		
+	}
+	/*
+	 *Unique execute for backup 
+	 */
 	
-	
-	
+	public static void executeForBackupReplicaManager() {
+		
+	}
+	/*
+	 *Unique execute for primary 
+	 */
+	public static void executeForPrimaryReplicaManager() {
+		
+	}
 }

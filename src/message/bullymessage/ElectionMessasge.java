@@ -1,15 +1,17 @@
-package message;
+package message.bullymessage;
 
 import java.util.UUID;
 
 import org.jgroups.Address;
-import org.jgroups.tests.rt.transports.JGroupsTransport;
 
-public class ElectionMessasge extends Message {
-	private static UUID messageUUID = UUID.fromString("11dd613e-3f65-11e9-b210-d663bd873d93");
-	private MessageStatus messageStatus; 
+import message.MessagePayload;
+
+public class ElectionMessasge extends BullyMessage {
+	private static UUID messageUUID = UUID.fromString("11dd613e-3f65-11e9-b210-d663bd873d93"); 
 	private String m_id; 
 	private Address m_address;
+	
+	
 	//Used by jackson to create prototype objects.
 	protected ElectionMessasge() {
 		super(ElectionMessasge.messageUUID);
@@ -17,27 +19,9 @@ public class ElectionMessasge extends Message {
 	protected ElectionMessasge(UUID uuid) {
 		super(uuid);
 	}
-	protected ElectionMessasge(MessagePayload message) {
-		super(message);
-	}
-	public ElectionMessasge(String id, Address address, MessageStatus status) {
-		super(ElectionMessasge.messageUUID);
-		this.m_id = id;
-		this.m_address = address;
-		
-		if(status.equals(MessageStatus.REPLY)) {
-			makeReplyMessage();
-		}
-		else {
-			makeRequestMessage();
-		}
-	}
 
 
-	public MessageStatus getMessageStatus() {
-		return this.messageStatus;
-	}
-	
+
 	@Override
 	public String toString() {
 		return "ElectionMessasge [ID=" + this.m_id + ", ADDRESS=" + this.m_address + ", toString()=" + super.toString() + "]";
@@ -67,15 +51,6 @@ public class ElectionMessasge extends Message {
 //	public int hashCode() {
 //		return super.hashCode()+name.hashCode();
 //	}
-	@Override
-	protected void makeReplyMessage() {
-		this.messageStatus = MessageStatus.REPLY;
-		
-	}
-	@Override
-	protected void makeRequestMessage() {
-		this.messageStatus = MessageStatus.REQUEST;
-		
-	}
+
 	
 }
