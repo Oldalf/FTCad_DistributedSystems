@@ -157,7 +157,6 @@ public class MessagePayload implements Comparable<MessagePayload> {
 										final MessagePayload m = (MessagePayload)o;
 										UUID uuid = m.getUuid();
 										MessagePayload.candidateObjectMap.put(uuid,m);
-										
 									}
 								} catch (ClassNotFoundException cnfex) {
 									throw new IllegalStateException(cnfex);

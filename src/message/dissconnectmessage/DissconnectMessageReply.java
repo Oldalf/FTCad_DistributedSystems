@@ -1,7 +1,14 @@
 package message.dissconnectmessage;
 
-public class DissconnectMessageReply extends DissconnectMessage{
+import java.util.UUID;
 
+public class DissconnectMessageReply extends DissconnectMessage{
+	private static UUID messageUUID = UUID.fromString("488eb4a6-3dbe-11e9-b210-d663bd873d93");
+	
+	
+	
+	
+	
 	@Override
 	protected void executeForFrontend() {
 		// TODO Auto-generated method stub
