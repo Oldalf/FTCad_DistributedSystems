@@ -17,7 +17,7 @@ import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
 import org.jgroups.util.Util;
 
-import DCAD.GObject;
+import message.bullymessage.ElectionMessage;
 
 public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	private JChannel channel;
@@ -31,13 +31,13 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	private Thread receiveLogicThread; 
 	
 	private volatile LinkedBlockingQueue<message.Message> messageQueue = new LinkedBlockingQueue<message.Message>();
+	private volatile LinkedBlockingQueue<ReplicaManagerOutgoingMessageContainer> messageOutputQueue = new LinkedBlockingQueue<ReplicaManagerOutgoingMessageContainer>();
 	// private final LinkedList<GObject> cadState = new LinkedList<GObject>();
 	private final LinkedList<String> cadState = new LinkedList<String>();
 	private String id;
 
 	public ReplicaManager() {
 		try {
-			// FIXME channel.close() någon gång tror jag.
 			this.channel = new JChannel().setReceiver(this);
 			this.channel.connect("replicaManagerCluster");
 			channel.getState(null, 10000);
@@ -95,8 +95,10 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	 * FIXME add messages to a processing list.
 	 */
 	public void receive(Message msg) {
+		
 		System.out.println(msg.getSrc() + ": " + msg.getObject());
 		cadState.add(msg.getObject());
+		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -138,7 +140,22 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	}
 
 	private void callElection() {
-
+		LinkedList<Address> membersWithHigherId = new LinkedList<Address>();
+		LinkedList<Address> members = (LinkedList<Address>) previousView.getMembers();
+		for(int i = 0; i < members.size(); i++) {
+			Address member = members.get(i);
+			if(!id.equals(member.toString())) {
+				if(id.compareTo(member.toString()) > 0){
+					membersWithHigherId.add(member);
+				}
+			}
+		}
+		/*
+		 * Message members.
+		 */
+		for(int i = 0; i < membersWithHigherId.size(); i++){
+			messageOutputQueue.add(new ReplicaManagerOutgoingMessageContainer(new ElectionMessage(), membersWithHigherId.get(i)));
+		}
 	}
 
 }
