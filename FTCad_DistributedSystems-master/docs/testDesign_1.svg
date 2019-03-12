@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="103cm" height="53cm" viewBox="32 -482 2059 1051" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="432" y="108" width="74.2" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="432" y="108" width="74.2" height="36"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="469.1" y="130">Client</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="432" y="285" width="81.9" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="432" y="285" width="81.9" height="36"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="472.95" y="307">Client2</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="625.3" y="169.4" width="158.9" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="625.3" y="169.4" width="158.9" height="36"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="704.75" y="191.4">Service/front end</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="942" y="58" width="143.5" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="942" y="58" width="143.5" height="36"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="1013.75" y="80">Replica Manager</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="957.1" y="156.8" width="143.5" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="957.1" y="156.8" width="143.5" height="36"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="1028.85" y="178.8">Replica Manager</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="928.2" y="232.6" width="143.5" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="928.2" y="232.6" width="143.5" height="36"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="999.95" y="254.6">Replica Manager</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="909.3" y="312.4" width="143.5" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="909.3" y="312.4" width="143.5" height="36"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="981.05" y="334.4">Replica Manager</text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="516.622" y1="138.382" x2="622.493" y2="165.968"/>
+    <polygon style="fill: #000000" points="509.364,136.491 520.302,134.174 516.622,138.382 517.78,143.851 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="509.364,136.491 520.302,134.174 516.622,138.382 517.78,143.851 "/>
+    <polygon style="fill: #000000" points="629.751,167.859 618.813,170.176 622.493,165.968 621.335,160.499 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="629.751,167.859 618.813,170.176 622.493,165.968 621.335,160.499 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="657.937" y1="210.746" x2="519.763" y2="279.654"/>
+    <polygon style="fill: #000000" points="664.649,207.399 657.931,216.336 657.937,210.746 653.468,207.387 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="664.649,207.399 657.931,216.336 657.937,210.746 653.468,207.387 "/>
+    <polygon style="fill: #000000" points="513.051,283.001 519.769,274.064 519.763,279.654 524.232,283.013 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="513.051,283.001 519.769,274.064 519.763,279.654 524.232,283.013 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="951.897" y1="98.2993" x2="766.603" y2="165.101"/>
+    <polygon style="fill: #000000" points="958.952,95.7557 951.24,103.851 951.897,98.2993 947.849,94.4435 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="958.952,95.7557 951.24,103.851 951.897,98.2993 947.849,94.4435 "/>
+    <polygon style="fill: #000000" points="759.548,167.644 767.26,159.549 766.603,165.101 770.651,168.956 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="759.548,167.644 767.26,159.549 766.603,165.101 770.651,168.956 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="946.385" y1="178.006" x2="794.92" y2="183.894"/>
+    <polygon style="fill: #000000" points="953.879,177.715 944.081,183.099 946.385,178.006 943.692,173.107 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="953.879,177.715 944.081,183.099 946.385,178.006 943.692,173.107 "/>
+    <polygon style="fill: #000000" points="787.426,184.186 797.224,178.801 794.92,183.894 797.613,188.794 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="787.426,184.186 797.224,178.801 794.92,183.894 797.613,188.794 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="917.693" y1="232.989" x2="794.719" y2="206.662"/>
+    <polygon style="fill: #000000" points="925.027,234.559 914.201,237.355 917.693,232.989 916.295,227.577 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="925.027,234.559 914.201,237.355 917.693,232.989 916.295,227.577 "/>
+    <polygon style="fill: #000000" points="787.385,205.092 798.21,202.296 794.719,206.662 796.117,212.074 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="787.385,205.092 798.21,202.296 794.719,206.662 796.117,212.074 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="935.69" y1="306.924" x2="750.11" y2="210.876"/>
+    <polygon style="fill: #000000" points="942.351,310.371 931.172,310.215 935.69,306.924 935.768,301.334 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="942.351,310.371 931.172,310.215 935.69,306.924 935.768,301.334 "/>
+    <polygon style="fill: #000000" points="743.449,207.429 754.628,207.585 750.11,210.876 750.032,216.466 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="743.449,207.429 754.628,207.585 750.11,210.876 750.032,216.466 "/>
+  </g>
+  <g>
+    <ellipse style="fill: #ffffff" cx="982.95" cy="430" rx="46.95" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="982.95" cy="430" rx="46.95" ry="18"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="982.95" y="434">Primary</text>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="956" y1="438" x2="1009.9" y2="438"/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="982.588" y1="411.009" x2="981.598" y2="359.125"/>
+    <polygon style="fill: #000000" points="981.455,351.627 986.645,361.53 981.598,359.125 976.647,361.72 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="981.455,351.627 986.645,361.53 981.598,359.125 976.647,361.72 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="570" y="273">
+    <tspan x="570" y="273">TCP/IP</tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="524" y="130">
+    <tspan x="524" y="130">Multiplexing</tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="715" y="411">
+    <tspan x="715" y="411">Election för primary</tspan>
+    <tspan x="715" y="427">När de märker att primary saknas</tspan>
+  </text>
+  <g>
+    <ellipse style="fill: #ffffff" cx="586.85" cy="389" rx="100.85" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="586.85" cy="389" rx="100.85" ry="18"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="586.85" y="393">DistributedMessageSer</text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="598.498" y1="370.253" x2="661.862" y2="268.27"/>
+    <polygon style="fill: #000000" points="665.82,261.899 664.789,273.032 661.862,268.27 656.295,267.755 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="665.82,261.899 664.789,273.032 661.862,268.27 656.295,267.755 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="649" y="314">
+    <tspan x="649" y="314">Alla meddelanden har, den</tspan>
+    <tspan x="649" y="330">som basklass</tspan>
+  </text>
+  <g>
+    <ellipse style="fill: #ffffff" cx="760.1" cy="73" rx="43.1" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="760.1" cy="73" rx="43.1" ry="18"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="760.1" y="77">Backup</text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="803.944" y1="73.5186" x2="931.282" y2="75.0246"/>
+    <polygon style="fill: #000000" points="938.782,75.1133 928.723,79.9947 931.282,75.0246 928.842,69.9954 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="938.782,75.1133 928.723,79.9947 931.282,75.0246 928.842,69.9954 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="792.939" y1="85.4392" x2="969.584" y2="152.351"/>
+    <polygon style="fill: #000000" points="976.598,155.007 965.475,156.141 969.584,152.351 969.018,146.789 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="976.598,155.007 965.475,156.141 969.584,152.351 969.018,146.789 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="782.074" y1="89.2706" x2="966.463" y2="225.804"/>
+    <polygon style="fill: #000000" points="972.49,230.267 961.478,228.335 966.463,225.804 967.429,220.298 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="972.49,230.267 961.478,228.335 966.463,225.804 967.429,220.298 "/>
+  </g>
+  <g>
+    <ellipse style="fill: #ffffff" cx="320.002" cy="463" rx="6" ry="6"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="320.002" cy="463" rx="6" ry="6"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="296.002" y1="475" x2="344.002" y2="475"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="320.002" y1="469" x2="320.002" y2="499"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="320.002" y1="499" x2="296.002" y2="525"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="320.002" y1="499" x2="344.002" y2="525"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="320.002" y="548.9">
+      <tspan x="320.002" y="548.9">Client</tspan>
+      <tspan x="320.002" y="564.9"></tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="392.002" y1="518" x2="451.267" y2="518.859"/>
+    <polygon style="fill: #000000" points="458.766,518.968 448.695,523.823 451.267,518.859 448.84,513.824 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="458.766,518.968 448.695,523.823 451.267,518.859 448.84,513.824 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="478.002" y="518">
+    <tspan x="478.002" y="518">Client 2 vill skapa kub, skickar till service</tspan>
+    <tspan x="478.002" y="534">/frontend</tspan>
+    <tspan x="478.002" y="550"></tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="660.006" y1="534" x2="780.314" y2="546.032"/>
+    <polygon style="fill: #000000" points="787.777,546.778 777.329,550.758 780.314,546.032 778.324,540.808 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="787.777,546.778 777.329,550.758 780.314,546.032 778.324,540.808 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="809.002" y="533">
+    <tspan x="809.002" y="533">Skickar till primary som hanterar den</tspan>
+    <tspan x="809.002" y="549">beslut tas på något sätt, </tspan>
+    <tspan x="809.002" y="565">uppdaterar backups</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="992.006" y1="548" x2="1076.27" y2="547.104"/>
+    <polygon style="fill: #000000" points="1083.77,547.024 1073.82,552.13 1076.27,547.104 1073.72,542.131 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1083.77,547.024 1073.82,552.13 1076.27,547.104 1073.72,542.131 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1106" y="529">
+    <tspan x="1106" y="529">Svarar och skickar bakåt</tspan>
+    <tspan x="1106" y="545">kub skapas osv.</tspan>
+    <tspan x="1106" y="561"></tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="352.006" y="-427.16" width="62.65" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="352.006" y="-427.16" width="62.65" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="383.331" y="-408.16">Client</text>
+    <rect style="fill: #ffffff" x="352.006" y="-399.16" width="62.65" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="352.006" y="-399.16" width="62.65" height="8"/>
+    <rect style="fill: #ffffff" x="352.006" y="-391.16" width="62.65" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="352.006" y="-391.16" width="62.65" height="8"/>
+  </g>
+  <text font-size="18.7844" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="620.006" y="-464.16">
+    <tspan x="620.006" y="-464.16">Client</tspan>
+  </text>
+  <g>
+    <ellipse style="fill: #ffffff" cx="490.006" cy="-216.16" rx="6" ry="6"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="490.006" cy="-216.16" rx="6" ry="6"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="466.006" y1="-204.16" x2="514.006" y2="-204.16"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="490.006" y1="-210.16" x2="490.006" y2="-180.16"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="490.006" y1="-180.16" x2="466.006" y2="-154.16"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="490.006" y1="-180.16" x2="514.006" y2="-154.16"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="490.006" y="-130.26">
+      <tspan x="490.006" y="-130.26">Vill måla grej</tspan>
+    </text>
+  </g>
+  <g>
+    <polygon style="fill: #ffffff" points="686.006,-198.16 696.006,-208.16 758.056,-208.16 758.056,-172.16 748.056,-162.16 686.006,-162.16 686.006,-198.16 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="686.006,-198.16 696.006,-208.16 758.056,-208.16 758.056,-172.16 748.056,-162.16 686.006,-162.16 686.006,-198.16 "/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="686.006" y1="-198.16" x2="748.056" y2="-198.16"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="748.056" y1="-198.16" x2="758.056" y2="-208.16"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="748.056" y1="-198.16" x2="748.056" y2="-162.16"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="696.006" y="-176.26">
+      <tspan x="696.006" y="-176.26">Server</tspan>
+    </text>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="696.006" y1="-173.26" x2="738.056" y2="-173.26"/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="532.033" y1="-180.16" x2="675.314" y2="-180.16"/>
+    <polygon style="fill: #000000" points="682.814,-180.16 672.814,-175.16 675.314,-180.16 672.814,-185.16 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="682.814,-180.16 672.814,-175.16 675.314,-180.16 672.814,-185.16 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="716.719" y1="-151.432" x2="715.877" y2="-73.8972"/>
+    <polygon style="fill: #000000" points="716.8,-158.932 721.692,-148.878 716.719,-151.432 711.692,-148.987 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="716.8,-158.932 721.692,-148.878 716.719,-151.432 711.692,-148.987 "/>
+    <polygon style="fill: #000000" points="715.795,-66.3977 710.904,-76.4514 715.877,-73.8972 720.904,-76.3428 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="715.795,-66.3977 710.904,-76.4514 715.877,-73.8972 720.904,-76.3428 "/>
+  </g>
+  <g>
+    <polygon style="fill: #ffffff" points="621.006,-53.16 631.006,-63.16 819.906,-63.16 819.906,-27.16 809.906,-17.16 621.006,-17.16 621.006,-53.16 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="621.006,-53.16 631.006,-63.16 819.906,-63.16 819.906,-27.16 809.906,-17.16 621.006,-17.16 621.006,-53.16 "/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="621.006" y1="-53.16" x2="809.906" y2="-53.16"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="809.906" y1="-53.16" x2="819.906" y2="-63.16"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="809.906" y1="-53.16" x2="809.906" y2="-17.16"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="631.006" y="-31.26">
+      <tspan x="631.006" y="-31.26">Replica managers och skit</tspan>
+    </text>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="631.006" y1="-28.26" x2="799.906" y2="-28.26"/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="566.006" y="-154.16">
+    <tspan x="566.006" y="-154.16">PM ändring</tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="730.006" y="-125.16">
+    <tspan x="730.006" y="-125.16">Beslut</tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="793.006" y="-234.16">
+    <tspan x="793.006" y="-234.16">Broadcasta resultat/ändring</tspan>
+    <tspan x="793.006" y="-218.16">till alla clients</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="759.049" y1="-180.16" x2="908.267" y2="-180.16"/>
+    <polygon style="fill: #000000" points="915.767,-180.16 905.767,-175.16 908.267,-180.16 905.767,-185.16 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="915.767,-180.16 905.767,-175.16 908.267,-180.16 905.767,-185.16 "/>
+  </g>
+  <g>
+    <ellipse style="fill: #ffffff" cx="944.006" cy="-216.16" rx="6" ry="6"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="944.006" cy="-216.16" rx="6" ry="6"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="920.006" y1="-204.16" x2="968.006" y2="-204.16"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="944.006" y1="-210.16" x2="944.006" y2="-180.16"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="944.006" y1="-180.16" x2="920.006" y2="-154.16"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="944.006" y1="-180.16" x2="968.006" y2="-154.16"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="944.006" y="-130.26">
+      <tspan x="944.006" y="-130.26">Clients</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="522.006" y="-446.16" width="341.1" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="522.006" y="-446.16" width="341.1" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="692.556" y="-427.16">ServerConnection</text>
+    <rect style="fill: #ffffff" x="522.006" y="-418.16" width="341.1" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="522.006" y="-418.16" width="341.1" height="8"/>
+    <rect style="fill: #ffffff" x="522.006" y="-410.16" width="341.1" height="129"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="522.006" y="-410.16" width="341.1" height="129"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="525.006" y="-396.16">+Skicka ändring(out Ändring:shape)</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="525.006" y="-380.16">+ta emot ändring(Ändringar:shape): (thread)</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="525.006" y="-364.16">+getState(): state</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="525.006" y="-349.66">När klient</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="525.006" y="-335.66">startar kallar</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="525.006" y="-321.66">på getState,</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="525.006" y="-307.66">möjligt att</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="525.006" y="-293.66">återanvända.</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="415.664,-405.16 468.332,-405.16 468.332,-363.66 521.001,-363.66 "/>
+    <polygon style="fill: #000000" points="472.332,-384.41 472.332,-392.41 480.332,-388.41 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="276.006" y="-326.16" width="217.9" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="276.006" y="-326.16" width="217.9" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="384.956" y="-307.16">GUI</text>
+    <rect style="fill: #ffffff" x="276.006" y="-298.16" width="217.9" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="276.006" y="-298.16" width="217.9" height="8"/>
+    <rect style="fill: #ffffff" x="276.006" y="-290.16" width="217.9" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="276.006" y="-290.16" width="217.9" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="279.006" y="-276.16">+Get+Set List(): LinkedList</text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="383.828" y1="-372.424" x2="384.368" y2="-336.898"/>
+    <polygon style="fill: #000000" points="383.714,-379.923 388.866,-370 383.828,-372.424 378.867,-369.848 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="383.714,-379.923 388.866,-370 383.828,-372.424 378.867,-369.848 "/>
+    <polygon style="fill: #000000" points="384.482,-329.399 379.33,-339.322 384.368,-336.898 389.329,-339.474 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="384.482,-329.399 379.33,-339.322 384.368,-336.898 389.329,-339.474 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="322.006" y="-458.16">
+    <tspan x="322.006" y="-458.16">Middleman till serverCon och GUI</tspan>
+  </text>
+  <g>
+    <ellipse style="fill: #ffffff" cx="88.006" cy="-108.888" rx="6" ry="6"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="88.006" cy="-108.888" rx="6" ry="6"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="64.006" y1="-96.8877" x2="112.006" y2="-96.8877"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="88.006" y1="-102.888" x2="88.006" y2="-72.8877"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="88.006" y1="-72.8877" x2="64.006" y2="-46.8877"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="88.006" y1="-72.8877" x2="112.006" y2="-46.8877"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="88.006" y="-22.9877">
+      <tspan x="88.006" y="-22.9877">Client connecting</tspan>
+    </text>
+  </g>
+  <g>
+    <polygon style="fill: #ffffff" points="275.006,-78.8877 285.006,-88.8877 347.056,-88.8877 347.056,-52.8877 337.056,-42.8877 275.006,-42.8877 275.006,-78.8877 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="275.006,-78.8877 285.006,-88.8877 347.056,-88.8877 347.056,-52.8877 337.056,-42.8877 275.006,-42.8877 275.006,-78.8877 "/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="275.006" y1="-78.8877" x2="337.056" y2="-78.8877"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="337.056" y1="-78.8877" x2="347.056" y2="-88.8877"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="337.056" y1="-78.8877" x2="337.056" y2="-42.8877"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="285.006" y="-56.9877">
+      <tspan x="285.006" y="-56.9877">Server</tspan>
+    </text>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="285.006" y1="-53.9877" x2="327.056" y2="-53.9877"/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="113.006" y1="-126.888" x2="264.791" y2="-74.9887"/>
+    <polygon style="fill: #000000" points="271.888,-72.5622 260.808,-71.0664 264.791,-74.9887 264.043,-80.5286 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="271.888,-72.5622 260.808,-71.0664 264.791,-74.9887 264.043,-80.5286 "/>
+  </g>
+  <g>
+    <polygon style="fill: #ffffff" points="224.006,36.1123 234.006,26.1123 399.706,26.1123 399.706,78.1123 389.706,88.1123 224.006,88.1123 224.006,36.1123 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="224.006,36.1123 234.006,26.1123 399.706,26.1123 399.706,78.1123 389.706,88.1123 224.006,88.1123 224.006,36.1123 "/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="224.006" y1="36.1123" x2="389.706" y2="36.1123"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="389.706" y1="36.1123" x2="399.706" y2="26.1123"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="389.706" y1="36.1123" x2="389.706" y2="88.1123"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="234.006" y="58.0123">
+      <tspan x="234.006" y="58.0123">Replica manager &amp; CO</tspan>
+    </text>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="234.006" y1="61.0123" x2="379.706" y2="61.0123"/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="306.224" y1="-32.1584" x2="306.543" y2="15.3728"/>
+    <polygon style="fill: #000000" points="306.173,-39.6582 311.24,-29.692 306.224,-32.1584 301.241,-29.6249 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="306.173,-39.6582 311.24,-29.692 306.224,-32.1584 301.241,-29.6249 "/>
+    <polygon style="fill: #000000" points="306.593,22.8726 301.526,12.9064 306.543,15.3728 311.526,12.8393 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="306.593,22.8726 301.526,12.9064 306.543,15.3728 311.526,12.8393 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="274.004" y1="-53.9189" x2="122.519" y2="-20.9578"/>
+    <polygon style="fill: #000000" points="115.191,-19.3632 123.899,-26.375 122.519,-20.9578 126.025,-16.6036 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="115.191,-19.3632 123.899,-26.375 122.519,-20.9578 126.025,-16.6036 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="157.006" y="-149.888">
+    <tspan x="157.006" y="-149.888">Ask for state</tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="349.006" y="-5.88774">
+    <tspan x="349.006" y="-5.88774">Get state</tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="182.006" y="-10.8877">
+    <tspan x="182.006" y="-10.8877">Send state</tspan>
+  </text>
+  <text font-size="20.1391" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1361.51" y="-451.61">
+    <tspan x="1361.51" y="-451.61">Server  + lite replica</tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="2068.31" y="-241.61">
+    <tspan x="2068.31" y="-241.61">asd</tspan>
+    <tspan x="2068.31" y="-225.61"></tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="1398.96" y="-396.61" width="114.8" height="126"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1398.96" y="-396.61" width="114.8" height="126"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1456.36" y="-377.61">Server</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="1456.36" y="-362.11">1 tråd för</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="1456.36" y="-348.11">jgroups</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="1456.36" y="-334.11">kommunikationen.</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="1456.36" y="-320.11">2 trådar per</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="1456.36" y="-306.11">client (reader</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="1456.36" y="-292.11">och logic o</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="1456.36" y="-278.11">write)</text>
+    <rect style="fill: #ffffff" x="1398.96" y="-270.61" width="114.8" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1398.96" y="-270.61" width="114.8" height="8"/>
+    <rect style="fill: #ffffff" x="1398.96" y="-262.61" width="114.8" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1398.96" y="-262.61" width="114.8" height="8"/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="1388.24" y1="-326.105" x2="1273.79" y2="-326.936"/>
+    <polygon style="fill: #000000" points="1395.74,-326.05 1385.71,-321.123 1388.24,-326.105 1385.78,-331.123 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1395.74,-326.05 1385.71,-321.123 1388.24,-326.105 1385.78,-331.123 "/>
+    <polygon style="fill: #000000" points="1266.29,-326.991 1276.32,-331.918 1273.79,-326.936 1276.25,-321.918 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1266.29,-326.991 1276.32,-331.918 1273.79,-326.936 1276.25,-321.918 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1098.96" y="-349.61" width="164.1" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1098.96" y="-349.61" width="164.1" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1181.01" y="-330.61">ClientConnection</text>
+    <rect style="fill: #ffffff" x="1098.96" y="-321.61" width="164.1" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1098.96" y="-321.61" width="164.1" height="8"/>
+    <rect style="fill: #ffffff" x="1098.96" y="-313.61" width="164.1" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1098.96" y="-313.61" width="164.1" height="8"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1763.96" y="-380.61" width="210.2" height="84"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1763.96" y="-380.61" width="210.2" height="84"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1869.06" y="-361.61">Replica Managers</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="1869.06" y="-346.11">Har elections,</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="1869.06" y="-332.11">en primary,</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="1869.06" y="-318.11">löser saker med</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="1869.06" y="-304.11">state.</text>
+    <rect style="fill: #ffffff" x="1763.96" y="-296.61" width="210.2" height="136"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1763.96" y="-296.61" width="210.2" height="136"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1766.96" y="-282.61">+isPrimary: boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1766.96" y="-266.61">+id: UUID</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1766.96" y="-252.11">kanske används</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1766.96" y="-238.11">för election</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1766.96" y="-215.61">+hostname + port</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1766.96" y="-201.11">Kanske också kan</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1766.96" y="-187.11">användas för</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1766.96" y="-173.11">election</text>
+    <rect style="fill: #ffffff" x="1763.96" y="-160.61" width="210.2" height="52"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1763.96" y="-160.61" width="210.2" height="52"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1766.96" y="-146.61">+HoldElection()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1766.96" y="-130.61">+Något me receive </text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1766.96" y="-114.61">+get + set state()</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1539.94,-325.61 1645.86,-325.61 1645.86,-244.61 1762.96,-244.61 "/>
+    <polygon style="fill: #ffffff" points="1514.77,-325.61 1528.77,-330.41 1542.77,-325.61 1528.77,-320.81 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1514.77,-325.61 1528.77,-330.41 1542.77,-325.61 1528.77,-320.81 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1009.4" y="-85.61">
+    <tspan x="1009.4" y="-85.61">Vi skickar objekt som ska läggas</tspan>
+    <tspan x="1009.4" y="-69.61"> till och lägger in det i listorna</tspan>
+    <tspan x="1009.4" y="-53.61">hela listan är vårt "state"</tspan>
+  </text>
+</svg>
