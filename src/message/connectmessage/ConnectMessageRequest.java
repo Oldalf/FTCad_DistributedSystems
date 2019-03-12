@@ -2,6 +2,7 @@ package message.connectmessage;
 
 import java.util.UUID;
 
+import State.ReplicaManagerState;
 import message.MessagePayload;
 
 public class ConnectMessageRequest extends ConnectMessage {
@@ -38,7 +39,7 @@ public class ConnectMessageRequest extends ConnectMessage {
 	}
 
 	@Override
-	public void executeForReplicaManager() {
+	public void executeForReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 		try {
 			throw new IllegalAccessException();
@@ -49,7 +50,7 @@ public class ConnectMessageRequest extends ConnectMessage {
 	}
 
 	@Override
-	public void executeForBackupReplicaManager() {
+	public void executeForBackupReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 		try {
 			throw new IllegalAccessException();
@@ -60,7 +61,7 @@ public class ConnectMessageRequest extends ConnectMessage {
 	}
 
 	@Override
-	public void executeForPrimaryReplicaManager() {
+	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 		
 	}

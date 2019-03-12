@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.jgroups.Address;
 
+import State.ReplicaManagerState;
 import message.MessagePayload;
 
 public class ElectionMessage extends BullyMessage {
@@ -32,19 +33,19 @@ public class ElectionMessage extends BullyMessage {
 	}
 
 	@Override
-	public void executeForReplicaManager() {
+	public void executeForReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void executeForBackupReplicaManager() {
+	public void executeForBackupReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void executeForPrimaryReplicaManager() {
+	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 
 	}

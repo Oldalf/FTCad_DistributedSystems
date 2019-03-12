@@ -2,6 +2,7 @@ package message.drawmessage;
 
 import java.util.UUID;
 
+import State.ReplicaManagerState;
 import message.MessagePayload;
 
 public class DrawMessageRequest extends DrawMessage {
@@ -24,19 +25,19 @@ public class DrawMessageRequest extends DrawMessage {
 	}
 
 	@Override
-	protected void executeForReplicaManager() {
+	protected void executeForReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void executeForBackupReplicaManager() {
+	public void executeForBackupReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void executeForPrimaryReplicaManager() {
+	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -3,6 +3,8 @@ package message;
 import java.util.Optional;
 import java.util.UUID;
 
+import State.ReplicaManagerState;
+
 
 public abstract class Message extends MessagePayload {
 	private static UUID messageUUID = UUID.fromString("e2cf5202-4027-11e9-b210-d663bd873d93");
@@ -65,14 +67,14 @@ public abstract class Message extends MessagePayload {
 	/*
 	 *Use this when backup and Primary want's to do the same thing.  
 	 */
-	protected abstract void executeForReplicaManager();
+	protected abstract void executeForReplicaManager(ReplicaManagerState state);
 	/*
 	 *Unique execute for backup 
 	 */
 	
-	public abstract void executeForBackupReplicaManager();
+	public abstract void executeForBackupReplicaManager(ReplicaManagerState state);
 	/*
 	 *Unique execute for primary 
 	 */
-	public abstract void executeForPrimaryReplicaManager();
+	public abstract void executeForPrimaryReplicaManager(ReplicaManagerState state);
 }
