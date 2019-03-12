@@ -4,13 +4,12 @@ import java.util.UUID;
 
 import org.jgroups.Address;
 
-import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
 import message.Message;
-import message.bullymessage.BullyMessage;
 
 public class FrontendMessage extends Message {
+
 	private static UUID messageUUID = UUID.fromString("e9684186-44ca-11e9-b210-d663bd873d93"); 
 	private Address m_Address;
 	protected FrontendMessage() {

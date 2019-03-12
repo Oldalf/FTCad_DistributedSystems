@@ -60,7 +60,7 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	public void receive(Message msg) {
 		message.Message message = getMessage(msg);
 		if(checkForUnwantedMessages(message)) {
-			
+			message.ex
 		}
 		//Vad de är för meddelande
 		//Election ska den aldrig svara på
