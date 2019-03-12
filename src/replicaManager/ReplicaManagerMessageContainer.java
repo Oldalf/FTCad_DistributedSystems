@@ -4,22 +4,22 @@ import org.jgroups.Address;
 
 import message.Message;
 
-public class ReplicaManagerOutgoingMessageContainer {
-	private message.Message outMessage;
+public class ReplicaManagerMessageContainer {
+	private message.Message rmMessage;
 	private Address replicaAddress;
 
-	public ReplicaManagerOutgoingMessageContainer(Message outMessage, Address replicaAddress) {
+	public ReplicaManagerMessageContainer(Message rmMessage, Address replicaAddress) {
 		super();
-		this.outMessage = outMessage;
+		this.rmMessage = rmMessage;
 		this.replicaAddress = replicaAddress;
 	}
 
 	public message.Message getOutMessage() {
-		return outMessage;
+		return rmMessage;
 	}
 
 	public void setOutMessage(message.Message outMessage) {
-		this.outMessage = outMessage;
+		this.rmMessage = outMessage;
 	}
 
 	public Address getReplicaAddress() {
