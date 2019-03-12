@@ -2,10 +2,13 @@ package message.bullymessage;
 
 import java.util.UUID;
 
+import org.jgroups.Address;
+
 import State.ReplicaManagerState;
 
 public class AnswerMessage extends BullyMessage {
 	private static UUID messageUUID = UUID.fromString("c38de910-3ff8-11e9-b210-d663bd873d93");
+	private Address m_address;
 
 	public AnswerMessage() {
 		super(AnswerMessage.messageUUID);
@@ -13,30 +16,40 @@ public class AnswerMessage extends BullyMessage {
 
 	public AnswerMessage(UUID uuid) {
 		super(uuid);
-		// TODO Auto-generated constructor stub
+
+	}
+
+	public AnswerMessage(Address adress) {
+		super(AnswerMessage.messageUUID);
+		this.m_address = adress;
 	}
 
 	@Override
-	public void executeForFrontend() {
+	public void executeForFrontend(FrontendState state) {
 
+	}
+
+	private void CoordinatorExecuteForRM(ReplicaManagerState state) {
+		state.electionTimeout = null;
 	}
 
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
-
+		CoordinatorExecuteForRM(state);
 	}
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
-
+		CoordinatorExecuteForRM(state);
 	}
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
-
+		try {
+			throw new IllegalAccessException();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

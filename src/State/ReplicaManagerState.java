@@ -17,6 +17,7 @@ public class ReplicaManagerState {
 	 */
 	public boolean primaryMissing = true;
 	public boolean onGoingElection = false;
+	public boolean callElection = false;
 	public Address primaryAddress = null;
 	public Address frontendAddress = null;
 	public View previousView;

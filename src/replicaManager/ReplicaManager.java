@@ -95,9 +95,12 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	@Override
 	public void run() {
 		while (threadLoopBool) {
-			if (state.primaryAddress == null && state.onGoingElection != true) {
+			// if the primary is null(missing) and there isn't an ongoing election, or if
+			// state tells us to call an election
+			if ((state.primaryAddress == null && state.onGoingElection != true) || state.callElection) {
 				callElection();
 			} else if (state.onGoingElection == true && state.electionTimeout < (System.currentTimeMillis() / 1000)) {
+				// There is an election but a timeout happened, we should be primary
 				// I am primary.
 				state.primaryAddress = id;
 				state.primaryMissing = false;
@@ -130,11 +133,8 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 
 						/*
 						 * If the message is of the type Election Message: do: callElection() send
-						 * answerMessage to the sender.
-						 */
-
-						/*
-						 * If message is of the type Coordinator message, sender is primary
+						 * answerMessage to the sender. TODO fix this with logic above to callElection
+						 * using state.!!
 						 */
 					}
 				} catch (InterruptedException e) {
@@ -148,6 +148,8 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 
 	private void callElection() {
 		state.onGoingElection = true;
+		//We are currently calling an election, don't need to keep calling.
+		state.callElection = false;
 		LinkedList<Address> membersWithHigherId = new LinkedList<Address>();
 		LinkedList<Address> members = (LinkedList<Address>) state.previousView.getMembers();
 		for (int i = 0; i < members.size(); i++) {
@@ -165,10 +167,6 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 			for (int i = 0; i < membersWithHigherId.size(); i++) {
 				messageOutputQueue
 						.add(new ReplicaManagerMessageContainer(new ElectionMessage(id), membersWithHigherId.get(i)));
-				/*
-				 * FIXME set a timer, either with thread or use the other other run above and
-				 * have a timestamp variable.
-				 */
 			}
 			state.electionTimeout = (System.currentTimeMillis() / 1000) + 2;
 		} else {
