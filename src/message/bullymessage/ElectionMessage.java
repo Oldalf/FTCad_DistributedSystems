@@ -21,7 +21,7 @@ public class ElectionMessage extends BullyMessage {
 		super(uuid);
 	}
 	//Use this constructor 
-	public ElectionMessage(Address address, String id) {
+	public ElectionMessage(Address address) {
 		super(ElectionMessage.messageUUID);
 	}
 
