@@ -54,6 +54,9 @@ public class ElectionMessage extends BullyMessage {
 		state.onGoingElection = true;
 		state.callElection = true;
 		state.primaryMissing = true;
+		/*
+		 * TODO send answer message to rm that send electionMessage.
+		 */
 
 	}
 
