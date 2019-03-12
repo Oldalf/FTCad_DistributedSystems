@@ -32,7 +32,7 @@ public abstract class Message extends MessagePayload {
 		
 		return messageClass;
 	}
-
+	
 	/*	
 	* Serialize the message and return it in byte[] form.
 	*Used soo you dont need to use MessagePayload directly.
