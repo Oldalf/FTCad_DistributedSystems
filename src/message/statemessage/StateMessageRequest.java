@@ -1,7 +1,23 @@
 package message.statemessage;
 
-public class StateMessageRequest extends StateMessage {
+import java.util.UUID;
 
+import message.MessagePayload;
+import message.drawmessage.DrawMessage;
+
+public class StateMessageRequest extends StateMessage {
+	private static UUID messageUUID = UUID.fromString("19505a1a-40f6-11e9-b210-d663bd873d93");
+
+	public StateMessageRequest() {
+		super(StateMessageRequest.messageUUID);
+	}
+	
+	protected StateMessageRequest(UUID uuid) {
+		super(uuid);
+	}
+	protected StateMessageRequest(MessagePayload message) {
+		super(message);
+	}
 	@Override
 	protected void executeForFrontend() {
 		// TODO Auto-generated method stub
