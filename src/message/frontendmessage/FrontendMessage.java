@@ -1,10 +1,13 @@
-package message.bullymessage;
+package message.frontendmessage;
 
 import java.util.UUID;
 
 import org.jgroups.Address;
 
-public class FrontendMessage extends BullyMessage {
+import message.Message;
+import message.bullymessage.BullyMessage;
+
+public class FrontendMessage extends Message {
 	private static UUID messageUUID = UUID.fromString("e9684186-44ca-11e9-b210-d663bd873d93"); 
 	private Address m_Address;
 	protected FrontendMessage() {

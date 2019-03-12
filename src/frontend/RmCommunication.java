@@ -8,7 +8,9 @@ import org.jgroups.Message;
 import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
 
-import message.bullymessage.FrontendMessage;
+import message.bullymessage.BullyMessage;
+import message.bullymessage.CoordinatorMessage;
+import message.frontendmessage.FrontendMessage;
 
 // Classen som ska kommunicera mellan Server och Replica Managerserna!
 class RmCommunication extends ReceiverAdapter implements Runnable {
@@ -53,8 +55,10 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	 * FIXME add messages to a processing list.
 	 */
 	public void receive(Message msg) {
-		
-		
+		message.Message message = getMessage(msg);
+		if(checkForUnwantedMessages(message)) {
+			
+		}
 		//Vad de är för meddelande
 		//Election ska den aldrig svara på
 		//answer ska aldrig ske
@@ -72,6 +76,16 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 			
 			
 		}
+	}
+	private message.Message getMessage(Message msg){
+		message.Message newMessage = message.Message.deserializeMessage(msg.getObject());
+		return newMessage;
+	}
+	private boolean checkForUnwantedMessages(message.Message msg) {
+		if(!(msg instanceof BullyMessage) && !(msg instanceof CoordinatorMessage)) {
+			return false;			
+		}
+		return true;
 	}
 
 
