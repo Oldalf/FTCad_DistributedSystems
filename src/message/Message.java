@@ -60,7 +60,7 @@ public abstract class Message extends MessagePayload {
 		messageClass = messageClass.replaceAll("class message.", ""); //remove everything except the class name.
 		return messageClass;
 	}
-	
+	//Use this execute method in frontend.. 
 	protected abstract void executeForFrontend();
 	/*
 	 *Use this when backup and Primary want's to do the same thing.  

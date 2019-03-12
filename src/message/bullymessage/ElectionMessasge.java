@@ -13,11 +13,15 @@ public class ElectionMessasge extends BullyMessage {
 	
 	
 	//Used by jackson to create prototype objects.
-	public ElectionMessasge() {
+	protected ElectionMessasge() {
 		super(ElectionMessasge.messageUUID);
 	}
 	protected ElectionMessasge(UUID uuid) {
 		super(uuid);
+	}
+	//Use this constructor 
+	public ElectionMessasge(Address address, String id) {
+		super(ElectionMessasge.messageUUID);
 	}
 	@Override
 	protected void executeForFrontend() {

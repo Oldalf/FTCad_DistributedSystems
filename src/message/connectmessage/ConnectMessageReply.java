@@ -23,6 +23,7 @@ public class ConnectMessageReply extends ConnectMessage {
 		super(message);
 	}
 	public ConnectMessageReply(Replys serverAnswer) {
+		super(ConnectMessageReply.messageUUID);
 		this.reply = serverAnswer;
 	}
 
