@@ -17,7 +17,7 @@ import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
 import org.jgroups.util.Util;
 
-import DCAD.GObject;
+import message.bullymessage.ElectionMessage;
 
 public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	private JChannel channel;
@@ -28,25 +28,24 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	private Address primaryAddress = null;
 	private Address frontendAddress = null;
 	private View previousView;
-	private Thread receiveLogicThread; 
-	
+	private Thread receiveLogicThread;
+
 	private volatile LinkedBlockingQueue<message.Message> messageQueue = new LinkedBlockingQueue<message.Message>();
+	private volatile LinkedBlockingQueue<ReplicaManagerMessageContainer> messageOutputQueue = new LinkedBlockingQueue<ReplicaManagerMessageContainer>();
 	// private final LinkedList<GObject> cadState = new LinkedList<GObject>();
 	private final LinkedList<String> cadState = new LinkedList<String>();
-	private String id;
+	private Address id;
 
 	public ReplicaManager() {
 		try {
-			// FIXME channel.close() någon gång tror jag.
 			this.channel = new JChannel().setReceiver(this);
 			this.channel.connect("replicaManagerCluster");
 			channel.getState(null, 10000);
-			id = channel.getAddressAsString();
+			id = channel.getAddress();
 			receiveLogicThread = new Thread(new ReplicaManagerReceiveLogicThread(messageQueue));
 			receiveLogicThread.start();
-			//FIXME skapa och starta tråd för sender.
-			
-			
+			// FIXME skapa och starta tråd för sender.
+
 			// eventLoop();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,8 +94,10 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	 * FIXME add messages to a processing list.
 	 */
 	public void receive(Message msg) {
+
 		System.out.println(msg.getSrc() + ": " + msg.getObject());
 		cadState.add(msg.getObject());
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -133,12 +134,74 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 			if (primaryAddress == null) {
 				callElection();
 			}
+
+			if (messageQueue.size() > 0) {
+				try {
+					message.Message rmMessage = messageQueue.take();
+					if (primaryAddress == id) {
+						/*
+						 * actions of primary
+						 */
+						rmMessage.executeForPrimaryReplicaManager();
+					} else {
+						/*
+						 * Actions of normal replica
+						 */
+						rmMessage.executeForBackupReplicaManager();
+
+						/*
+						 * If the message is of the type AnswerMesage, stop the election Timer/timeout.
+						 */
+
+						/*
+						 * If the message is of the type Election Message: do: callElection() send
+						 * answerMEssage to the sender.
+						 */
+
+						/*
+						 * If message is of the type Coordinator message, sender is primary
+						 */
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+			}
 		}
 
 	}
 
 	private void callElection() {
-
+		LinkedList<Address> membersWithHigherId = new LinkedList<Address>();
+		LinkedList<Address> members = (LinkedList<Address>) previousView.getMembers();
+		for (int i = 0; i < members.size(); i++) {
+			Address member = members.get(i);
+			if (!id.equals(member)) {
+				if (id.compareTo(member) > 0) {
+					membersWithHigherId.add(member);
+				}
+			}
+		}
+		/*
+		 * Message members.
+		 */
+		if (membersWithHigherId.size() > 0) {
+			for (int i = 0; i < membersWithHigherId.size(); i++) {
+				messageOutputQueue
+						.add(new ReplicaManagerMessageContainer(new ElectionMessage(), membersWithHigherId.get(i)));
+				/*
+				 * FIXME set a timer, either with thread or use the other other run above and
+				 * have a timestamp variable.
+				 */
+			}
+		} else {
+			/*
+			 * I am primary, send coordinator message.
+			 * FIXME ask supervisor if this is a correct assessment of the algorithm.
+			 * Seems like once all replicaManagers realize the primary is gone one of them will realize its
+			 * the highest and just elect itself and rarely would the others get time to start the election process.
+			 */
+		}
 	}
 
 }
