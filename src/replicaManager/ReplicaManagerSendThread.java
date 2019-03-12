@@ -3,7 +3,7 @@ package replicaManager;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ReplicaManagerSendThread implements Runnable {
-	private volatile LinkedBlockingQueue<ReplicaManagerMessageContainer> messageOutputQueue = new LinkedBlockingQueue<ReplicaManagerMessageContainer>();
+	private volatile LinkedBlockingQueue<ReplicaManagerOutgoingMessageContainer> messageOutputQueue = new LinkedBlockingQueue<ReplicaManagerOutgoingMessageContainer>();
 	
 	public ReplicaManagerSendThread(LinkedBlockingQueue<message.Message> messageOutputQueue) {
 		

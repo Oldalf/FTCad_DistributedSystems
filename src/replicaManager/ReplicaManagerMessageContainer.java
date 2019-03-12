@@ -14,11 +14,11 @@ public class ReplicaManagerMessageContainer {
 		this.replicaAddress = replicaAddress;
 	}
 
-	public message.Message getOutMessage() {
+	public message.Message getMessage() {
 		return rmMessage;
 	}
 
-	public void setOutMessage(message.Message outMessage) {
+	public void setMessage(message.Message outMessage) {
 		this.rmMessage = outMessage;
 	}
 
