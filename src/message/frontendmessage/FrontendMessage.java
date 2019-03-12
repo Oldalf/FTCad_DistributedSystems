@@ -4,6 +4,9 @@ import java.util.UUID;
 
 import org.jgroups.Address;
 
+import Role.ReplicaManagerRole;
+import State.FrontendState;
+import State.ReplicaManagerState;
 import message.Message;
 import message.bullymessage.BullyMessage;
 
@@ -29,25 +32,25 @@ public class FrontendMessage extends Message {
 	}
 
 	@Override
-	protected void executeForFrontend() {
+	public void executeForFrontend(FrontendState state) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected void executeForReplicaManager() {
+	public void executeForReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void executeForBackupReplicaManager() {
+	public void executeForBackupReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void executeForPrimaryReplicaManager() {
+	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 		
 	}

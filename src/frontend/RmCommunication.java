@@ -8,6 +8,7 @@ import org.jgroups.Message;
 import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
 
+import State.FrontendState;
 import message.bullymessage.BullyMessage;
 import message.bullymessage.CoordinatorMessage;
 import message.frontendmessage.FrontendMessage;
@@ -20,9 +21,11 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	private Address id;
 	private Address primaryAddress = null;
 	private View previousView;
+	private FrontendState frotendstate;
 
 	public RmCommunication() {
 		try {
+			this.frotendstate.getInstance();
 			this.channel = new JChannel().setReceiver(this);
 			this.channel.connect("replicaManagerCluster");
 			id = channel.getAddress();
@@ -82,7 +85,7 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 		return newMessage;
 	}
 	private boolean checkForUnwantedMessages(message.Message msg) {
-		if(!(msg instanceof BullyMessage) && !(msg instanceof CoordinatorMessage)) {
+		if((msg instanceof BullyMessage) && !(msg instanceof CoordinatorMessage)) {
 			return false;			
 		}
 		return true;

@@ -3,6 +3,7 @@ package message;
 import java.util.Optional;
 import java.util.UUID;
 
+import State.FrontendState;
 import State.ReplicaManagerState;
 
 
@@ -63,11 +64,11 @@ public abstract class Message extends MessagePayload {
 		return messageClass;
 	}
 	//Use this execute method in frontend.. 
-	protected abstract void executeForFrontend();
+	public abstract void executeForFrontend(FrontendState state);
 	/*
 	 *Use this when backup and Primary want's to do the same thing.  
 	 */
-	protected abstract void executeForReplicaManager(ReplicaManagerState state);
+	public abstract void executeForReplicaManager(ReplicaManagerState state);
 	/*
 	 *Unique execute for backup 
 	 */

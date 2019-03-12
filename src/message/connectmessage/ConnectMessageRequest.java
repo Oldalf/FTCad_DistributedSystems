@@ -2,6 +2,7 @@ package message.connectmessage;
 
 import java.util.UUID;
 
+import State.FrontendState;
 import State.ReplicaManagerState;
 import message.MessagePayload;
 
@@ -27,7 +28,7 @@ public class ConnectMessageRequest extends ConnectMessage {
 	}
 	
 	@Override
-	public void executeForFrontend() {
+	public void executeForFrontend(FrontendState state) {
 		// TODO Auto-generated method stub
 			try {
 				throw new IllegalAccessException();

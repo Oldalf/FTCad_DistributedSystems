@@ -2,6 +2,7 @@ package message.dissconnectmessage;
 
 import java.util.UUID;
 
+import State.FrontendState;
 import State.ReplicaManagerState;
 import message.MessagePayload;
 
@@ -19,13 +20,13 @@ public class DissconnectMessageRequest extends DissconnectMessage {
 		super(message);
 	}
 	@Override
-	protected void executeForFrontend() {
+	public void executeForFrontend(FrontendState state) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected void executeForReplicaManager(ReplicaManagerState state) {
+	public void executeForReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 		
 	}
