@@ -7,7 +7,10 @@ import java.net.Socket;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import Server.ClientConnection;
+import State.FrontendState;
 import message.connectmessage.ConnectMessage;
+import message.drawmessage.DrawMessageReply;
 import message.Message;
 
 public class SendThread implements Runnable{
@@ -35,16 +38,67 @@ public class SendThread implements Runnable{
 		while(true)
 		{
 			// Plocka bort ett meddelande från clientens meddelandekö
-			// Kolla vilket typ av meddelande det är (t.ex draw)
-
-			// message = det meddelandet som tas ifrån kön
-			// Kanske att det ska skickas till alla clienter i "connectedClients" hashmappen? lite som en broadcast?
+			try {
+				message = FrontendState.connectedClients.get(ID).getMessageQueue().take();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			
-			//output.write(message);
-			//output.flush();
+			// Draw reply
+			if(message.getUuid().equals(UUID.fromString("77bf05fc-40f5-11e9-b210-d663bd873d93")))
+			{
+				// Kolla om det är OK eller ICKE-OK, alltså om det ska eller inte ska ritas ut,
+				// om det ska skicka till alla klienter annars skicka endast tillbaka ett meddelande
+				// till klienten om att det blev ett avslag eller nått.
 
-			// Tror inte att writer behöver göra mycket mer då den ska inte utföra några beslut som i TCP-Chat 
-			// utan den endast skickar meddelanden som Replica Managern redan har tagit beslut på.
+				DrawMessageReply dmr = (DrawMessageReply)message;
+				
+				if(!ID.equals(message.senderID())) // För att se till att man inte konstant skickar broadcasts även fast man inte var klienten som skickade requesten
+				{
+					broadcast();
+				}
+
+				// Skicka endast meddelandet till sig själv!
+				else
+				{
+					sendMessageToSelf();
+				}
+			}
+
+			// Om det är någon annan typ av meddelande än Draw så ska det endast skickas till klienten som skickade det, tror jag?
+			else
+			{
+				// Kanske att man behöver kolla på meddelandet och utföra vissa ändringar innan man skickar det?
+				
+				sendMessageToSelf();
+			}
+		}
+	}
+
+	private void broadcast()
+	{
+		for(ClientConnection entry:FrontendState.connectedClients.values())
+		{
+			if(!entry.getUUID().equals(ID))	// För att se till att man inte lägger in meddelandet i sin egna kö!
+			{
+				try {
+					entry.getMessageQueue().put(message);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+
+		sendMessageToSelf();
+	}
+
+	private void sendMessageToSelf()
+	{
+		try {
+			output.write(message.serialize());
+			output.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
