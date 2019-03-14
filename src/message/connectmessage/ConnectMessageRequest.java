@@ -2,7 +2,6 @@ package message.connectmessage;
 
 import java.util.UUID;
 
-
 import State.FrontendState;
 import State.ReplicaManagerState;
 import message.MessagePayload;

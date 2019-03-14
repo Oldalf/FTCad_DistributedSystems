@@ -1,6 +1,5 @@
 package message.connectmessage;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import message.Message;

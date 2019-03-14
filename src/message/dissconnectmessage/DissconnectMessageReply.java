@@ -5,7 +5,6 @@ import java.util.UUID;
 import State.FrontendState;
 import State.ReplicaManagerState;
 import message.MessagePayload;
-import message.connectmessage.ConnectMessageReply;
 
 
 public class DissconnectMessageReply extends DissconnectMessage{

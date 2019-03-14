@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import State.FrontendState;
 import State.ReplicaManagerState;
-import message.Message;
 import message.MessagePayload;
 import message.Reply;
 
@@ -22,9 +21,9 @@ public class ConnectMessageReply extends ConnectMessage {
 	protected ConnectMessageReply(MessagePayload message) {
 		super(message);
 	}
-	public ConnectMessageReply(Reply serverAnswer) {
+	public ConnectMessageReply(Reply reply) {
 		super(ConnectMessageReply.messageUUID);
-		this.reply = serverAnswer;
+		this.reply = reply;
 	}
 	
 	public Reply getReply()

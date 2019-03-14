@@ -11,7 +11,7 @@ import message.Message;
 public class FrontendMessage extends Message {
 
 	private static UUID messageUUID = UUID.fromString("e9684186-44ca-11e9-b210-d663bd873d93"); 
-	private Address m_Address;
+	private Address address;
 	protected FrontendMessage() {
 		super(FrontendMessage.messageUUID);
 	}
@@ -21,13 +21,13 @@ public class FrontendMessage extends Message {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public FrontendMessage(Address adrs) {
+	public FrontendMessage(Address address) {
 		super(FrontendMessage.messageUUID);
-		this.m_Address = adrs;
+		this.address = address;
 	}
 	
 	public Address getAddress() {
-		return this.m_Address;
+		return this.address;
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import java.util.UUID;
 import State.FrontendState;
 import State.ReplicaManagerState;
 import message.MessagePayload;
-import message.dissconnectmessage.DissconnectMessageRequest;
 
 public class DrawMessageReply extends DrawMessage {
 	private static UUID messageUUID = UUID.fromString("77bf05fc-40f5-11e9-b210-d663bd873d93");

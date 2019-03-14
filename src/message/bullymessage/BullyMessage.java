@@ -2,7 +2,6 @@ package message.bullymessage;
 
 import java.util.UUID;
 
-import State.ReplicaManagerState;
 import message.Message;
 
 public abstract class BullyMessage extends Message {
