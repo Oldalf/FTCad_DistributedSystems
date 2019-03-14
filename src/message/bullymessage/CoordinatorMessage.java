@@ -21,9 +21,9 @@ public class CoordinatorMessage extends BullyMessage {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CoordinatorMessage(Address address) {
+	public CoordinatorMessage(Address m_address) {
 		super(CoordinatorMessage.messageUUID);
-		this.m_address = address;
+		this.m_address = m_address;
 	}
 
 	@Override
@@ -37,6 +37,7 @@ public class CoordinatorMessage extends BullyMessage {
 		state.electionTimeout = null;
 		state.onGoingElection = false;
 		state.primaryAddress = m_address;
+		System.out.println("new primary is!: " + m_address);
 	}
 
 	@Override
@@ -51,11 +52,8 @@ public class CoordinatorMessage extends BullyMessage {
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		try {
-			throw new IllegalAccessException("YOU SHOULD NOT USE THIS EXECUTE WHERE EVER YOU ARE!");
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
+		// Someone think they have a higher id, yielding primary.
+		CoordinatorExecuteForRM(state);
 
 	}
 

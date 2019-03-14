@@ -20,9 +20,9 @@ public class AnswerMessage extends BullyMessage {
 
 	}
 
-	public AnswerMessage(Address adress) {
+	public AnswerMessage(Address m_address) {
 		super(AnswerMessage.messageUUID);
-		this.m_address = adress;
+		this.m_address = m_address;
 	}
 
 	@Override

@@ -22,9 +22,9 @@ public class ElectionMessage extends BullyMessage {
 	}
 
 	// Use this constructor
-	public ElectionMessage(Address address) {
+	public ElectionMessage(Address m_address) {
 		super(ElectionMessage.messageUUID);
-		this.m_address = address;
+		this.m_address = m_address;
 	}
 
 	@Override

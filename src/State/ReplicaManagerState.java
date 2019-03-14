@@ -1,5 +1,7 @@
 package State;
 
+import java.util.concurrent.LinkedBlockingQueue;
+
 import org.jgroups.Address;
 import org.jgroups.View;
 
@@ -18,11 +20,13 @@ public class ReplicaManagerState {
 	public boolean primaryMissing = true;
 	public boolean onGoingElection = false;
 	public boolean callElection = false;
+	public volatile boolean stateAcquired = false;
 	public Address primaryAddress = null;
 	public Address frontendAddress = null;
 	public View previousView;
 	public Long electionTimeout;
 	public AbstractRole role = ReplicaManagerRole.getInstance();
+	public LinkedBlockingQueue<Address> answerMessageReplyList = new LinkedBlockingQueue<>();
 
 	public rmReplicableState rpState = rmReplicableState.getInstance();
 
