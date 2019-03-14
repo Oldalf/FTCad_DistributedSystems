@@ -21,7 +21,7 @@ public class DrawMessageRequest extends DrawMessage {
 	}
 	@Override
 	public void executeForFrontend(FrontendState state) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

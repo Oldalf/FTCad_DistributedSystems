@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.jgroups.Address;
 
+import State.FrontendState;
 import State.ReplicaManagerState;
 
 public class AnswerMessage extends BullyMessage {
@@ -46,7 +47,7 @@ public class AnswerMessage extends BullyMessage {
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
 		try {
-			throw new IllegalAccessException();
+			throw new IllegalAccessException("You should not use this execute method from the current class.");
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
