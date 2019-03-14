@@ -33,18 +33,15 @@ public class ReceiveThread implements Runnable{
 
 	private void receiveClientMessage()
 	{
-		byte[] b = new byte[8192];
+		byte[] inputByte = new byte[8192];
+
 		try {
-			input.read(b);
+			input.read(inputByte);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		// UnMarshal-Message or just Read the type
-		// Put the message in the right LinkedBlockingQueue- 
-		// depending on the UUID on the hashmap 
-		//			ELLER
-		// Lägg in det i replicaMessageQueue som endast Backend-Tråden använder?
+		// Här ska den skicka meddelandet (input byten) till Replica-Manager tråden!
 
 	}
 }

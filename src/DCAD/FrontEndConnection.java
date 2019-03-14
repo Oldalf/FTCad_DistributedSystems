@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.UUID;
 
-import message.JoinMessage;
+import message.ConnectMessage;
+import message.Message;
+import message.MessageStatus;
 
 public class FrontEndConnection 
 {
@@ -25,7 +26,7 @@ public class FrontEndConnection
 
 	// Variables
 	private boolean gotJoinMessage = false;
-	private JoinMessage jMessage = new JoinMessage();	// Ska joinMessage vara protected? och är det såhär vi ska göra?
+	private ConnectMessage connectMessage;
 	private InputStream input;
 	private OutputStream output;
 	private byte[] inputByte;
@@ -64,33 +65,65 @@ public class FrontEndConnection
 		clientID = id;
 
 		// Skapa ett JoinMessage
+		connectMessage = new ConnectMessage(clientID, MessageStatus.REQUEST);
 
-		// Marhsal Message // Vet inte hur det fungerar med Jgroups så väntar med det
-
-		// Skicka ett JoinMessage
-		output.write(/* Marshaled Message */);
-		output.flush();
-
-		// Loopen är här för att fixa "problemet" med att andra slags meddelanden kan komma medans man väntar på receive.
-		while(!gotJoinMessage)
-		{
-			// ReceiveMessage(), släng om det inte är ett JoinMessage och försök igen
-			inputByte = new byte[8192];
-			input.read(inputByte);		// Vet inte om det är såhär vi ska göra med Jgroups eller inte?
-
-			// om det är ett JoinMessage-type -> gotJoinMessage = true; annars loopa om igen!
+		// Marhsal Message och Skicka ett JoinMessage
+		try {
+			output.write(Message.serializeMessage(connectMessage));
+			output.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
-		// Unmarshal Message
+		System.out.println("CLIENT SKICKADE ETT MEDDELANDE TILL SERVERN!");
 
-		/*
-		 * if(message = OK)
-		 * 		then return true typ
-		 * 
-		 * else
-		 * 		return false;
-		 * 
-		 * */
-		return false;	// Bara här för att inte få error!
+		// Loopen är här för att se till att om det skulle komma någon annan typ av meddelande än just "connectMessage" så slängs det och den lyssnar efter nya meddelanden
+		while(gotJoinMessage == false)
+		{
+			// ReceiveMessage, släng om det inte är ett JoinMessage och försök igen
+			inputByte = new byte[8192];
+			try {
+				input.read(inputByte);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			// Tror denna kollar om UUID:et på meddelandet är samma UUID som används för ConnectMessage
+			if(Message.getUUIDFromJSONObject(inputByte).equals(UUID.fromString("fe28ead0-3b38-11e9-b210-d663bd873d93")) && 
+					connectMessage.getMessageStatus().equals(MessageStatus.REPLY))
+			{
+				// Unmarshal Message
+				connectMessage.deserialize(inputByte);
+				gotJoinMessage = true;
+			}
+		}
+
+		// To see if its ok to join or not
+		if(connectMessage.getTextMessage().equals("OK"))
+		{
+			return true;	
+		}
+
+		else
+			return false;
+
+	}
+
+	public void receiveMessages()
+	{	
+		inputByte = new byte[8192];
+
+		try {
+			input.read(inputByte);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		connectMessage.deserialize(inputByte);
+
+		// Kolla vad det är för slags meddelande och gör de beslut utifrån de,
+		// såsom att om det är en draw-reply kolla om du ska måla ut det på skärmen
+		// eller om det var din draw-request som blev avslagen / declined.
+
 	}
 }
