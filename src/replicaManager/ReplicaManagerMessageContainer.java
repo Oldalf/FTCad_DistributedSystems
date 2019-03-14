@@ -2,24 +2,22 @@ package replicaManager;
 
 import org.jgroups.Address;
 
-import message.Message;
-
 public class ReplicaManagerMessageContainer {
 	private message.Message rmMessage;
-	private Address replicaAddress;
+	private Address jGroupAddress;
 	private String messageType;
 
-	public ReplicaManagerMessageContainer(Message rmMessage, Address replicaAddress, String messageType) {
+	public ReplicaManagerMessageContainer(message.Message rmMessage, Address jGroupAddress, String messageType) {
 		super();
 		this.rmMessage = rmMessage;
-		this.replicaAddress = replicaAddress;
+		this.jGroupAddress = jGroupAddress;
 		this.messageType = messageType;
 	}
-	
-	public ReplicaManagerMessageContainer(Message rmMessage, Address replicaAddress) {
+
+	public ReplicaManagerMessageContainer(message.Message rmMessage, Address jGroupAddress) {
 		super();
 		this.rmMessage = rmMessage;
-		this.replicaAddress = replicaAddress;
+		this.jGroupAddress = jGroupAddress;
 		this.messageType = null;
 	}
 
@@ -35,16 +33,16 @@ public class ReplicaManagerMessageContainer {
 		return rmMessage;
 	}
 
-	public void setMessage(message.Message outMessage) {
-		this.rmMessage = outMessage;
+	public void setMessage(message.Message rmMessage) {
+		this.rmMessage = rmMessage;
 	}
 
-	public Address getReplicaAddress() {
-		return replicaAddress;
+	public Address getjGroupAddress() {
+		return jGroupAddress;
 	}
 
-	public void setReplicaAddress(Address replicaAddress) {
-		this.replicaAddress = replicaAddress;
+	public void setjGroupAddress(Address jGroupAddress) {
+		this.jGroupAddress = jGroupAddress;
 	}
 
 }
