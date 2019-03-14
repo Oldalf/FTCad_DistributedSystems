@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.UUID;
 
+import State.FrontendState;
+import message.Message;
+
 public class ReceiveThread implements Runnable{
 
 	private Socket clientSocket = null;
@@ -41,8 +44,17 @@ public class ReceiveThread implements Runnable{
 			e.printStackTrace();
 		}
 
-		// Här ska den skicka meddelandet (input byten) till Replica-Manager tråden!
-
+		sendMessageToReplica(inputByte);
+	}
+	
+	private void sendMessageToReplica(byte[] b)
+	{
+		// Sending the message to the replica-Managers message queue
+		try {
+			FrontendState.replicaMessageQueue.put(Message.deserializeMessage(b));
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
 

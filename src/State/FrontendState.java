@@ -2,12 +2,14 @@ package State;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.jgroups.Address;
 
 import Role.AbstractRole;
 import Role.FrontendRole;
 import frontend.ClientConnection;
+import message.Message;
 
 public class FrontendState {
 	/*
@@ -20,6 +22,7 @@ public class FrontendState {
 	public AbstractRole role = FrontendRole.getInstance();
 	
 	public static ConcurrentHashMap<UUID, ClientConnection> connectedClients = new ConcurrentHashMap<UUID, ClientConnection>();
+	public static LinkedBlockingQueue<Message> replicaMessageQueue = new LinkedBlockingQueue<Message>();
 	
 	/*
 	 * Concurrent hashmap with clients.

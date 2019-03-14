@@ -60,7 +60,6 @@ public class FrontEndConnection
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public boolean handShake(UUID id)
@@ -91,7 +90,6 @@ public class FrontEndConnection
 				e.printStackTrace();
 			}
 			
-			
 			UUID tempID = Message.getUUIDFromJSONObject(inputByte);
 			if(Message.defineMessageClassWithUUID(tempID).equals("ConnectMessageReply"))
 			{
@@ -121,7 +119,7 @@ public class FrontEndConnection
 			e.printStackTrace();
 		}
 		
-		message.deserialize(inputByte);
+		message = Message.deserializeMessage(inputByte);
 
 		// Kolla vad det är för slags meddelande och gör de beslut utifrån de,
 		// såsom att om det är en draw-reply kolla om du ska måla ut det på skärmen
