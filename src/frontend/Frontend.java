@@ -5,10 +5,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
+
+import message.ConnectMessage;
+import message.Message;
+import message.MessageStatus;
 
 public class Frontend {
 
@@ -19,6 +21,10 @@ public class Frontend {
 	private OutputStream output;
 	private ConcurrentHashMap<UUID, ClientConnection> connectedClients = new ConcurrentHashMap<UUID, ClientConnection>();
 
+	private ConnectMessage connectMessage = null;
+	private boolean gotJoinMessage = false;
+
+	private byte[] inputByte;
 
 	public static void main(String[] args) 
 	{
@@ -34,35 +40,67 @@ public class Frontend {
 			e.printStackTrace();
 		}
 
-		// For adding all the linked quseues to the Queue Hashmap
-		for(int i = 0; i < 3; i++)
-		{
-			// Lägg till all blockingqueues till Hashmappen (queues)!
-		}
-
-		Thread backendThread = new Thread(new Backend());
-		backendThread.start();
+		Thread rmCommunicationThread = new Thread(new RmCommunication());
+		rmCommunicationThread.start();
 	}
 
 	private void running()
 	{
 		while(true)
 		{
-			receiveMessage();
-			
-			// Kolla type
-			// Om typ == JoinMessage-Request
-			//		Kolla om UUID:et finns i connectedClients om inte 
-			//			skicka tillbaka en joinMessage-Reply som är OK-TO-CONNECT eller nått
-			
-			// Detta ska göras om det är sant att clienten får connecta
-			connectedClients.put(clientUUID, new ClientConnection(message.clientUUID, message.clientAddress, message.clientPort));
-			Thread r = new Thread(new ReceiveThread(clientSocket, message.clientUUID));
-			Thread s = new Thread(new SendThread(clientSocket, message.clientUUID));
-			r.start();
-			s.start();
-			
-			// annars skicka bara tillbaka ett meddelande att id är upptaget
+			System.out.println("Waiting for Messages...");
+
+			// Här för att se till att den inte tar emot andra slags meddelanden än ConnectMessage
+			while(gotJoinMessage == false)
+			{
+
+				receiveMessage();
+
+				// Tror denna kollar om UUID:et på meddelandet är samma UUID som används för ConnectMessage
+				if(Message.getUUIDFromJSONObject(inputByte).equals(UUID.fromString("fe28ead0-3b38-11e9-b210-d663bd873d93")) && 
+						connectMessage.getMessageStatus().equals(MessageStatus.REQUEST))
+				{
+					// Unmarshal Message
+					connectMessage.deserialize(inputByte);
+					gotJoinMessage = true;
+				}
+			}
+
+			if(!connectedClients.containsKey(connectMessage.getName()))
+			{
+				// OBS! getName() returnerar inte ett namn (string) utan clientens UUID!
+				connectedClients.put(connectMessage.getName(), new ClientConnection(connectMessage.getName(), clientSocket.getInetAddress(), clientSocket.getPort()));
+				Thread r = new Thread(new ReceiveThread(clientSocket, connectMessage.getName()));
+				Thread s = new Thread(new SendThread(clientSocket, connectMessage.getName()));
+
+				connectMessage = new ConnectMessage("OK", MessageStatus.REPLY);
+
+				try {
+					output.write(Message.serializeMessage(connectMessage));
+					output.flush();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				r.start();
+				s.start();
+				gotJoinMessage = false;
+			}
+
+			// Annars skicka bara tillbaka ett meddelande att "id är upptaget" / får inte ansluta
+			else
+			{
+				connectMessage = new ConnectMessage("NOT-OK", MessageStatus.REPLY);
+
+				try {
+					output.write(Message.serializeMessage(connectMessage));
+					output.flush();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				gotJoinMessage = false;
+			}
 		}
 	}
 
@@ -75,5 +113,15 @@ public class Frontend {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		inputByte = new byte[8192];
+
+		try {
+			input.read(inputByte);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("SERVER FICK ETT MEDDELANDE!");
 	}
 }

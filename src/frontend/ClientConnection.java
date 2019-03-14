@@ -2,6 +2,9 @@ package frontend;
 
 import java.net.InetAddress;
 import java.util.UUID;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import message.Message;
 
 public class ClientConnection 
 {
@@ -9,6 +12,9 @@ public class ClientConnection
 	private UUID ID;
 	private InetAddress address = null;
 	private int port = 0;
+
+	// Kön som Output läser ifrån samt att det är denna som alla meddelanden läggs i när de kommer från Replicamanagersen
+	private LinkedBlockingQueue<Message> messageQueue = new LinkedBlockingQueue<Message>();
 
 	public ClientConnection()
 	{
@@ -20,6 +26,11 @@ public class ClientConnection
 		ID = id;
 		this.address = address;
 		this.port = port;
+	}
+
+	public LinkedBlockingQueue<Message> getMessageQueue()
+	{
+		return messageQueue;
 	}
 
 	public UUID getUUID()

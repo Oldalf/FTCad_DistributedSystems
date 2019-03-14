@@ -198,7 +198,7 @@ public class GUI extends JFrame implements WindowListener, ActionListener, Mouse
 
 	public void paint(Graphics g) {
 		super.paint(g); // The superclass (JFrame) paint function draws the GUI
-						// components.
+		// components.
 		update(g);
 	}
 
