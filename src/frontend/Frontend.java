@@ -76,6 +76,7 @@ public class Frontend {
 				s.start();
 			}
 
+			
 			// Annars skicka bara tillbaka ett meddelande att "id är upptaget" / får inte ansluta
 			else
 			{
