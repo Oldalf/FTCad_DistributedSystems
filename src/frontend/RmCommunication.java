@@ -1,6 +1,7 @@
 package frontend;
 
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.jgroups.Address;
 import org.jgroups.JChannel;
@@ -22,12 +23,16 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	private Address primaryAddress = null;
 	private View previousView;
 	private FrontendState frotendstate;
+	private LinkedBlockingQueue<message.Message> receiveQueue;
+	private LinkedBlockingQueue<message.Message> sendQueue;
+	
 
 	public RmCommunication() {
 		try {
-			this.frotendstate.getInstance();
+			this.frotendstate = FrontendState.getInstance();
 			this.channel = new JChannel().setReceiver(this);
 			this.channel.connect("replicaManagerCluster");
+			this.channel.setDiscardOwnMessages(true);
 			id = channel.getAddress();
 			sendBroadcastMessage(provideFrontendId());
 		} catch (Exception e) {
@@ -40,8 +45,8 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 		if (previousView != null && primaryAddress != null) {
 			List<Address> leavingMembers = View.leftMembers(previousView, new_view);
 			if (leavingMembers.contains(primaryAddress)) {
-				primaryMissing = true;
-				primaryAddress = null;
+				frotendstate.primaryMissing = true;
+				frotendstate.primaryAddress = null;
 			}
 		}
 		if(previousView != null) {
@@ -60,18 +65,13 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	public void receive(Message msg) {
 		message.Message message = getMessage(msg);
 		if(checkForUnwantedMessages(message)) {
-			message.ex
+			if(isMessageToClient(message)) {
+				sendQueue.add(message);
+			}
+			else {
+				message.executeForFrontend(frotendstate);				
+			}
 		}
-		//Vad de är för meddelande
-		//Election ska den aldrig svara på
-		//answer ska aldrig ske
-		//call election
-		//
-		
-		
-		System.out.println(msg.getSrc() + ": " + msg.getObject());
-		//cadState.add(msg.getObject());
-
 	}
 
 	public void run() {
@@ -79,6 +79,13 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 			
 			
 		}
+	}
+	private boolean isMessageToClient(message.Message msg){
+		if(msg instanceof CoordinatorMessage) {
+			return false;
+		}
+		return true;
+		
 	}
 	private message.Message getMessage(Message msg){
 		message.Message newMessage = message.Message.deserializeMessage(msg.getObject());

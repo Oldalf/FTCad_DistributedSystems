@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.jgroups.Address;
 
+import State.FrontendState;
 import State.ReplicaManagerState;
 
 public class CoordinatorMessage extends BullyMessage {
@@ -11,7 +12,7 @@ public class CoordinatorMessage extends BullyMessage {
 	private static UUID messageUUID = UUID.fromString("1fe2de74-3ff8-11e9-b210-d663bd873d93");
 	private Address m_address;
 
-	protected CoordinatorMessage() {
+	public CoordinatorMessage() {
 		super(CoordinatorMessage.messageUUID);
 	}
 
@@ -27,7 +28,8 @@ public class CoordinatorMessage extends BullyMessage {
 
 	@Override
 	public void executeForFrontend(FrontendState state) {
-		// TODO Auto-generated method stub
+		state.primaryMissing = false;
+		state.primaryAddress = this.m_address;
 
 	}
 
@@ -50,7 +52,7 @@ public class CoordinatorMessage extends BullyMessage {
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
 		try {
-			throw new IllegalAccessException();
+			throw new IllegalAccessException("YOU SHOULD NOT USE THIS EXECUTE WHERE EVER YOU ARE!");
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
