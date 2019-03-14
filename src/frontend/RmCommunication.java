@@ -24,9 +24,9 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	private View previousView;
 	private FrontendState frotendstate;
 	private LinkedBlockingQueue<message.Message> receiveQueue;
-	private LinkedBlockingQueue<message.Message> sendQueue;
+	private LinkedBlockingQueue<message.Message> sendQueue = new LinkedBlockingQueue<message.Message>();
 
-	public RmCommunication() {
+	public RmCommunication(LinkedBlockingQueue<message.Message> queueBetweenClients) {
 		try {
 			this.frotendstate = FrontendState.getInstance();
 			this.channel = new JChannel().setReceiver(this);
@@ -34,6 +34,7 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 			this.channel.setDiscardOwnMessages(true);
 			id = channel.getAddress();
 			sendBroadcastMessage(provideFrontendId());
+			this.receiveQueue = queueBetweenClients;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,7 +77,12 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 
 	public void run() {
 		while (threadBool) {
-
+			try {
+				message.Message msg = receiveQueue.take();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

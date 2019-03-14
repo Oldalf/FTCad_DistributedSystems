@@ -6,14 +6,13 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import State.FrontendState;
-import message.connectmessage.ConnectMessage;
-import message.connectmessage.ConnectMessageReply;
-import message.connectmessage.ConnectMessageRequest;
 import message.Message;
 import message.Reply;
+import message.connectmessage.ConnectMessageReply;
+import message.connectmessage.ConnectMessageRequest;
 
 public class Frontend {
 
@@ -22,10 +21,12 @@ public class Frontend {
 
 	private InputStream input;
 	private OutputStream output;
-	private ConnectMessageReply connectMessage;
-
+	private ConnectMessageReply connectMessage; 
+	
 	private byte[] inputByte;
-
+	
+	private LinkedBlockingQueue<Message> queueBetweenRThreadAndRmCom = new LinkedBlockingQueue<Message>();
+	
 	public static void main(String[] args) 
 	{
 		Frontend frontend = new Frontend(Integer.parseInt(args[0]));
@@ -35,12 +36,12 @@ public class Frontend {
 	public Frontend(int port)
 	{
 		try {
-			serverSocket = new ServerSocket(port);
+			this.serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		Thread rmCommunicationThread = new Thread(new RmCommunication());
+		Thread rmCommunicationThread = new Thread(new RmCommunication(queueBetweenRThreadAndRmCom));
 		rmCommunicationThread.start();
 	}
 
@@ -60,7 +61,8 @@ public class Frontend {
 			if(!FrontendState.connectedClients.containsKey(UUID.fromString(rm.getID())))
 			{
 				FrontendState.connectedClients.put(UUID.fromString(rm.getID()), new ClientConnection(UUID.fromString(rm.getID()), clientSocket.getInetAddress(), clientSocket.getPort()));
-				Thread r = new Thread(new ReceiveThread(clientSocket, UUID.fromString(rm.getID())));
+				//Thread r = new Thread(new ReceiveThread(clientSocket, UUID.fromString(rm.getID())), queueBetweenRThreadAndRmCom);
+				Thread r = new Thread(new ReceiveThread(clientSocket, message.getSenderUUID(), queueBetweenRThreadAndRmCom));
 				Thread s = new Thread(new SendThread(clientSocket, UUID.fromString(rm.getID())));
 
 				connectMessage = new ConnectMessageReply(Reply.OK);

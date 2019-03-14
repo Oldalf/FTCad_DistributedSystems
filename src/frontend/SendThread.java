@@ -1,17 +1,13 @@
 package frontend;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
-import Server.ClientConnection;
 import State.FrontendState;
-import message.connectmessage.ConnectMessage;
-import message.drawmessage.DrawMessageReply;
 import message.Message;
+import message.drawmessage.DrawMessageReply;
 
 public class SendThread implements Runnable{
 
@@ -53,7 +49,7 @@ public class SendThread implements Runnable{
 
 				DrawMessageReply dmr = (DrawMessageReply)message;
 				
-				if(!ID.equals(message.senderID())) // För att se till att man inte konstant skickar broadcasts även fast man inte var klienten som skickade requesten
+				if(!ID.equals(message.getSenderUUID())) // För att se till att man inte konstant skickar broadcasts även fast man inte var klienten som skickade requesten
 				{
 					broadcast();
 				}

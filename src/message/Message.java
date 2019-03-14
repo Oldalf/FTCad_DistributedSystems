@@ -14,7 +14,8 @@ public abstract class Message extends MessagePayload implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static UUID messageUUID = UUID.fromString("e2cf5202-4027-11e9-b210-d663bd873d93");
-	
+	private UUID senderUUID;
+	private UUID receiverUUID;
 	protected Message() {
 		super(Message.messageUUID);
 	}
@@ -27,6 +28,7 @@ public abstract class Message extends MessagePayload implements Serializable {
 	protected Message(MessagePayload message) {
 		super(message);
 	}
+	
 
 	/*
 	 * Used to identify the message type
@@ -83,4 +85,20 @@ public abstract class Message extends MessagePayload implements Serializable {
 	 *Unique execute for primary 
 	 */
 	public abstract void executeForPrimaryReplicaManager(ReplicaManagerState state);
+
+	public UUID getSenderUUID() {
+		return senderUUID;
+	}
+
+	public void setSenderUUID(UUID senderUUID) {
+		this.senderUUID = senderUUID;
+	}
+
+	public UUID getReceiverUUID() {
+		return receiverUUID;
+	}
+
+	public void setReceiverUUID(UUID receiverUUID) {
+		this.receiverUUID = receiverUUID;
+	}
 }

@@ -19,10 +19,10 @@ public class FrontendState {
 
 	public Address primaryAddress;
 	public boolean primaryMissing;
-	public AbstractRole role = FrontendRole.getInstance();
+	public FrontendRole role = FrontendRole.getInstance();
 	
 	public static ConcurrentHashMap<UUID, ClientConnection> connectedClients = new ConcurrentHashMap<UUID, ClientConnection>();
-	public static LinkedBlockingQueue<Message> replicaMessageQueue = new LinkedBlockingQueue<Message>();
+	
 	
 	/*
 	 * Concurrent hashmap with clients.
