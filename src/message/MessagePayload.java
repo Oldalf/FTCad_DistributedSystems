@@ -56,6 +56,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 	private static Boolean messageDigestInitialized = false;
 
 	private static ObjectMapper objectMapper = new ObjectMapper();
+	
 	private static Map<UUID,MessagePayload> candidateObjectMap;
 	private static Boolean candidateObjectMapInitialized = false;
 
@@ -253,6 +254,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 	 */
 	public Optional<MessagePayload> deserialize(byte[] networkMessage) {
 		try {
+			
 			MessagePayload tmp = MessagePayload.objectMapper.readValue(networkMessage, this.getClass());
 			return Optional.of(tmp);
 		} catch (IOException e) {

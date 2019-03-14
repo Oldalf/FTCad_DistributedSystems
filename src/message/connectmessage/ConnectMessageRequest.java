@@ -2,13 +2,18 @@ package message.connectmessage;
 
 import java.util.UUID;
 
+
 import State.FrontendState;
 import State.ReplicaManagerState;
 import message.MessagePayload;
 
 public class ConnectMessageRequest extends ConnectMessage {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static UUID messageUUID = UUID.fromString("e8cf5202-4027-11e9-b210-d663bd873d93");
-	private String m_id;
+	private volatile String id;
 	
 	public ConnectMessageRequest() {
 		super(ConnectMessageRequest.messageUUID);
@@ -23,14 +28,14 @@ public class ConnectMessageRequest extends ConnectMessage {
 	
 	public ConnectMessageRequest(String id) {
 		super(ConnectMessageRequest.messageUUID);
-		this.m_id = id;
+		this.id = id;
 		
 	}
 	
 	
 	public String getID()
 	{
-		return m_id;
+		return id;
 	}
 	
 	

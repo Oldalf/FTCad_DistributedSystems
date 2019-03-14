@@ -1,5 +1,6 @@
 package message;
 
+import java.io.Serializable;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -7,7 +8,11 @@ import State.FrontendState;
 import State.ReplicaManagerState;
 
 
-public abstract class Message extends MessagePayload {
+public abstract class Message extends MessagePayload implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static UUID messageUUID = UUID.fromString("e2cf5202-4027-11e9-b210-d663bd873d93");
 	
 	protected Message() {

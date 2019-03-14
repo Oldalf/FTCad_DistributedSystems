@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import State.FrontendState;
 import State.ReplicaManagerState;
+import message.Message;
 import message.MessagePayload;
 import message.Reply;
 
