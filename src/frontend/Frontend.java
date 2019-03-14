@@ -8,9 +8,12 @@ import java.net.Socket;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import message.ConnectMessage;
+import State.FrontendState;
+import message.connectmessage.ConnectMessage;
+import message.connectmessage.ConnectMessageReply;
+import message.connectmessage.ConnectMessageRequest;
 import message.Message;
-import message.MessageStatus;
+import message.Reply;
 
 public class Frontend {
 
@@ -19,10 +22,7 @@ public class Frontend {
 
 	private InputStream input;
 	private OutputStream output;
-	private ConcurrentHashMap<UUID, ClientConnection> connectedClients = new ConcurrentHashMap<UUID, ClientConnection>();
-
-	private ConnectMessage connectMessage = null;
-	private boolean gotJoinMessage = false;
+	private ConnectMessageReply connectMessage;
 
 	private byte[] inputByte;
 
@@ -50,30 +50,20 @@ public class Frontend {
 		{
 			System.out.println("Waiting for Messages...");
 
-			// Här för att se till att den inte tar emot andra slags meddelanden än ConnectMessage
-			while(gotJoinMessage == false)
+			receiveMessage();
+			
+			// Unmarshal Message
+			Message message = Message.deserializeMessage(inputByte);
+			
+			ConnectMessageRequest rm = (ConnectMessageRequest)message;
+			
+			if(!FrontendState.connectedClients.containsKey(UUID.fromString(rm.getID())))
 			{
+				FrontendState.connectedClients.put(UUID.fromString(rm.getID()), new ClientConnection(UUID.fromString(rm.getID()), clientSocket.getInetAddress(), clientSocket.getPort()));
+				Thread r = new Thread(new ReceiveThread(clientSocket, UUID.fromString(rm.getID())));
+				Thread s = new Thread(new SendThread(clientSocket, UUID.fromString(rm.getID())));
 
-				receiveMessage();
-
-				// Tror denna kollar om UUID:et på meddelandet är samma UUID som används för ConnectMessage
-				if(Message.getUUIDFromJSONObject(inputByte).equals(UUID.fromString("fe28ead0-3b38-11e9-b210-d663bd873d93")) && 
-						connectMessage.getMessageStatus().equals(MessageStatus.REQUEST))
-				{
-					// Unmarshal Message
-					connectMessage.deserialize(inputByte);
-					gotJoinMessage = true;
-				}
-			}
-
-			if(!connectedClients.containsKey(connectMessage.getName()))
-			{
-				// OBS! getName() returnerar inte ett namn (string) utan clientens UUID!
-				connectedClients.put(connectMessage.getName(), new ClientConnection(connectMessage.getName(), clientSocket.getInetAddress(), clientSocket.getPort()));
-				Thread r = new Thread(new ReceiveThread(clientSocket, connectMessage.getName()));
-				Thread s = new Thread(new SendThread(clientSocket, connectMessage.getName()));
-
-				connectMessage = new ConnectMessage("OK", MessageStatus.REPLY);
+				connectMessage = new ConnectMessageReply(Reply.OK);
 
 				try {
 					output.write(Message.serializeMessage(connectMessage));
@@ -84,13 +74,12 @@ public class Frontend {
 
 				r.start();
 				s.start();
-				gotJoinMessage = false;
 			}
 
 			// Annars skicka bara tillbaka ett meddelande att "id är upptaget" / får inte ansluta
 			else
 			{
-				connectMessage = new ConnectMessage("NOT-OK", MessageStatus.REPLY);
+				connectMessage = new ConnectMessageReply(Reply.CHANGEUUID);
 
 				try {
 					output.write(Message.serializeMessage(connectMessage));
@@ -98,8 +87,6 @@ public class Frontend {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
-				gotJoinMessage = false;
 			}
 		}
 	}

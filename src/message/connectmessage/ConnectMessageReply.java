@@ -5,14 +5,11 @@ import java.util.UUID;
 import State.FrontendState;
 import State.ReplicaManagerState;
 import message.MessagePayload;
-enum Replys{
-	OK, //use to indicate for clients that a connection is established 
-	CHANGEUUID, // use to indicate to the clients that the UUID already exists as a established connection in the server
-	ERROR, //Server error. 
-}
+import message.Reply;
+
 public class ConnectMessageReply extends ConnectMessage {
 	private static UUID messageUUID = UUID.fromString("fe28ead0-3b38-11e9-b210-d663bd873d93");
-	private Replys reply;
+	private Reply reply;
 	
 	public ConnectMessageReply() {
 		super(ConnectMessageReply.messageUUID);
@@ -24,9 +21,14 @@ public class ConnectMessageReply extends ConnectMessage {
 	protected ConnectMessageReply(MessagePayload message) {
 		super(message);
 	}
-	public ConnectMessageReply(Replys serverAnswer) {
+	public ConnectMessageReply(Reply serverAnswer) {
 		super(ConnectMessageReply.messageUUID);
 		this.reply = serverAnswer;
+	}
+	
+	public Reply getReply()
+	{
+		return this.reply;
 	}
 
 	@Override

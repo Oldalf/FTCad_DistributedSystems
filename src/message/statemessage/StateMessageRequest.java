@@ -21,9 +21,6 @@ public class StateMessageRequest extends StateMessage {
 		super(message);
 	}
 	
-	
-	
-	
 	@Override
 	public void executeForFrontend(FrontendState state) {
 		// TODO Auto-generated method stub

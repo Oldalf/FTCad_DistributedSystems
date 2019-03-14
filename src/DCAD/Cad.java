@@ -9,10 +9,6 @@ package DCAD;
 
 import java.util.UUID;
 
-import message.Message;
-import message.MessageStatus;
-import message.connectmessage.ConnectMessage;
-
 public class Cad {
 	static private GUI gui;
 

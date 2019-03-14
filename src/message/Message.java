@@ -18,11 +18,11 @@ public abstract class Message extends MessagePayload {
 		super(uuid);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	protected Message(MessagePayload message) {
 		super(message);
 	}
-	
+
 	/*
 	 * Used to identify the message type
 	 * Reutrn: a String with the message class name. 
@@ -32,18 +32,18 @@ public abstract class Message extends MessagePayload {
 		MessagePayload message = MessagePayload.getPrototypeMessage(id); //create a temp message
 		String messageClass = message.getClass().toString(); //get the class of message
 		messageClass = messageClass.replaceAll("class ", ""); //remove everything except the class name.
-		
+
 		return messageClass;
 	}
 	
 	/*	
-	* Serialize the message and return it in byte[] form.
-	*Used soo you dont need to use MessagePayload directly.
-	*/
+	 * Serialize the message and return it in byte[] form.
+	 *Used soo you dont need to use MessagePayload directly.
+	 */
 	public static byte[] serializeMessage(Message message) {
 		return message.serialize();
 	}
-	
+
 	/*
 	 * Deserialize a byte[] message and convert it to a message class type.
 	 * All other messages classes extends Message so no need to cast to other messages types. 
@@ -52,7 +52,7 @@ public abstract class Message extends MessagePayload {
 		Optional<MessagePayload> msg = MessagePayload.createMessage(byteMessage);
 		return (Message)msg.get();
 	}
-	
+
 	/*
 	 *Returns the message Class name for the UUID
 	 */

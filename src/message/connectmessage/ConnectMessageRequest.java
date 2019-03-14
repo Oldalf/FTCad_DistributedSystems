@@ -27,6 +27,13 @@ public class ConnectMessageRequest extends ConnectMessage {
 		
 	}
 	
+	
+	public String getID()
+	{
+		return m_id;
+	}
+	
+	
 	@Override
 	public void executeForFrontend(FrontendState state) {
 		// TODO Auto-generated method stub

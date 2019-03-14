@@ -1,9 +1,13 @@
 package State;
 
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.jgroups.Address;
 
 import Role.AbstractRole;
 import Role.FrontendRole;
+import frontend.ClientConnection;
 
 public class FrontendState {
 	/*
@@ -14,6 +18,9 @@ public class FrontendState {
 	public Address primaryAddress;
 	public boolean primaryMissing;
 	public AbstractRole role = FrontendRole.getInstance();
+	
+	public static ConcurrentHashMap<UUID, ClientConnection> connectedClients = new ConcurrentHashMap<UUID, ClientConnection>();
+	
 	/*
 	 * Concurrent hashmap with clients.
 	 */

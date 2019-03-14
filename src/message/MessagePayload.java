@@ -51,14 +51,14 @@ public class MessagePayload implements Comparable<MessagePayload> {
 	private UUID uuid = UUID.fromString("a9343c32-e126-4630-82ba-af983a5a7684"); // do not make static!
 	private static Pattern uuidPattern = Pattern.compile("^.*\"[uU]{2}[iI][dD]\"\\s*:\\s*\"([^\"]+)\".*$");
 	private static Pattern multipleUuidPattern = Pattern.compile("^.*\"[uU]{2}[iI][dD]\"\\s*:.*\"[uU]{2}[iI][dD]\"\\s*:.*$");
-	
+
 	private static MessageDigest messageDigest;
 	private static Boolean messageDigestInitialized = false;
-	
+
 	private static ObjectMapper objectMapper = new ObjectMapper();
 	private static Map<UUID,MessagePayload> candidateObjectMap;
 	private static Boolean candidateObjectMapInitialized = false;
-	
+
 	public static MessageDigest getMessageDigest() {
 		initializeMessageDigest();
 		return MessagePayload.messageDigest;
@@ -69,23 +69,23 @@ public class MessagePayload implements Comparable<MessagePayload> {
 	public final UUID getUuid() {
 		return uuid;
 	}
-	
-	
+
+
 	/**Initializes the message digest structure. The reason for encapsulating the initialization in a method 
 	 * is that it is impossible to handle exceptions are part of the assignment of attributes 
 	 * 
 	 */
 	private static void initializeMessageDigest() {
 		try {
-		synchronized(MessagePayload.messageDigestInitialized) {
-			if (!MessagePayload.messageDigestInitialized) {
-				if (MessagePayload.messageDigest == null) {
-					MessagePayload.messageDigest = MessageDigest.getInstance("SHA-1");
-				}	
-				MessagePayload.messageDigestInitialized = true;
-				
+			synchronized(MessagePayload.messageDigestInitialized) {
+				if (!MessagePayload.messageDigestInitialized) {
+					if (MessagePayload.messageDigest == null) {
+						MessagePayload.messageDigest = MessageDigest.getInstance("SHA-1");
+					}	
+					MessagePayload.messageDigestInitialized = true;
+
+				}
 			}
-		}
 		} catch (NoSuchAlgorithmException nsae) {
 			System.err.println("Could not initialize digest package");
 			System.exit(1);
@@ -96,23 +96,23 @@ public class MessagePayload implements Comparable<MessagePayload> {
 	 * 
 	 */
 	private MessagePayload() {
-		
+
 	}
-	
+
 	/**Actual constructor.
 	 * @param uuid
 	 */
 	protected MessagePayload(UUID uuid) {
 		this.uuid = uuid;
 	}
-	
+
 	/** Copy constructor.
 	 * @param message
 	 */
 	protected MessagePayload(MessagePayload message) {
 		this.uuid = message.uuid;
 	}
-	
+
 	/** This method returns an empty prototype object of the right class.
 	 * @param uuid the UUID of the message type
 	 * @return a prototype object that can be employed to deserialize JSON objects
@@ -121,7 +121,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 		initializeStaticCandidateObjectMap();
 		return MessagePayload.candidateObjectMap.get(uuid);
 	}
-	
+
 	/**
 	 * Initializes the candidateObjectMap in the class Message to prototype objects of subclasses of Message
 	 * and Message itself.  
@@ -173,9 +173,9 @@ public class MessagePayload implements Comparable<MessagePayload> {
 				MessagePayload.candidateObjectMapInitialized = true;
 			}
 		}
-		
+
 	}
-	
+
 	private static Set<MessagePayload> getCandidateObjectSet() {
 		MessagePayload.initializeStaticCandidateObjectMap();
 		Set<MessagePayload> candidateObjectSet = new HashSet<>();
@@ -184,7 +184,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 		});
 		return candidateObjectSet;
 	}
-	
+
 	private static Optional<MessagePayload> getCandidateObject(UUID uuid) {
 		final MessagePayload message = MessagePayload.candidateObjectMap.get(uuid);
 		if (message != null) {
@@ -193,7 +193,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 			return Optional.empty();
 		}
 	}
-	
+
 	/** Alternative 1 method for creating an object, which is based on looking of the prototype message object in the 
 	 * map and use it.
 	 * @param networkMessage the JSON object in byte format
@@ -201,7 +201,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 	 * @throws IllegalArgumentException in case something is wrong with the JSON object in the networkMessage
 	 */
 	private static Optional<MessagePayload> createMessageAttempt1(byte[] networkMessage) {
-		
+
 		// get the UUID out of a assumed JSON object
 
 		UUID uuid = MessagePayload.getUUIDFromJSONObject(networkMessage);
@@ -210,7 +210,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 		final MessagePayload prototypeMessage = MessagePayload.getPrototypeMessage(uuid);
 		final Optional<MessagePayload> message = prototypeMessage.deserialize(networkMessage);
 		return message;
-		
+
 	}
 	/** Alternative 2 method for creating an object, which is based on going through all subclasses and 
 	 * trying to create an object based on any class.
@@ -219,7 +219,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 	 */
 	private static Optional<MessagePayload> createMessageAttempt2(byte[] networkMessage) {
 		// more expensive method, go through all subclasses
-		
+
 		for (MessagePayload prototypeMessage: MessagePayload.getCandidateObjectSet() ) {
 			Optional<MessagePayload> result = prototypeMessage.deserialize(networkMessage);
 			if (result.isPresent()) {
@@ -227,9 +227,9 @@ public class MessagePayload implements Comparable<MessagePayload> {
 			}
 		}
 		return Optional.empty();
-		
+
 	}
-	
+
 	/** Factory method that creates a message object of the right subclass based on the network messages represented as a byte array. 
 	 * In contrast to deserialize, this method is static. 
 	 * @param networkMessage the network message received from the network
@@ -244,7 +244,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 		return message;
 	}
 
-	
+
 	/** Deserializes a message according the current class. Essentially, the UUID is used to discover a prototype 
 	 * object of the right message type. This prototype object will then determine the value of <code> this.getClass()</code>
 	 * and, thus, for how jackson should perform deserialization.   
@@ -284,7 +284,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 			throw new IllegalArgumentException("Could not marshal the object "+this,e);
 		}
 	}
-	
+
 	/** Serializes a nessage according to the current class in the form of a String. 
 	 * @return
 	 */
@@ -294,7 +294,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 		} catch (JsonProcessingException e) {
 			throw new IllegalArgumentException("Could not marshal the object "+this,e);
 		}
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -314,7 +314,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 	public boolean equals(Object obj) {
 		return this.uuid.equals(((MessagePayload)obj).getUuid());
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
@@ -352,7 +352,7 @@ public class MessagePayload implements Comparable<MessagePayload> {
 		}
 		return result;
 	}
-	
+
 	public static UUID getUUIDFromJSONObject(byte[] jsonObject) {
 		return getUUIDFromJSONObject(new String(jsonObject));
 	}

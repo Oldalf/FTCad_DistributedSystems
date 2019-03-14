@@ -8,9 +8,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.UUID;
 
-import message.ConnectMessage;
 import message.Message;
-import message.MessageStatus;
+import message.Reply;
+import message.connectmessage.ConnectMessageReply;
+import message.connectmessage.ConnectMessageRequest;
 
 public class FrontEndConnection 
 {
@@ -26,7 +27,9 @@ public class FrontEndConnection
 
 	// Variables
 	private boolean gotJoinMessage = false;
-	private ConnectMessage connectMessage;
+	//private ConnectMessageRequest connectMessage;
+	private ConnectMessageReply replyConnectMessage;
+	private Message message;
 	private InputStream input;
 	private OutputStream output;
 	private byte[] inputByte;
@@ -65,7 +68,7 @@ public class FrontEndConnection
 		clientID = id;
 
 		// Skapa ett JoinMessage
-		connectMessage = new ConnectMessage(clientID, MessageStatus.REQUEST);
+		ConnectMessageRequest connectMessage = new ConnectMessageRequest(clientID.toString());
 
 		// Marhsal Message och Skicka ett JoinMessage
 		try {
@@ -87,19 +90,18 @@ public class FrontEndConnection
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
-			// Tror denna kollar om UUID:et på meddelandet är samma UUID som används för ConnectMessage
-			if(Message.getUUIDFromJSONObject(inputByte).equals(UUID.fromString("fe28ead0-3b38-11e9-b210-d663bd873d93")) && 
-					connectMessage.getMessageStatus().equals(MessageStatus.REPLY))
+			
+			
+			UUID tempID = Message.getUUIDFromJSONObject(inputByte);
+			if(Message.defineMessageClassWithUUID(tempID).equals("ConnectMessageReply"))
 			{
-				// Unmarshal Message
-				connectMessage.deserialize(inputByte);
+				replyConnectMessage = (ConnectMessageReply) Message.deserializeMessage(inputByte);
 				gotJoinMessage = true;
 			}
 		}
 
 		// To see if its ok to join or not
-		if(connectMessage.getTextMessage().equals("OK"))
+		if(replyConnectMessage.getReply().equals(Reply.OK))
 		{
 			return true;	
 		}
@@ -118,8 +120,8 @@ public class FrontEndConnection
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		connectMessage.deserialize(inputByte);
+		
+		message.deserialize(inputByte);
 
 		// Kolla vad det är för slags meddelande och gör de beslut utifrån de,
 		// såsom att om det är en draw-reply kolla om du ska måla ut det på skärmen

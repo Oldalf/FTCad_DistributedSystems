@@ -7,9 +7,8 @@ import java.net.Socket;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import message.ConnectMessage;
+import message.connectmessage.ConnectMessage;
 import message.Message;
-import message.MessageStatus;
 
 public class SendThread implements Runnable{
 
@@ -40,8 +39,9 @@ public class SendThread implements Runnable{
 
 			// message = det meddelandet som tas ifrån kön
 			// Kanske att det ska skickas till alla clienter i "connectedClients" hashmappen? lite som en broadcast?
-			output.write(message);
-			output.flush();
+			
+			//output.write(message);
+			//output.flush();
 
 			// Tror inte att writer behöver göra mycket mer då den ska inte utföra några beslut som i TCP-Chat 
 			// utan den endast skickar meddelanden som Replica Managern redan har tagit beslut på.
