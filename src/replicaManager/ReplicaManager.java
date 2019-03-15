@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 import org.jgroups.Address;
 import org.jgroups.JChannel;
@@ -29,6 +30,7 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	private Thread sendRmThread;
 
 	private volatile LinkedBlockingQueue<ReplicaManagerMessageContainer> messageQueue = new LinkedBlockingQueue<ReplicaManagerMessageContainer>();
+	private volatile LinkedBlockingQueue<Message> messageQueue2 = new LinkedBlockingQueue<Message>();
 	private volatile LinkedBlockingQueue<ReplicaManagerMessageContainer> messageOutputQueue = new LinkedBlockingQueue<ReplicaManagerMessageContainer>();
 
 	private Address id;
@@ -67,14 +69,22 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	public void receive(Message msg) {
 		System.out.println("receiving message: ");
 		Message msg2 = msg;
-		System.out.println(msg.getSrc()+" buffer: " + msg.getBuffer());
-		System.out.println("object: " + msg2.getBuffer());
-		
+		System.out.println(msg.getSrc() + " buffer: " + msg.getBuffer());
+
 		/*
 		 * Get uuid, message and message type
 		 */
+		messageQueue2.add(msg2);
+		System.out.println("added msg 2 to queue 2");
+
 		message.Message incomingMessage = message.Message.deserializeMessage(msg.getBuffer());
 		System.out.println("efter deserial");
+<<<<<<< HEAD
+=======
+
+		// UUID msgUIID = message.Message.getUUIDFromJSONObject((String)
+
+>>>>>>> 0678a65b0fe2a3e9835f1c2015d7955feb6e57d5
 		UUID msgUIID = incomingMessage.getUuid();
 		System.out.println("efter get uuid");
 		String messageType = message.Message.defineMessageClassWithUUID(msgUIID);
@@ -129,7 +139,7 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 				state.electionTimeout = null;
 				state.primaryAddress = id;
 				state.primaryMissing = false;
-				
+
 				messageOutputQueue.add(new ReplicaManagerMessageContainer(new CoordinatorMessage(id), null));
 			}
 
@@ -168,16 +178,41 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 				}
 
 			}
+
+			if (messageQueue2.size() > 0) {
+				System.out.println("messagequeue 2 has size: " + messageQueue2.size());
+				Message msg;
+				try {
+					msg = messageQueue2.take();
+					String test = new String(msg.getBuffer());
+					System.out.println("msg buffer as string is: "+test);
+					
+					message.Message incomingMessage = message.Message.deserializeMessage(msg.getBuffer());
+					System.out.println("efter deserial");
+
+					// UUID msgUIID = message.Message.getUUIDFromJSONObject((String)
+
+					UUID msgUIID = incomingMessage.getUuid();
+					System.out.println("efter get uuid");
+					String messageType = message.Message.defineMessageClassWithUUID(msgUIID);
+					System.out.println("efter definetype");
+				} catch (InterruptedException e) {
+
+					e.printStackTrace();
+				}
+			}
+
 			if (messageOutputQueue.size() > 0) {
 				try {
 					ReplicaManagerMessageContainer msgCont = messageOutputQueue.take();
 					Address recipientAddress = msgCont.getjGroupAddress();
 					message.Message rmMessage = msgCont.getMessage();
-			
+
 					System.out.println("Message uid: " + rmMessage.getUuid());
 					System.out.println(rmMessage.getClass().toString());
 					System.out.println("address: " + recipientAddress);
-
+					String test2 = new String(rmMessage.serialize());
+					System.out.println("test2, serialised and made to string: "+test2);
 					Message msg = new Message(recipientAddress, rmMessage.serialize());
 					channel.send(msg);
 				} catch (InterruptedException e) {
