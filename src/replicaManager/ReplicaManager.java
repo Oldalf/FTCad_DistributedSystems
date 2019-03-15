@@ -75,7 +75,6 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 		 */
 		message.Message incomingMessage = message.Message.deserializeMessage(msg.getBuffer());
 		System.out.println("efter deserial");
-		//UUID msgUIID = message.Message.getUUIDFromJSONObject((String) msg.getObject());
 		UUID msgUIID = incomingMessage.getUuid();
 		System.out.println("efter get uuid");
 		String messageType = message.Message.defineMessageClassWithUUID(msgUIID);
