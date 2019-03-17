@@ -20,7 +20,7 @@ public class MessageHandlerThread implements Runnable
 			try {
 				Message message = this.messageQueue.take();
 				if(FrontendState.connectedClients.containsKey(message.getReceiverUUID())) {
-					FrontendState.connectedClients.get(message.getReceiverUUID()).getMessageQueue().put(message);
+					FrontendState.connectedClients.get(message.getSenderUUID()).getMessageQueue().put(message);
 				}
 				
 			} catch (InterruptedException e) {

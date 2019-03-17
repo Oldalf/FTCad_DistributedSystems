@@ -2,6 +2,10 @@ package message.bullymessage;
 
 import java.util.UUID;
 
+import Role.FrontendRole;
+import Role.ReplicaManagerBackupRole;
+import Role.ReplicaManagerPrimaryRole;
+import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
 import replicaManager.AddressConverter;
@@ -27,32 +31,54 @@ public class AnswerMessage extends BullyMessage {
 		this.addressC = addressC;
 	}
 
-	@Override
-	public void executeForFrontend(FrontendState state) {
-
-	}
 
 	private void CoordinatorExecuteForRM(ReplicaManagerState state) {
 		state.electionTimeout = null;
 	}
 
+	
+	@Override
+	public void executeForFrontend(FrontendState state) {
+		if(state.role instanceof FrontendRole) {
+			
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
+	}
+
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
-		CoordinatorExecuteForRM(state);
+		if(state.role instanceof ReplicaManagerRole) {
+			CoordinatorExecuteForRM(state);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
 	}
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		CoordinatorExecuteForRM(state);
+		if(state.role instanceof ReplicaManagerBackupRole) {
+			CoordinatorExecuteForRM(state);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
 	}
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		try {
-			throw new IllegalAccessException("You should not use this execute method from the current class.");
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+		if(state.role instanceof ReplicaManagerPrimaryRole) {
+			
 		}
+		else {
+			throw new IllegalStateException();
+		}
+		
 	}
 
 }

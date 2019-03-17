@@ -2,6 +2,10 @@ package message.statemessage;
 
 import java.util.UUID;
 
+import Role.FrontendRole;
+import Role.ReplicaManagerBackupRole;
+import Role.ReplicaManagerPrimaryRole;
+import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
 import message.MessagePayload;
@@ -21,25 +25,45 @@ public class StateMessageReply extends StateMessage {
 	}
 	@Override
 	public void executeForFrontend(FrontendState state) {
-		// TODO Auto-generated method stub
+		if(state.role instanceof FrontendRole) {
+			
+		}
+		else {
+			throw new IllegalStateException();
+		}
 		
 	}
 
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
+		if(state.role instanceof ReplicaManagerRole) {
+			
+		}
+		else {
+			throw new IllegalStateException();
+		}
 		
 	}
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
+		if(state.role instanceof ReplicaManagerBackupRole) {
+			
+		}
+		else {
+			throw new IllegalStateException();
+		}
 		
 	}
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
+		if(state.role instanceof ReplicaManagerPrimaryRole) {
+			
+		}
+		else {
+			throw new IllegalStateException();
+		}
 		
 	}
 

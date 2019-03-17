@@ -4,6 +4,10 @@ import java.util.UUID;
 
 import org.jgroups.tests.rt.transports.JGroupsTransport;
 
+import Role.FrontendRole;
+import Role.ReplicaManagerBackupRole;
+import Role.ReplicaManagerPrimaryRole;
+import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
 import replicaManager.AddressConverter;
@@ -29,12 +33,7 @@ public class CoordinatorMessage extends BullyMessage {
 		this.addressC = addressC;
 	}
 
-	@Override
-	public void executeForFrontend(FrontendState state) {
-		state.primaryMissing = false;
-		org.jgroups.util.UUID JGroupUUID = addressC.PossiblyCreateAndGetJGroupsUUID();
-		state.primaryAddress = JGroupUUID;
-	}
+
 
 	private void CoordinatorExecuteForRM(ReplicaManagerState state) {
 		state.electionTimeout = null;
@@ -43,21 +42,52 @@ public class CoordinatorMessage extends BullyMessage {
 		state.primaryAddress = JGroupUUID;
 	}
 
+	
+	@Override
+	public void executeForFrontend(FrontendState state) {
+		if(state.role instanceof FrontendRole) {
+			state.primaryMissing = false;
+			org.jgroups.util.UUID JGroupUUID = addressC.PossiblyCreateAndGetJGroupsUUID();
+			state.primaryAddress = JGroupUUID;
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
+	}
+
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
-		CoordinatorExecuteForRM(state);
+		if(state.role instanceof ReplicaManagerRole) {
+			CoordinatorExecuteForRM(state);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
 	}
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		CoordinatorExecuteForRM(state);
+		if(state.role instanceof ReplicaManagerBackupRole) {
+			CoordinatorExecuteForRM(state);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
 	}
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		// Someone think they have a higher id, yielding primary.
-		CoordinatorExecuteForRM(state);
-
+		if(state.role instanceof ReplicaManagerPrimaryRole) {
+			CoordinatorExecuteForRM(state);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
 	}
+	
 
 }

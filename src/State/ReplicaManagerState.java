@@ -25,7 +25,7 @@ public class ReplicaManagerState {
 	public Address frontendAddress = null;
 	public View previousView;
 	public Long electionTimeout;
-	public AbstractRole role = ReplicaManagerRole.getInstance();
+	public ReplicaManagerRole role = ReplicaManagerRole.getInstance();
 	public LinkedBlockingQueue<Address> answerMessageReplyList = new LinkedBlockingQueue<>();
 
 	public rmReplicableState rpState = rmReplicableState.getInstance();

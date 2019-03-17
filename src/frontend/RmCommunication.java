@@ -25,7 +25,7 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	private FrontendState frotendstate;
 	private LinkedBlockingQueue<message.Message> receiveQueue;
 	private LinkedBlockingQueue<message.Message> sendQueue = new LinkedBlockingQueue<message.Message>();
-
+	private Thread sendToMessageHandler;
 	public RmCommunication(LinkedBlockingQueue<message.Message> queueBetweenClients) {
 		try {
 			this.frotendstate = FrontendState.getInstance();
@@ -35,6 +35,8 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 			id = channel.getAddress();
 			sendBroadcastMessage(provideFrontendId());
 			this.receiveQueue = queueBetweenClients;
+			this.sendToMessageHandler = new Thread(new MessageHandlerThread(sendQueue));
+			this.sendToMessageHandler.start();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,7 +67,6 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	public void receive(Message msg) {
 		message.Message message = getMessage(msg);
 		if (checkForUnwantedMessages(message)) {
-
 			if (isMessageToClient(message)) {
 				sendQueue.add(message);
 			} else {
@@ -79,6 +80,9 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 		while (threadBool) {
 			try {
 				message.Message msg = receiveQueue.take();
+				if(frotendstate.primaryAddress != null) {
+					sendToPrimary(message.Message.serializeMessage(msg));			
+				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -116,6 +120,15 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	private void sendBroadcastMessage(byte[] b) {
 		try {
 			channel.send(null, b);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	private void sendToPrimary(byte[] b) {
+		try {
+			channel.send(frotendstate.primaryAddress, b);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
