@@ -2,8 +2,6 @@ package message.bullymessage;
 
 import java.util.UUID;
 
-import org.jgroups.tests.rt.transports.JGroupsTransport;
-
 import Role.FrontendRole;
 import Role.ReplicaManagerBackupRole;
 import Role.ReplicaManagerPrimaryRole;

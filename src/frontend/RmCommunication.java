@@ -18,21 +18,21 @@ import message.frontendmessage.FrontendMessage;
 class RmCommunication extends ReceiverAdapter implements Runnable {
 	private JChannel channel;
 	private boolean threadBool = true;
-	private boolean primaryMissing = true;
+	//private boolean primaryMissing = true;
 	private Address id;
-	private Address primaryAddress = null;
+	//private Address primaryAddress = null;
 	private View previousView;
-	private FrontendState frotendstate;
+	private FrontendState frontendstate;
 	private LinkedBlockingQueue<message.Message> receiveQueue;
 	private LinkedBlockingQueue<message.Message> sendQueue = new LinkedBlockingQueue<message.Message>();
 	private Thread sendToMessageHandler;
 	public RmCommunication(LinkedBlockingQueue<message.Message> queueBetweenClients) {
 		try {
-			this.frotendstate = FrontendState.getInstance();
+			this.frontendstate = FrontendState.getInstance();
 			this.channel = new JChannel().setReceiver(this);
 			this.channel.connect("replicaManagerCluster");
 			this.channel.setDiscardOwnMessages(true);
-			id = channel.getAddress();
+			this.id = channel.getAddress();
 			sendBroadcastMessage(provideFrontendId());
 			this.receiveQueue = queueBetweenClients;
 			this.sendToMessageHandler = new Thread(new MessageHandlerThread(sendQueue));
@@ -44,11 +44,11 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	}
 
 	public void viewAccepted(View new_view) {
-		if (previousView != null && primaryAddress != null) {
+		if (previousView != null && frontendstate.primaryAddress != null) {
 			List<Address> leavingMembers = View.leftMembers(previousView, new_view);
-			if (leavingMembers.contains(primaryAddress)) {
-				frotendstate.primaryMissing = true;
-				frotendstate.primaryAddress = null;
+			if (leavingMembers.contains(frontendstate.primaryAddress)) {
+				frontendstate.primaryMissing = true;
+				frontendstate.primaryAddress = null;
 			}
 		}
 		if (previousView != null) {
@@ -70,7 +70,7 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 			if (isMessageToClient(message)) {
 				sendQueue.add(message);
 			} else {
-				message.executeForFrontend(frotendstate);
+				message.executeForFrontend(frontendstate);
 			}
 
 		}
@@ -80,7 +80,7 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 		while (threadBool) {
 			try {
 				message.Message msg = receiveQueue.take();
-				if(frotendstate.primaryAddress != null) {
+				if(frontendstate.primaryAddress != null && frontendstate.primaryMissing == false ) {
 					sendToPrimary(message.Message.serializeMessage(msg));			
 				}
 			} catch (InterruptedException e) {
@@ -127,11 +127,16 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	}
 	private void sendToPrimary(byte[] b) {
 		try {
-			channel.send(frotendstate.primaryAddress, b);
+			channel.send(frontendstate.primaryAddress, b);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public void endProcess() {
+		this.threadBool = false;
+		this.sendToMessageHandler.e
+		
 	}
 }

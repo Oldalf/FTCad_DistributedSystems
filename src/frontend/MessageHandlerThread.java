@@ -10,6 +10,7 @@ public class MessageHandlerThread implements Runnable
 	private LinkedBlockingQueue<Message> messageQueue;
 	private volatile boolean isAlive = false;
 	
+	
 	public MessageHandlerThread(LinkedBlockingQueue<Message> fromRMCommunication){
 		isAlive = true;
 		this.messageQueue = fromRMCommunication;
@@ -28,5 +29,8 @@ public class MessageHandlerThread implements Runnable
 				e.printStackTrace();
 			}
 		}
+	}
+	public void endProcess() {
+		this.isAlive = false;
 	}
 }

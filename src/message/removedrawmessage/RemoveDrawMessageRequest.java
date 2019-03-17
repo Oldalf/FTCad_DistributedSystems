@@ -1,4 +1,4 @@
-package message.dissconnectmessage;
+package message.removedrawmessage;
 
 import java.util.UUID;
 
@@ -10,26 +10,26 @@ import State.FrontendState;
 import State.ReplicaManagerState;
 import message.MessagePayload;
 
+public class RemoveDrawMessageRequest extends RemoveDrawMessage {
 
-public class DissconnectMessageReply extends DissconnectMessage{
 	private static final long serialVersionUID = 1L;
-	private static UUID messageUUID = UUID.fromString("77befc38-40f5-11e9-b210-d663bd873d93");
-	
-	public DissconnectMessageReply() {
-		super(DissconnectMessageReply.messageUUID);
-	}
-	
-	protected DissconnectMessageReply(UUID uuid) {
-		super(uuid);
-	}
-	protected DissconnectMessageReply(MessagePayload message) {
-		super(message);
-	}
-//	public DissconnectMessageReply(Replys serverAnswer) {
-//		this.reply = serverAnswer;
-//	}
-	
-	
+	private static UUID messageUUID = UUID.fromString("dfaa8aec-489d-11e9-8646-d663bd873d93");
+
+	public RemoveDrawMessageRequest()
+	    {
+	        super(RemoveDrawMessageRequest.messageUUID);
+	    }
+
+	protected RemoveDrawMessageRequest(UUID uuid) 
+	    {
+	        super(uuid);
+	    }
+
+	protected RemoveDrawMessageRequest(MessagePayload message) 
+	    {
+	        super(message);
+	    }
+
 	@Override
 	public void executeForFrontend(FrontendState state) {
 		if(state.role instanceof FrontendRole) {

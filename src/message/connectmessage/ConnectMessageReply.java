@@ -12,6 +12,8 @@ import message.MessagePayload;
 import message.Reply;
 
 public class ConnectMessageReply extends ConnectMessage {
+
+	private static final long serialVersionUID = 1L;
 	private static UUID messageUUID = UUID.fromString("fe28ead0-3b38-11e9-b210-d663bd873d93");
 	private Reply reply;
 	

@@ -17,8 +17,8 @@ public class FrontendState {
 	 */
 	private static FrontendState single_instance = null;
 
-	public Address primaryAddress;
-	public boolean primaryMissing;
+	public Address primaryAddress = null;
+	public boolean primaryMissing = true;
 	public FrontendRole role = FrontendRole.getInstance();
 	
 	public static ConcurrentHashMap<UUID, ClientConnection> connectedClients = new ConcurrentHashMap<UUID, ClientConnection>();

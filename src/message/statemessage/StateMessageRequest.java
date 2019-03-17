@@ -12,6 +12,7 @@ import message.MessagePayload;
 
 
 public class StateMessageRequest extends StateMessage {
+	private static final long serialVersionUID = 1L;
 	private static UUID messageUUID = UUID.fromString("19505a1a-40f6-11e9-b210-d663bd873d93");
 
 	public StateMessageRequest() {

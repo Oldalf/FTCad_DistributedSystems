@@ -11,6 +11,7 @@ import State.ReplicaManagerState;
 import message.MessagePayload;
 
 public class DissconnectMessageRequest extends DissconnectMessage {
+	private static final long serialVersionUID = 1L;
 	private static UUID messageUUID = UUID.fromString("77beff12-40f5-11e9-b210-d663bd873d93");
 	
 	public DissconnectMessageRequest() {

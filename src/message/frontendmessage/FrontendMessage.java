@@ -2,8 +2,6 @@ package message.frontendmessage;
 
 import java.util.UUID;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
 import org.jgroups.Address;
 
 import Role.FrontendRole;
@@ -15,7 +13,7 @@ import State.ReplicaManagerState;
 import message.Message;
 
 public class FrontendMessage extends Message {
-
+	private static final long serialVersionUID = 1L;
 	private static UUID messageUUID = UUID.fromString("e9684186-44ca-11e9-b210-d663bd873d93"); 
 	private Address address;
 	protected FrontendMessage() {

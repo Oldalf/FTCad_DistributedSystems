@@ -1,7 +1,9 @@
-package message.dissconnectmessage;
+package message.removedrawmessage;
 
+import java.util.LinkedList;
 import java.util.UUID;
 
+import DCAD.GObject;
 import Role.FrontendRole;
 import Role.ReplicaManagerBackupRole;
 import Role.ReplicaManagerPrimaryRole;
@@ -9,27 +11,53 @@ import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
 import message.MessagePayload;
+import message.Reply;
 
+public class RemoveDrawMessageReply extends RemoveDrawMessage {
 
-public class DissconnectMessageReply extends DissconnectMessage{
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
-	private static UUID messageUUID = UUID.fromString("77befc38-40f5-11e9-b210-d663bd873d93");
-	
-	public DissconnectMessageReply() {
-		super(DissconnectMessageReply.messageUUID);
-	}
-	
-	protected DissconnectMessageReply(UUID uuid) {
-		super(uuid);
-	}
-	protected DissconnectMessageReply(MessagePayload message) {
+	private static UUID messageUUID = UUID.fromString("1934207e-489f-11e9-8646-d663bd873d93");
+
+	private LinkedList<GObject> state = new LinkedList<GObject>();
+	private Reply reply;
+
+	protected RemoveDrawMessageReply(MessagePayload message) {
 		super(message);
 	}
-//	public DissconnectMessageReply(Replys serverAnswer) {
-//		this.reply = serverAnswer;
-//	}
-	
-	
+
+	protected RemoveDrawMessageReply(UUID uuid) {
+		super(uuid);
+	}
+
+	public RemoveDrawMessageReply() {
+		super(RemoveDrawMessageReply.messageUUID);
+	}
+
+	public RemoveDrawMessageReply(LinkedList<GObject> state, Reply reply) {
+		super(RemoveDrawMessageReply.messageUUID);
+		this.reply = reply;
+		this.state = state;
+	}
+
+	public void setState(LinkedList<GObject> state) {
+		this.state = state;
+	}
+
+	public LinkedList<GObject> getState() {
+		return this.state;
+	}
+
+	public void setReply(Reply reply) {
+		this.reply = reply;
+	}
+
+	public Reply getReply() {
+		return this.reply;
+	}
+
 	@Override
 	public void executeForFrontend(FrontendState state) {
 		if(state.role instanceof FrontendRole) {
@@ -73,5 +101,4 @@ public class DissconnectMessageReply extends DissconnectMessage{
 		}
 		
 	}
-
 }
