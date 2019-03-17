@@ -2,42 +2,45 @@ package message.bullymessage;
 
 import java.util.UUID;
 
-import org.jgroups.Address;
+import org.jgroups.tests.rt.transports.JGroupsTransport;
 
 import State.FrontendState;
 import State.ReplicaManagerState;
+import replicaManager.AddressConverter;
 
 public class CoordinatorMessage extends BullyMessage {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9218691209050850699L;
 	private static UUID messageUUID = UUID.fromString("1fe2de74-3ff8-11e9-b210-d663bd873d93");
-	private Address m_address;
 
 	public CoordinatorMessage() {
 		super(CoordinatorMessage.messageUUID);
 	}
 
-	protected CoordinatorMessage(UUID uuid) {
+	public CoordinatorMessage(UUID uuid) {
 		super(uuid);
-		// TODO Auto-generated constructor stub
 	}
 
-	public CoordinatorMessage(Address m_address) {
+	public CoordinatorMessage(AddressConverter addressC) {
 		super(CoordinatorMessage.messageUUID);
-		this.m_address = m_address;
+		this.addressC = addressC;
 	}
 
 	@Override
 	public void executeForFrontend(FrontendState state) {
 		state.primaryMissing = false;
-		state.primaryAddress = this.m_address;
-
+		org.jgroups.util.UUID JGroupUUID = addressC.PossiblyCreateAndGetJGroupsUUID();
+		state.primaryAddress = JGroupUUID;
 	}
 
 	private void CoordinatorExecuteForRM(ReplicaManagerState state) {
 		state.electionTimeout = null;
 		state.onGoingElection = false;
-		state.primaryAddress = m_address;
-		System.out.println("new primary is!: " + m_address);
+		org.jgroups.util.UUID JGroupUUID = addressC.PossiblyCreateAndGetJGroupsUUID();
+		state.primaryAddress = JGroupUUID;
 	}
 
 	@Override

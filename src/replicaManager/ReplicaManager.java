@@ -19,6 +19,7 @@ import org.jgroups.util.Util;
 
 import State.ReplicaManagerState;
 import State.rmReplicableState;
+import message.MessagePayload;
 import message.bullymessage.AnswerMessage;
 import message.bullymessage.CoordinatorMessage;
 import message.bullymessage.ElectionMessage;
@@ -45,8 +46,22 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 			state.stateAcquired = true;
 
 			id = channel.getAddress();
+
 			/*
-			 * sendRmThread = new Thread(new ReplicaManagerSendThread(messageOutputQueue,
+			 * FIXME ta bort det här senare, har kvar för o testa addresConvertern bara
+			 * org.jgroups.util.UUID testid = (org.jgroups.util.UUID) id; AddressConverter
+			 * AC = new AddressConverter(testid.getMostSignificantBits(),testid.
+			 * getLeastSignificantBits()); org.jgroups.util.UUID testid2 =
+			 * AC.getAndPossiblyCreateJGroupsUUID(); System.out.println("testid1: "+testid);
+			 * System.out.println("testid1 long: "+testid.toStringLong());
+			 * 
+			 * System.out.println("testid2: "+testid2);
+			 * System.out.println("testid2 long: "+testid2.toStringLong());
+			 * 
+			 * System.out.println("testid1: compared to testid2: "+testid.compareTo(testid2)
+			 * ); System.out.println("testid1 är testid2: "+testid.equals(testid2)); /*
+			 * 
+			 * /* sendRmThread = new Thread(new ReplicaManagerSendThread(messageOutputQueue,
 			 * channel)); sendRmThread.start();
 			 */
 		} catch (Exception e) {
@@ -77,21 +92,18 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 		messageQueue2.add(msg2);
 		System.out.println("added msg 2 to queue 2");
 
-		message.Message incomingMessage = message.Message.deserializeMessage(msg.getBuffer());
-		System.out.println("efter deserial");
-<<<<<<< HEAD
-=======
-
-		// UUID msgUIID = message.Message.getUUIDFromJSONObject((String)
-
->>>>>>> 0678a65b0fe2a3e9835f1c2015d7955feb6e57d5
-		UUID msgUIID = incomingMessage.getUuid();
-		System.out.println("efter get uuid");
-		String messageType = message.Message.defineMessageClassWithUUID(msgUIID);
-		System.out.println("efter definetype");
-		// add messageContainer to queue.
-		messageQueue.add(new ReplicaManagerMessageContainer(incomingMessage, msg.getSrc(), messageType));
-		System.out.println("message received added to message queue!");
+		// message.Message incomingMessage =
+		// message.Message.deserializeMessage(msg.getBuffer());
+		// System.out.println("efter deserial");
+		//
+		// UUID msgUIID = incomingMessage.getUuid();
+		// System.out.println("efter get uuid");
+		// String messageType = message.Message.defineMessageClassWithUUID(msgUIID);
+		// System.out.println("efter definetype");
+		// // add messageContainer to queue.
+		// messageQueue.add(new ReplicaManagerMessageContainer(incomingMessage,
+		// msg.getSrc(), messageType));
+		// System.out.println("message received added to message queue!");
 	}
 
 	@Override
@@ -126,7 +138,9 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 				System.out.println("primary: " + state.primaryAddress);
 				System.out.println("ongoingElection: " + state.onGoingElection);
 				System.out.println("callElection: " + state.callElection);
+
 				callElection();
+
 			} else if (state.onGoingElection == true
 					&& (state.electionTimeout != null && state.electionTimeout < (System.currentTimeMillis() / 1000))) {
 				// There is an election but a timeout happened, we should be primary
@@ -140,7 +154,9 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 				state.primaryAddress = id;
 				state.primaryMissing = false;
 
-				messageOutputQueue.add(new ReplicaManagerMessageContainer(new CoordinatorMessage(id), null));
+				org.jgroups.util.UUID JGroupUUID = (org.jgroups.util.UUID) id;
+				messageOutputQueue.add(new ReplicaManagerMessageContainer(new CoordinatorMessage(new AddressConverter(
+						JGroupUUID.getMostSignificantBits(), JGroupUUID.getLeastSignificantBits())), null));
 			}
 
 			if (messageQueue.size() > 0) {
@@ -148,6 +164,7 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 				System.out.println("case messageQueu");
 				System.out.println("primary address:" + state.primaryAddress);
 				System.out.println("my id: " + id);
+				
 				try {
 					ReplicaManagerMessageContainer rmCont = messageQueue.take();
 					message.Message rmMessage = rmCont.getMessage();
@@ -163,15 +180,6 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 
 						rmMessage.executeForBackupReplicaManager(state);
 
-						/*
-						 * If the message is of the type AnswerMesage, stop the election Timer/timeout.
-						 */
-
-						/*
-						 * If the message is of the type Election Message: do: callElection() send
-						 * answerMessage to the sender. TODO fix this with logic above to callElection
-						 * using state.!!
-						 */
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -185,8 +193,8 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 				try {
 					msg = messageQueue2.take();
 					String test = new String(msg.getBuffer());
-					System.out.println("msg buffer as string is: "+test);
-					
+					System.out.println("msg buffer as string is: " + test);
+
 					message.Message incomingMessage = message.Message.deserializeMessage(msg.getBuffer());
 					System.out.println("efter deserial");
 
@@ -212,7 +220,7 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 					System.out.println(rmMessage.getClass().toString());
 					System.out.println("address: " + recipientAddress);
 					String test2 = new String(rmMessage.serialize());
-					System.out.println("test2, serialised and made to string: "+test2);
+					System.out.println("output serialised and made to string: " + test2);
 					Message msg = new Message(recipientAddress, rmMessage.serialize());
 					channel.send(msg);
 				} catch (InterruptedException e) {
@@ -228,8 +236,9 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 				System.out.println("list size: " + state.answerMessageReplyList.size());
 				try {
 					Address answerReplyAddress = state.answerMessageReplyList.take();
+					org.jgroups.util.UUID JGroupUUID = (org.jgroups.util.UUID) id;
 					messageOutputQueue
-							.add(new ReplicaManagerMessageContainer(new AnswerMessage(id), answerReplyAddress));
+							.add(new ReplicaManagerMessageContainer(new AnswerMessage(new AddressConverter(JGroupUUID.getMostSignificantBits(),JGroupUUID.getLeastSignificantBits())), answerReplyAddress));
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -262,16 +271,17 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 		System.out.println(membersWithHigherId.size());
 		if (membersWithHigherId.size() > 0) {
 			for (int i = 0; i < membersWithHigherId.size(); i++) {
+				org.jgroups.util.UUID JGroupUUID = (org.jgroups.util.UUID) id;
 				messageOutputQueue
-						.add(new ReplicaManagerMessageContainer(new ElectionMessage(id), membersWithHigherId.get(i)));
+						.add(new ReplicaManagerMessageContainer(new ElectionMessage(new AddressConverter(JGroupUUID.getMostSignificantBits(),JGroupUUID.getLeastSignificantBits())), membersWithHigherId.get(i)));
 			}
 			state.electionTimeout = (System.currentTimeMillis() / 1000) + 2;
 		} else {
 			// No other replicaManger has a higher id, announce myself as the electionWinner
 			state.primaryAddress = id;
 			state.primaryMissing = false;
-
-			messageOutputQueue.add(new ReplicaManagerMessageContainer(new CoordinatorMessage(id), null));
+			org.jgroups.util.UUID JGroupUUID = (org.jgroups.util.UUID) id;
+			messageOutputQueue.add(new ReplicaManagerMessageContainer(new CoordinatorMessage(new AddressConverter(JGroupUUID.getMostSignificantBits(),JGroupUUID.getLeastSignificantBits())), null));
 			System.out.println(id + "(me) is the primary");
 		}
 	}

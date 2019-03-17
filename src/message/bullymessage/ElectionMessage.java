@@ -2,29 +2,30 @@ package message.bullymessage;
 
 import java.util.UUID;
 
-import org.jgroups.Address;
-
 import State.FrontendState;
 import State.ReplicaManagerState;
+import replicaManager.AddressConverter;
 
 public class ElectionMessage extends BullyMessage {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3089389173415240163L;
 	private static UUID messageUUID = UUID.fromString("11dd613e-3f65-11e9-b210-d663bd873d93");
-	private Address m_address;
-
 	// Used by jackson to create prototype objects.
-	protected ElectionMessage() {
+	public ElectionMessage() {
 		super(ElectionMessage.messageUUID);
 	}
 
-	protected ElectionMessage(UUID uuid) {
+	public ElectionMessage(UUID uuid) {
 		super(uuid);
 	}
 
 	// Use this constructor
-	public ElectionMessage(Address m_address) {
+	public ElectionMessage(AddressConverter addressC) {
 		super(ElectionMessage.messageUUID);
-		this.m_address = m_address;
+		this.addressC = addressC;
 	}
 
 	@Override

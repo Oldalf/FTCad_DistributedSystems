@@ -2,14 +2,16 @@ package message.bullymessage;
 
 import java.util.UUID;
 
-import org.jgroups.Address;
-
 import State.FrontendState;
 import State.ReplicaManagerState;
+import replicaManager.AddressConverter;
 
 public class AnswerMessage extends BullyMessage {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5575648795817322320L;
 	private static UUID messageUUID = UUID.fromString("c38de910-3ff8-11e9-b210-d663bd873d93");
-	private Address m_address;
 
 	public AnswerMessage() {
 		super(AnswerMessage.messageUUID);
@@ -20,9 +22,9 @@ public class AnswerMessage extends BullyMessage {
 
 	}
 
-	public AnswerMessage(Address m_address) {
+	public AnswerMessage(AddressConverter addressC) {
 		super(AnswerMessage.messageUUID);
-		this.m_address = m_address;
+		this.addressC = addressC;
 	}
 
 	@Override
