@@ -6,6 +6,7 @@ import org.jgroups.Address;
 import org.jgroups.View;
 
 import Role.ReplicaManagerRole;
+import replicaManager.ReplicaManagerMessageContainer;
 
 public class ReplicaManagerState {
 	/*
@@ -26,6 +27,7 @@ public class ReplicaManagerState {
 	public Long electionTimeout;
 	public ReplicaManagerRole role = ReplicaManagerRole.getInstance();
 	public LinkedBlockingQueue<Address> answerMessageReplyList = new LinkedBlockingQueue<>();
+	public LinkedBlockingQueue<ReplicaManagerMessageContainer> responseList = new LinkedBlockingQueue<ReplicaManagerMessageContainer>();
 
 	public rmReplicableState rpState = rmReplicableState.getInstance();
 

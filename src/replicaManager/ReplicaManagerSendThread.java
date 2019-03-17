@@ -4,6 +4,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.jgroups.Address;
 import org.jgroups.JChannel;
+import org.jgroups.Message;
 
 public class ReplicaManagerSendThread implements Runnable {
 
@@ -23,11 +24,17 @@ public class ReplicaManagerSendThread implements Runnable {
 			if (messageOutputQueue.size() > 0) {
 				try {
 					ReplicaManagerMessageContainer msgCont = messageOutputQueue.take();
+
 					Address recipientAddress = msgCont.getjGroupAddress();
 					message.Message rmMessage = msgCont.getMessage();
-					System.out.println("rmMessage uid: " + rmMessage.getUuid());
+
+					System.out.println("Message uid: " + rmMessage.getUuid());
 					System.out.println(rmMessage.getClass().toString());
-					channel.send(recipientAddress, rmMessage.serialize());
+					System.out.println("address: " + recipientAddress);
+					String test2 = new String(rmMessage.serialize());
+					System.out.println("output serialised and made to string: " + test2);
+					Message msg = new Message(recipientAddress, rmMessage.serialize());
+					channel.send(msg);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} catch (Exception e) {

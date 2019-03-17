@@ -31,7 +31,6 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	private Thread sendRmThread;
 
 	private volatile LinkedBlockingQueue<ReplicaManagerMessageContainer> messageQueue = new LinkedBlockingQueue<ReplicaManagerMessageContainer>();
-	private volatile LinkedBlockingQueue<Message> messageQueue2 = new LinkedBlockingQueue<Message>();
 	private volatile LinkedBlockingQueue<ReplicaManagerMessageContainer> messageOutputQueue = new LinkedBlockingQueue<ReplicaManagerMessageContainer>();
 
 	private Address id;
@@ -39,7 +38,8 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	public ReplicaManager() {
 		state = ReplicaManagerState.getInstance();
 		try {
-			this.channel = new JChannel().setReceiver(this);
+			this.channel = new JChannel();
+			this.channel.setReceiver(this);
 			this.channel.connect("replicaManagerCluster2");
 			this.channel.setDiscardOwnMessages(true);
 			channel.getState(null, 10000);
@@ -60,10 +60,10 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 			 * 
 			 * System.out.println("testid1: compared to testid2: "+testid.compareTo(testid2)
 			 * ); System.out.println("testid1 är testid2: "+testid.equals(testid2)); /*
-			 * 
-			 * /* sendRmThread = new Thread(new ReplicaManagerSendThread(messageOutputQueue,
-			 * channel)); sendRmThread.start();
 			 */
+			sendRmThread = new Thread(new ReplicaManagerSendThread(messageOutputQueue, channel));
+			sendRmThread.start();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -83,27 +83,19 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 
 	public void receive(Message msg) {
 		System.out.println("receiving message: ");
-		Message msg2 = msg;
-		System.out.println(msg.getSrc() + " buffer: " + msg.getBuffer());
+		System.out.println(msg.getSrc() + " buffer: " + msg.getBuffer().toString());
 
 		/*
 		 * Get uuid, message and message type
 		 */
-		messageQueue2.add(msg2);
-		System.out.println("added msg 2 to queue 2");
 
-		// message.Message incomingMessage =
-		// message.Message.deserializeMessage(msg.getBuffer());
-		// System.out.println("efter deserial");
-		//
-		// UUID msgUIID = incomingMessage.getUuid();
-		// System.out.println("efter get uuid");
-		// String messageType = message.Message.defineMessageClassWithUUID(msgUIID);
-		// System.out.println("efter definetype");
-		// // add messageContainer to queue.
-		// messageQueue.add(new ReplicaManagerMessageContainer(incomingMessage,
-		// msg.getSrc(), messageType));
-		// System.out.println("message received added to message queue!");
+		message.Message incomingMessage = message.Message.deserializeMessage(msg.getBuffer());
+		UUID msgUIID = incomingMessage.getUuid();
+		String messageType = message.Message.defineMessageClassWithUUID(msgUIID);
+
+		messageQueue.add(new ReplicaManagerMessageContainer(incomingMessage, msg.getSrc(), messageType));
+
+		System.out.println("message received added to message queue!");
 	}
 
 	@Override
@@ -164,9 +156,13 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 				System.out.println("case messageQueu");
 				System.out.println("primary address:" + state.primaryAddress);
 				System.out.println("my id: " + id);
-				
-				try {
-					ReplicaManagerMessageContainer rmCont = messageQueue.take();
+
+				// using poll just in case the state is changed through a message we don't want
+				// to get
+				// stuck waiting.
+				ReplicaManagerMessageContainer rmCont = messageQueue.poll();
+				if (rmCont != null) {
+
 					message.Message rmMessage = rmCont.getMessage();
 					if (state.primaryAddress == id) {
 						/*
@@ -177,70 +173,42 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 						/*
 						 * Actions of normal replica
 						 */
-
 						rmMessage.executeForBackupReplicaManager(state);
-
 					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
 				}
 
 			}
 
-			if (messageQueue2.size() > 0) {
-				System.out.println("messagequeue 2 has size: " + messageQueue2.size());
-				Message msg;
-				try {
-					msg = messageQueue2.take();
-					String test = new String(msg.getBuffer());
-					System.out.println("msg buffer as string is: " + test);
+			// Make one of these for respones and requests.
 
-					message.Message incomingMessage = message.Message.deserializeMessage(msg.getBuffer());
-					System.out.println("efter deserial");
+			if (state.responseList.size() > 0) {
+				System.out.println("*********");
+				System.out.println("case response list");
 
-					// UUID msgUIID = message.Message.getUUIDFromJSONObject((String)
-
-					UUID msgUIID = incomingMessage.getUuid();
-					System.out.println("efter get uuid");
-					String messageType = message.Message.defineMessageClassWithUUID(msgUIID);
-					System.out.println("efter definetype");
-				} catch (InterruptedException e) {
-
-					e.printStackTrace();
-				}
-			}
-
-			if (messageOutputQueue.size() > 0) {
-				try {
-					ReplicaManagerMessageContainer msgCont = messageOutputQueue.take();
-					Address recipientAddress = msgCont.getjGroupAddress();
-					message.Message rmMessage = msgCont.getMessage();
-
-					System.out.println("Message uid: " + rmMessage.getUuid());
-					System.out.println(rmMessage.getClass().toString());
-					System.out.println("address: " + recipientAddress);
-					String test2 = new String(rmMessage.serialize());
-					System.out.println("output serialised and made to string: " + test2);
-					Message msg = new Message(recipientAddress, rmMessage.serialize());
-					channel.send(msg);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
+				// using poll just in case the state is changed through a message we don't want
+				// to get
+				// stuck waiting.
+				ReplicaManagerMessageContainer msgCont = state.responseList.poll();
+				if (msgCont != null) {				
+					messageOutputQueue.add(msgCont);
 				}
 			}
 
 			if (state.answerMessageReplyList.size() > 0) {
 				System.out.println("*********");
-				System.out.println("case anser reply list");
-				System.out.println("list size: " + state.answerMessageReplyList.size());
-				try {
-					Address answerReplyAddress = state.answerMessageReplyList.take();
+				System.out.println("case answer reply list");
+
+				// using poll just in case the state is changed through a message we don't want
+				// to get
+				// stuck waiting.
+				Address answerReplyAddress = state.answerMessageReplyList.poll();
+				if (answerReplyAddress != null) {
+
 					org.jgroups.util.UUID JGroupUUID = (org.jgroups.util.UUID) id;
-					messageOutputQueue
-							.add(new ReplicaManagerMessageContainer(new AnswerMessage(new AddressConverter(JGroupUUID.getMostSignificantBits(),JGroupUUID.getLeastSignificantBits())), answerReplyAddress));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+					messageOutputQueue.add(new ReplicaManagerMessageContainer(
+							new AnswerMessage(new AddressConverter(JGroupUUID.getMostSignificantBits(),
+									JGroupUUID.getLeastSignificantBits())),
+							answerReplyAddress));
 				}
 			}
 		}
@@ -254,11 +222,9 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 		LinkedList<Address> membersWithHigherId = new LinkedList<Address>();
 		LinkedList<Address> members = new LinkedList<>();
 		members.addAll(state.previousView.getMembers());
-		System.out.println("my id is: " + id);
 		for (int i = 0; i < members.size(); i++) {
 			Address member = members.get(i);
 			// Don't add myself or the frontend.
-			System.out.println("The member is: " + member);
 			if (!id.equals(member) || member.equals(state.frontendAddress)) {
 				if (id.compareTo(member) > 0) {
 					membersWithHigherId.add(member);
@@ -268,12 +234,13 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 		/*
 		 * Message members.
 		 */
-		System.out.println(membersWithHigherId.size());
 		if (membersWithHigherId.size() > 0) {
 			for (int i = 0; i < membersWithHigherId.size(); i++) {
 				org.jgroups.util.UUID JGroupUUID = (org.jgroups.util.UUID) id;
-				messageOutputQueue
-						.add(new ReplicaManagerMessageContainer(new ElectionMessage(new AddressConverter(JGroupUUID.getMostSignificantBits(),JGroupUUID.getLeastSignificantBits())), membersWithHigherId.get(i)));
+				messageOutputQueue.add(new ReplicaManagerMessageContainer(
+						new ElectionMessage(new AddressConverter(JGroupUUID.getMostSignificantBits(),
+								JGroupUUID.getLeastSignificantBits())),
+						membersWithHigherId.get(i)));
 			}
 			state.electionTimeout = (System.currentTimeMillis() / 1000) + 2;
 		} else {
@@ -281,7 +248,9 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 			state.primaryAddress = id;
 			state.primaryMissing = false;
 			org.jgroups.util.UUID JGroupUUID = (org.jgroups.util.UUID) id;
-			messageOutputQueue.add(new ReplicaManagerMessageContainer(new CoordinatorMessage(new AddressConverter(JGroupUUID.getMostSignificantBits(),JGroupUUID.getLeastSignificantBits())), null));
+			messageOutputQueue.add(new ReplicaManagerMessageContainer(new CoordinatorMessage(
+					new AddressConverter(JGroupUUID.getMostSignificantBits(), JGroupUUID.getLeastSignificantBits())),
+					null));
 			System.out.println(id + "(me) is the primary");
 		}
 	}

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 
 import DCAD.GObject;
+import replicaManager.RequestContainer;
 
 public class rmReplicableState implements Serializable{
 	/**
@@ -19,11 +20,12 @@ public class rmReplicableState implements Serializable{
 	/*
 	 * Object state
 	 */
-	public final LinkedList<GObject> cadState = new LinkedList<GObject>();
+	public LinkedList<GObject> cadState = new LinkedList<GObject>();
 
 	/*
 	 * Request state
 	 */
+	public LinkedList<RequestContainer> requestState = new LinkedList<RequestContainer>();
 
 	protected rmReplicableState() { 
 
