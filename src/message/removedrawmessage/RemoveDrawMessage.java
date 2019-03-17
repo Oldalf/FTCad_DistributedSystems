@@ -2,12 +2,6 @@ package message.removedrawmessage;
 
 import java.util.UUID;
 
-import Role.FrontendRole;
-import Role.ReplicaManagerBackupRole;
-import Role.ReplicaManagerPrimaryRole;
-import Role.ReplicaManagerRole;
-import State.FrontendState;
-import State.ReplicaManagerState;
 import message.Message;
 import message.MessagePayload;
 

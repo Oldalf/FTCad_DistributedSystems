@@ -26,6 +26,7 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	private LinkedBlockingQueue<message.Message> receiveQueue;
 	private LinkedBlockingQueue<message.Message> sendQueue = new LinkedBlockingQueue<message.Message>();
 	private Thread sendToMessageHandler;
+	private MessageHandlerThread MessageHandlerThreadInstance;
 	public RmCommunication(LinkedBlockingQueue<message.Message> queueBetweenClients) {
 		try {
 			this.frontendstate = FrontendState.getInstance();
@@ -35,7 +36,8 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 			this.id = channel.getAddress();
 			sendBroadcastMessage(provideFrontendId());
 			this.receiveQueue = queueBetweenClients;
-			this.sendToMessageHandler = new Thread(new MessageHandlerThread(sendQueue));
+			this.MessageHandlerThreadInstance = new MessageHandlerThread(sendQueue);
+			this.sendToMessageHandler = new Thread(MessageHandlerThreadInstance);
 			this.sendToMessageHandler.start();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -136,7 +138,10 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	}
 	public void endProcess() {
 		this.threadBool = false;
-		this.sendToMessageHandler.e
+		this.MessageHandlerThreadInstance.endProcess();
+		this.channel.disconnect();
+		this.channel.close();
+		
 		
 	}
 }
