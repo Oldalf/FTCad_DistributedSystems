@@ -30,7 +30,8 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	public RmCommunication(LinkedBlockingQueue<message.Message> queueBetweenClients) {
 		try {
 			this.frontendstate = FrontendState.getInstance();
-			this.channel = new JChannel().setReceiver(this);
+			this.channel = new JChannel();
+            this.channel.setReceiver(this);
 			this.channel.connect("replicaManagerCluster");
 			this.channel.setDiscardOwnMessages(true);
 			this.id = channel.getAddress();

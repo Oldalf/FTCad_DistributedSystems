@@ -5,7 +5,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.jgroups.Address;
 import org.jgroups.View;
 
-import Role.AbstractRole;
 import Role.ReplicaManagerRole;
 
 public class ReplicaManagerState {
