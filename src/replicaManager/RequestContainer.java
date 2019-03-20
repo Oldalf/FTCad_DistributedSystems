@@ -8,7 +8,7 @@ public class RequestContainer {
 	}
 
 	enum RequestStage {
-		Received, AddedToMyState, SentToBackup, ConfrimedByBackup, ConfirmedToFrontEnd
+		Received, AddedToMyState, SentToBackup, ConfrimedByBackup, SentToFrontEnd
 	}
 
 	private GObject object;

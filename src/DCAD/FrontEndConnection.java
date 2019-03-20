@@ -12,6 +12,8 @@ import message.Message;
 import message.Reply;
 import message.connectmessage.ConnectMessageReply;
 import message.connectmessage.ConnectMessageRequest;
+import message.drawmessage.DrawMessageReply;
+import message.removedrawmessage.RemoveDrawMessageReply;
 
 public class FrontEndConnection 
 {
@@ -29,7 +31,7 @@ public class FrontEndConnection
 	private boolean gotJoinMessage = false;
 	//private ConnectMessageRequest connectMessage;
 	private ConnectMessageReply replyConnectMessage;
-	private Message message;
+	private Message message = null;
 	private InputStream input;
 	private OutputStream output;
 	private byte[] inputByte;
@@ -62,12 +64,14 @@ public class FrontEndConnection
 		}
 	}
 
-	public boolean handShake(UUID id)
+	public boolean handShake(UUID id, GUI gui)
 	{
 		clientID = id;
 
 		// Skapa ett JoinMessage
 		ConnectMessageRequest connectMessage = new ConnectMessageRequest(clientID.toString());
+		connectMessage.setSenderUUID(clientID);
+		connectMessage.setReceiverUUID(clientID);
 
 		// Marhsal Message och Skicka ett JoinMessage
 		try {
@@ -89,11 +93,11 @@ public class FrontEndConnection
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-			UUID tempID = Message.getUUIDFromJSONObject(inputByte);
-			if(Message.defineMessageClassWithUUID(tempID).equals("ConnectMessageReply"))
+
+			replyConnectMessage = (ConnectMessageReply) Message.deserializeMessage(inputByte);
+
+			if(replyConnectMessage instanceof ConnectMessageReply)
 			{
-				replyConnectMessage = (ConnectMessageReply) Message.deserializeMessage(inputByte);
 				gotJoinMessage = true;
 			}
 		}
@@ -109,8 +113,10 @@ public class FrontEndConnection
 
 	}
 
-	public void receiveMessages()
+	public void receiveMessages(GUI gui)
 	{	
+		/*
+
 		inputByte = new byte[8192];
 
 		try {
@@ -118,12 +124,81 @@ public class FrontEndConnection
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		message = Message.deserializeMessage(inputByte);
 
 		// Kolla vad det är för slags meddelande och gör de beslut utifrån de,
 		// såsom att om det är en draw-reply kolla om du ska måla ut det på skärmen
 		// eller om det var din draw-request som blev avslagen / declined.
 
+
+		if(message instanceof DrawMessageReply)
+		{
+			DrawMessageReply dmr = new DrawMessageReply();
+			dmr = (DrawMessageReply)message;
+
+
+			if(dmr.getReply().equals(Reply.OK))
+				gui.addObjectToState(dmr.getObject());
+		}
+		 */
+
+		// =================================
+		// 			   TESTNING!
+		// =================================
+
+		byte[] inputByte = new byte[8192];
+
+		try {
+			input.read(inputByte);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("KLIENTEN FICK ETT MEDDELANDE!");
+
+		message = Message.deserializeMessage(inputByte);
+
+		if(message instanceof DrawMessageReply)
+		{
+
+			DrawMessageReply m = (DrawMessageReply)message;
+
+			if(m.getReply().equals(Reply.OK))
+			{
+				gui.addObjectToState(m.getObject());
+
+				if(m.getSenderUUID().equals(clientID))
+					gui.addMyObject(m.getObject());
+			}
+		}
+
+		else if(message instanceof RemoveDrawMessageReply)
+		{
+
+			RemoveDrawMessageReply m = (RemoveDrawMessageReply)message;
+
+			if(m.getReply().equals(Reply.OK))
+				gui.removeObject(m.getObject());
+
+			gui.repaint();
+		}
+
+	}
+
+	public void sendMessage(Message message)
+	{
+		System.out.println(message.toString());
+
+		message.setSenderUUID(clientID);
+
+		try {
+			output.write(Message.serializeMessage(message));
+			output.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("CLIENT SKICKADE ETT MEDDELANDE TILL SERVERN!");
 	}
 }

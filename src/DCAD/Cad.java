@@ -3,24 +3,29 @@
  * @author brom
  */
 
-// Version 0.4 16:25 2019-03-12
+// Version 0.7 20:13 2019-03-17
 
 package DCAD;
 
 import java.util.UUID;
 
-public class Cad {
+public class Cad
+{
+
 	static private GUI gui;
 
 	private UUID ID;
 	private boolean hasNotConnectedYet = true;
 	private FrontEndConnection frontEndConnection = new FrontEndConnection();
+	private static Cad client;
+
+	private message.Message Message;
 
 	public static void main(String[] args) {
-		Cad c = new Cad();
+		client = new Cad();
 
 		// args[0] = HostName och args[1] = Client-port
-		c.connectToServer(args[0], Integer.parseInt(args[1]));
+		client.connectToServer(args[0], Integer.parseInt(args[1]));
 	}
 
 	private Cad() 
@@ -32,17 +37,21 @@ public class Cad {
 	{
 		frontEndConnection = new FrontEndConnection(hostName, port);
 
-		// Gör en Handshake tills den kommer in på servern!
+		// Gör en Handshake tills den kommer in på servern
 		while(hasNotConnectedYet)
 		{
-			System.out.println("CLIENT FÖRSÖKER CONNECTA TILL SERVERN!");
+			System.out.println("CLIENT försöker CONNECTA TILL SERVERN!");
 
-			if(frontEndConnection.handShake(ID))
+			if(frontEndConnection.handShake(ID, gui))
 			{
 				System.out.println("WELCOME TO THE SERVER!");
-				gui = new GUI(750,600);
+				gui = new GUI(750,600, client);
 				gui.addToListener();
 				hasNotConnectedYet = false;
+				
+				// TO FIX A BUG, REMOVE LATER
+				//frontEndConnection.sendMessage(new DrawMessageRequest(new GObject(Shape.LINE, Color.RED, 1,1,1,1)));
+				//frontEndConnection.sendMessage(new RemovedrawMessageRequest());
 			}
 
 			else
@@ -52,9 +61,20 @@ public class Cad {
 			}
 		}
 
+		listenForMessages();
+
+	}
+
+	private void listenForMessages()
+	{
 		while(true)
 		{
-			frontEndConnection.receiveMessages();
+			frontEndConnection.receiveMessages(gui);
 		}
+	}
+
+	public FrontEndConnection getFrontendConnection()
+	{
+		return frontEndConnection;
 	}
 }
