@@ -1,8 +1,12 @@
 package replicaManager;
 
+import java.util.Timer;
+
+import Cleaner.RequestCleaner;
 import DCAD.GObject;
 
 public class RequestContainer {
+	int REQUEST_TIMEOUT_MS = 600000; //10 min in milisec.. Used for timerTask. 
 	enum requestType {
 		Draw, Remove
 	}
@@ -14,14 +18,24 @@ public class RequestContainer {
 	private GObject object;
 	private requestType type;
 	private RequestStage stage;
+	private Timer timer;
 	private long lastTouched;
+	
 
-	public RequestContainer(GObject object, requestType type, RequestStage stage, long lastTouched) {
+//	public RequestContainer(GObject object, requestType type, RequestStage stage, long lastTouched) {
+//		this.object = object;
+//		this.type = type;
+//		this.stage = stage;
+//		this.lastTouched = lastTouched;
+//	}
+
+	public RequestContainer(GObject object, requestType type, RequestStage stage) {
 		this.object = object;
 		this.type = type;
 		this.stage = stage;
-		this.lastTouched = lastTouched;
 	}
+	
+	
 
 	public GObject getObject() {
 		return object;
@@ -53,6 +67,10 @@ public class RequestContainer {
 
 	public void setLastTouched(long lastTouched) {
 		this.lastTouched = lastTouched;
+	}
+	public void startTimer() {
+		this.timer = new Timer();
+		this.timer.schedule(new RequestCleaner(this), REQUEST_TIMEOUT_MS);
 	}
 
 }
