@@ -18,17 +18,12 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.LinkedList;
 import java.util.ListIterator;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
-
-import message.drawmessage.DrawMessageRequest;
-import message.removedrawmessage.RemoveDrawMessageRequest;
 
 public class GUI extends JFrame implements WindowListener, ActionListener, MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = -2630210430475554979L;
-
 	JButton ovalButton = new JButton("Oval");
 	JButton rectangleButton = new JButton("Rect");
 	JButton lineButton = new JButton("Line");
@@ -42,15 +37,10 @@ public class GUI extends JFrame implements WindowListener, ActionListener, Mouse
 
 	private GObject template = new GObject(Shape.OVAL, Color.RED, 363, 65, 25, 25);
 	private GObject current = null;
-	private Cad client;
 
 	private LinkedList<GObject> objectList = new LinkedList<GObject>();
-	private LinkedList<GObject> myObjects = new LinkedList<GObject>();
 
-	public GUI(int xpos, int ypos, Cad client) {
-
-		this.client = client;
-
+	public GUI(int xpos, int ypos) {
 		setSize(xpos, ypos);
 		setTitle("FTCAD");
 
@@ -137,14 +127,14 @@ public class GUI extends JFrame implements WindowListener, ActionListener, Mouse
 		// User clicks the right mouse button:
 		// undo an operation by removing the most recently added object.
 		if (e.getButton() == MouseEvent.BUTTON3 && objectList.size() > 0) {
-			client.getFrontendConnection().sendMessage(new RemoveDrawMessageRequest(myObjects.remove(myObjects.size()-1)));
+			objectList.removeLast();
 		}
 		repaint();
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		if (current != null) {		
-			client.getFrontendConnection().sendMessage(new DrawMessageRequest(current));
+		if (current != null) {
+			objectList.addLast(current);
 			current = null;
 		}
 		repaint();
@@ -229,30 +219,5 @@ public class GUI extends JFrame implements WindowListener, ActionListener, Mouse
 		this.objectList.add(newObject);
 		repaint();
 	}
-	
-	public void setObjectList(LinkedList<GObject> objectList)
-	{
-		this.objectList = objectList;
-	}
-	
-	public void addMyObject(GObject object)
-	{
-		myObjects.add(object);
-	}
-	
-	public LinkedList<GObject> getMyObjects()
-	{
-		return myObjects;
-	}
-	
-	public void removeObject(GObject object)
-	{
-		for(int i = 0; i < objectList.size(); i++)
-		{
-			if(objectList.get(i).getObjectID().equals(object.getObjectID()))
-			{
-				objectList.remove(i);
-			}
-		}
-	}
+
 }

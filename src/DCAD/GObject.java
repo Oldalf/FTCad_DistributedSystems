@@ -9,8 +9,6 @@ package DCAD;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import org.jgroups.util.UUID;
-
 /**
  *
  * @author brom
@@ -19,21 +17,13 @@ public class GObject {
     private Shape s;
     private Color c;
     private int x,y,width,height;
-    
-    private UUID objectID;
     // Note that the x and y coordinates are relative to the top left corner of the
     // graphics context in which the object is to be drawn - NOT the top left corner
     // of the GUI window.
 
-    public GObject()
-    {
-    	
-    }
-    
     public GObject(Shape s, Color c, int x, int y, int width, int height) {
 	this.s = s; this.c = c; this.x = x; this.y = y;
 	this.width = width; this.height = height;
-	objectID = UUID.randomUUID();
     }
 
     public void setShape(Shape s) {this.s = s;}
@@ -44,19 +34,7 @@ public class GObject {
     public Color getColor() {return c;}
     public int getX() {return x;}
     public int getY() {return y;}
-    public int getWidth() {return width;}
-    public int getHeight() {return height;}
-    
-    public void setObjectID(UUID objectID)
-    {
-    	this.objectID = objectID;
-    }
-    
-    public UUID getObjectID()
-    {
-    	return this.objectID;
-    }
-    
+
     public void draw(Graphics g) {
 	g.setColor(c);
 	int drawX = x, drawY = y, drawWidth = width, drawHeight = height;
