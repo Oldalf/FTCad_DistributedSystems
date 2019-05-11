@@ -10,7 +10,7 @@ public class ReplicaManagerSendThread implements Runnable {
 
 	private volatile LinkedBlockingQueue<ReplicaManagerMessageContainer> messageOutputQueue = new LinkedBlockingQueue<ReplicaManagerMessageContainer>();
 	private JChannel channel;
-	private boolean threadLoopBool = true;
+	private boolean isAlive = true;
 
 	public ReplicaManagerSendThread(LinkedBlockingQueue<ReplicaManagerMessageContainer> messageOutputQueue,
 			JChannel channel) {
@@ -20,7 +20,7 @@ public class ReplicaManagerSendThread implements Runnable {
 
 	@Override
 	public void run() {
-		while (threadLoopBool) {
+		while (isAlive) {
 			if (messageOutputQueue.size() > 0) {
 				try {
 					ReplicaManagerMessageContainer msgCont = messageOutputQueue.take();
@@ -42,6 +42,11 @@ public class ReplicaManagerSendThread implements Runnable {
 				}
 			}
 		}
+	}
+	
+	public void kill() {
+		// leave while loop in run and die.
+		isAlive = false;
 	}
 
 }
