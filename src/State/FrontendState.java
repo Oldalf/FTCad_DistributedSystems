@@ -26,7 +26,7 @@ public class FrontendState {
 	 */
 	
 	protected FrontendState() {
-
+		
 	}
 
 	public static FrontendState getInstance() {

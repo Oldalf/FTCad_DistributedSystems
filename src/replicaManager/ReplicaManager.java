@@ -23,6 +23,10 @@ import message.MessagePayload;
 import message.bullymessage.AnswerMessage;
 import message.bullymessage.CoordinatorMessage;
 import message.bullymessage.ElectionMessage;
+import message.drawmessage.DrawMessageReply;
+import message.removedrawmessage.RemoveDrawMessageReply;
+import replicaManager.RequestContainer.RequestStage;
+import replicaManager.RequestContainer.requestType;
 
 public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	private ReplicaManagerState state;
@@ -61,6 +65,7 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 			 * System.out.println("testid1: compared to testid2: "+testid.compareTo(testid2)
 			 * ); System.out.println("testid1 är testid2: "+testid.equals(testid2)); /*
 			 */
+
 			sendRmThread = new Thread(new ReplicaManagerSendThread(messageOutputQueue, channel));
 			sendRmThread.start();
 
@@ -185,12 +190,28 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 				System.out.println("*********");
 				System.out.println("case response list");
 
-				// using poll just in case the state is changed through a message we don't want
-				// to get
-				// stuck waiting.
+				// using poll just in case the state is changed through a message and we don't
+				// want to get stuck waiting.
 				ReplicaManagerMessageContainer msgCont = state.responseList.poll();
-				if (msgCont != null) {				
+				if (msgCont != null) {
 					messageOutputQueue.add(msgCont);
+				}
+			}
+
+			if (state.rpState.ReadyToSendRequests.size() > 0) {
+				RequestContainer requestReply = state.rpState.ReadyToSendRequests.poll();
+				if (requestReply != null) {
+					requestReply.setStage(RequestStage.ConfirmedToFrontEnd);
+					if (requestReply.getType() == requestType.Draw) {
+						// FIXME byt konstruktor när den nya finns
+						DrawMessageReply reply = new DrawMessageReply();
+						messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.frontendAddress));
+					} else {
+						// its a remove type.
+						// FIXME byt konstruktor när den nya finns
+						RemoveDrawMessageReply reply = new RemoveDrawMessageReply();
+						messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.frontendAddress));
+					}
 				}
 			}
 

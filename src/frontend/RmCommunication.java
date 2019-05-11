@@ -10,48 +10,51 @@ import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
 
 import State.FrontendState;
+import State.rmReplicableState;
+import message.Reply;
 import message.bullymessage.BullyMessage;
 import message.bullymessage.CoordinatorMessage;
+import message.drawmessage.DrawMessageReply;
+import message.drawmessage.DrawMessageRequest;
 import message.frontendmessage.FrontendMessage;
+import message.removedrawmessage.RemoveDrawMessageReply;
+import message.removedrawmessage.RemoveDrawMessageRequest;
 
 // Classen som ska kommunicera mellan Server och Replica Managerserna!
 class RmCommunication extends ReceiverAdapter implements Runnable {
 	private JChannel channel;
 	private boolean threadBool = true;
-	//private boolean primaryMissing = true;
+	private boolean primaryMissing = true;
 	private Address id;
-	//private Address primaryAddress = null;
+	private Address primaryAddress = null;
 	private View previousView;
-	private FrontendState frontendstate;
+	private FrontendState frotendstate;
 	private LinkedBlockingQueue<message.Message> receiveQueue;
 	private LinkedBlockingQueue<message.Message> sendQueue = new LinkedBlockingQueue<message.Message>();
-	private Thread sendToMessageHandler;
-	private MessageHandlerThread MessageHandlerThreadInstance;
+
 	public RmCommunication(LinkedBlockingQueue<message.Message> queueBetweenClients) {
 		try {
-			this.frontendstate = FrontendState.getInstance();
-			this.channel = new JChannel();
-            this.channel.setReceiver(this);
+			this.frotendstate = FrontendState.getInstance();
+			this.channel = new JChannel().setReceiver(this);
 			this.channel.connect("replicaManagerCluster");
 			this.channel.setDiscardOwnMessages(true);
-			this.id = channel.getAddress();
+			id = channel.getAddress();
 			sendBroadcastMessage(provideFrontendId());
 			this.receiveQueue = queueBetweenClients;
-			this.MessageHandlerThreadInstance = new MessageHandlerThread(sendQueue);
-			this.sendToMessageHandler = new Thread(MessageHandlerThreadInstance);
-			this.sendToMessageHandler.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		Thread messageHanderThread = new Thread(new MessageHandlerThread(sendQueue));
+		messageHanderThread.start();
 	}
 
 	public void viewAccepted(View new_view) {
-		if (previousView != null && frontendstate.primaryAddress != null) {
+		if (previousView != null && primaryAddress != null) {
 			List<Address> leavingMembers = View.leftMembers(previousView, new_view);
-			if (leavingMembers.contains(frontendstate.primaryAddress)) {
-				frontendstate.primaryMissing = true;
-				frontendstate.primaryAddress = null;
+			if (leavingMembers.contains(primaryAddress)) {
+				frotendstate.primaryMissing = true;
+				frotendstate.primaryAddress = null;
 			}
 		}
 		if (previousView != null) {
@@ -70,10 +73,11 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	public void receive(Message msg) {
 		message.Message message = getMessage(msg);
 		if (checkForUnwantedMessages(message)) {
+
 			if (isMessageToClient(message)) {
 				sendQueue.add(message);
 			} else {
-				message.executeForFrontend(frontendstate);
+				message.executeForFrontend(frotendstate);
 			}
 
 		}
@@ -83,13 +87,18 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 		while (threadBool) {
 			try {
 				message.Message msg = receiveQueue.take();
-				if(frontendstate.primaryAddress != null && frontendstate.primaryMissing == false ) {
-					sendToPrimary(message.Message.serializeMessage(msg));			
-				}
+				
+				// skicka meddelande till replica
+				
+				// ta emot svar
+				
+				// skicka svar till sendQueue (messageHandler)
+				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		}
 	}
 
@@ -127,22 +136,5 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	private void sendToPrimary(byte[] b) {
-		try {
-			channel.send(frontendstate.primaryAddress, b);
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	public void endProcess() {
-		this.threadBool = false;
-		this.MessageHandlerThreadInstance.endProcess();
-		this.channel.disconnect();
-		this.channel.close();
-		
-		
 	}
 }

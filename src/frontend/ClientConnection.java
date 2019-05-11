@@ -12,8 +12,6 @@ public class ClientConnection
 	private UUID ID;
 	private InetAddress address = null;
 	private int port = 0;
-
-	// Kön som Output läser ifrån samt att det är denna som alla meddelanden läggs i när de kommer från Replicamanagersen
 	private LinkedBlockingQueue<Message> messageQueue = new LinkedBlockingQueue<Message>();
 
 	public ClientConnection()
@@ -23,7 +21,7 @@ public class ClientConnection
 
 	public ClientConnection(UUID id, InetAddress address, int port)
 	{
-		ID = id;
+		this.ID = id;
 		this.address = address;
 		this.port = port;
 	}
