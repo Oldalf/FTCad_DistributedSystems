@@ -1,5 +1,8 @@
 package frontend;
 
+import java.awt.RenderingHints.Key;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import State.FrontendState;
@@ -19,9 +22,7 @@ public class MessageHandlerThread implements Runnable
 		while(isAlive) {
 			try {
 				Message message = this.messageQueue.take();
-				if(FrontendState.connectedClients.containsKey(message.getSenderUUID())) {
-					FrontendState.connectedClients.get(message.getSenderUUID()).getMessageQueue().put(message);
-				}
+				message.executeForFrontend(FrontendState.getInstance());
 				
 			} catch (InterruptedException e) {
 				e.printStackTrace();

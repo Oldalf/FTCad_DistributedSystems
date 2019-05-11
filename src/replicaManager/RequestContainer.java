@@ -14,7 +14,6 @@ public class RequestContainer {
 
 	public enum RequestStage {
 		Received, AddedToMyState, SentToBackup, ConfrimedByBackup, ConfirmedToFrontEnd
-
 	}
 
 	private GObject object;

@@ -10,15 +10,15 @@ import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
 
 import State.FrontendState;
-import State.rmReplicableState;
-import message.Reply;
 import message.bullymessage.BullyMessage;
 import message.bullymessage.CoordinatorMessage;
-import message.drawmessage.DrawMessageReply;
+import message.drawmessage.DrawMessage;
 import message.drawmessage.DrawMessageRequest;
 import message.frontendmessage.FrontendMessage;
-import message.removedrawmessage.RemoveDrawMessageReply;
+import message.removedrawmessage.RemoveDrawMessage;
 import message.removedrawmessage.RemoveDrawMessageRequest;
+import message.statemessage.StateMessage;
+import message.statemessage.StateMessageRequest;
 
 // Classen som ska kommunicera mellan Server och Replica Managerserna!
 class RmCommunication extends ReceiverAdapter implements Runnable {
@@ -75,9 +75,9 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 		if (checkForUnwantedMessages(message)) {
 
 			if (isMessageToClient(message)) {
-				sendQueue.add(message);
+				receiveQueue.add(message);
 			} else {
-				message.executeForFrontend(frotendstate);
+				message.executeForFrontend(frotendstate); //Message is a cordinatormessage. 
 			}
 
 		}
@@ -88,11 +88,15 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 			try {
 				message.Message msg = receiveQueue.take();
 				
-				// skicka meddelande till replica
-				
-				// ta emot svar
-				
-				// skicka svar till sendQueue (messageHandler)
+				if(msg instanceof DrawMessage || msg instanceof RemoveDrawMessage || msg instanceof StateMessage) {
+					if(msg instanceof DrawMessageRequest || msg instanceof RemoveDrawMessageRequest || msg instanceof StateMessageRequest ) {
+						sendToPrimary(message.Message.serializeMessage(msg));
+					}else {
+						sendQueue.add(msg);
+					}
+				} else {
+					msg.executeForFrontend(frotendstate); //Message most be a frontendMessage. 
+				}
 				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -132,6 +136,14 @@ class RmCommunication extends ReceiverAdapter implements Runnable {
 	private void sendBroadcastMessage(byte[] b) {
 		try {
 			channel.send(null, b);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	private void sendToPrimary(byte[] b) {
+		try {
+			channel.send(primaryAddress, b);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

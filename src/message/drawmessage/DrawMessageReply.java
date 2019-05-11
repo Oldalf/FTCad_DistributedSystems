@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.util.UUID;
 
 import DCAD.GObject;
+import Role.FrontendRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
+import frontend.ClientConnection;
 import message.MessagePayload;
 import message.Reply;
 
@@ -112,8 +114,11 @@ public class DrawMessageReply extends DrawMessage {
 
 	@Override
 	public void executeForFrontend(FrontendState state) {
-		// TODO Auto-generated method stub
-
+		if(state.role instanceof FrontendRole) {
+			for(ClientConnection cc: state.connectedClients.values()) {
+				cc.getMessageQueue().add(this);
+			}
+		}
 	}
 
 	@Override

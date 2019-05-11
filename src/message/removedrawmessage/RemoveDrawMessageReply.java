@@ -1,5 +1,6 @@
 package message.removedrawmessage;
 
+import java.security.KeyStore.Entry;
 import java.util.UUID;
 
 import DCAD.GObject;
@@ -9,6 +10,7 @@ import Role.ReplicaManagerPrimaryRole;
 import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
+import frontend.ClientConnection;
 import message.MessagePayload;
 import message.Reply;
 
@@ -68,7 +70,9 @@ public class RemoveDrawMessageReply extends RemoveDrawMessage
 	@Override
 	public void executeForFrontend(FrontendState state) {
 		if(state.role instanceof FrontendRole) {
-			
+			for(ClientConnection cc: state.connectedClients.values()) {
+				cc.getMessageQueue().add(this);
+			}
 		}
 		else {
 			throw new IllegalStateException();

@@ -13,17 +13,17 @@ import message.removedrawmessage.RemoveDrawMessageReply;
 public class SendThread implements Runnable{
 
 	private Socket clientSocket = null;
-	private UUID ID;
+	private UUID clientID;
 	private OutputStream output;
 
 	private volatile boolean isAlive = true;
 	
-	private Message message;
+	//private Message message;
 
 	public SendThread(Socket clientSocket, UUID clientID)
 	{
 		this.clientSocket = clientSocket;
-		ID = clientID;
+		clientID = clientID;
 
 		try {
 			output = this.clientSocket.getOutputStream();
@@ -38,29 +38,31 @@ public class SendThread implements Runnable{
 		{
 			// Plocka bort ett meddelande från clientens meddelandekö
 			try {
-				message = FrontendState.connectedClients.get(ID).getMessageQueue().take();
+				FrontendState state = FrontendState.getInstance();
+				Message message = state.connectedClients.get(clientID).getMessageQueue().take();
+				sendMessageToSelf(message);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
-			if(message instanceof DrawMessageReply)
-			{
-
-				if(ID.equals(message.getSenderUUID())) // För att se till att man inte konstant skickar broadcasts även fast man inte var klienten som skickade requesten
-				{
-					broadcast();
-				}
-
-				else
-				{
-					sendMessageToSelf();
-				}
-			}
-
-			else if(message instanceof RemoveDrawMessageReply)
-			{
-				broadcast();
-			}
+//			if(message instanceof DrawMessageReply)
+//			{
+//
+//				if(ID.equals(message.getSenderUUID())) // För att se till att man inte konstant skickar broadcasts även fast man inte var klienten som skickade requesten
+//				{
+//					broadcast();
+//				}
+//
+//				else
+//				{
+//					sendMessageToSelf();
+//				}
+//			}
+//
+//			else if(message instanceof RemoveDrawMessageReply)
+//			{
+//				broadcast();
+//			}
 			
 			// Om det är någon annan typ av meddelande än Draw så ska det endast skickas till klienten som skickade det, tror jag?
 			/*else
@@ -72,24 +74,24 @@ public class SendThread implements Runnable{
 		}
 	}
 
-	private void broadcast()
-	{
-		for(ClientConnection entry:FrontendState.connectedClients.values())
-		{
-			if(!entry.getUUID().equals(ID))	// För att se till att man inte lägger in meddelandet i sin egna kö!
-			{
-				try {
-					entry.getMessageQueue().put(message);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-			}
-		}
+//	private void broadcast()
+//	{
+//		for(ClientConnection entry:FrontendState.connectedClients.values())
+//		{
+//			if(!entry.getUUID().equals(ID))	// För att se till att man inte lägger in meddelandet i sin egna kö!
+//			{
+//				try {
+//					entry.getMessageQueue().put(message);
+//				} catch (InterruptedException e1) {
+//					e1.printStackTrace();
+//				}
+//			}
+//		}
+//
+//		sendMessageToSelf();
+//	}
 
-		sendMessageToSelf();
-	}
-
-	private void sendMessageToSelf()
+	private void sendMessageToSelf(Message message)
 	{
 		try {
 			output.write(Message.serializeMessage(message));

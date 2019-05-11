@@ -6,7 +6,9 @@ import java.net.Socket;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import State.FrontendState;
 import message.Message;
+import message.dissconnectmessage.DissconnectMessage;
 
 public class ReceiveThread implements Runnable
 {
@@ -16,6 +18,8 @@ public class ReceiveThread implements Runnable
 	private InputStream input;
 
 	private volatile boolean isAlive = true;
+	
+	private FrontendState frontendState = FrontendState.getInstance();
 	
 	private LinkedBlockingQueue<Message> toRmComQueue;
 
@@ -48,10 +52,20 @@ public class ReceiveThread implements Runnable
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		System.out.println("RECEIVER THREAD FICK ETT MEDDELANDE!");
 		
-		sendMessageToReplica(inputByte);
+		
+		Message receivedMessage = Message.deserializeMessage(inputByte);
+		
+		if(receivedMessage instanceof DissconnectMessage) {
+			System.out.println("RECEIVER THREAD TOG EMOT ETT DISSCONNECT MEDDELANDE!");
+			receivedMessage.executeForFrontend(frontendState);
+		}
+		else {
+			System.out.println("RECEIVER THREAD FICK ETT MEDDELANDE!");
+			sendMessageToReplica(receivedMessage);
+		}
+
+		
 		
 		//==============================================================
 		// FÖR TESTNING!
@@ -104,11 +118,12 @@ public class ReceiveThread implements Runnable
 		//===============================================================
 	}
 
-	private void sendMessageToReplica(byte[] b)
+	private void sendMessageToReplica(Message msg)
 	{
 		// Sending the message to the replica-Managers message queue
 		try {
-			toRmComQueue.put(Message.deserializeMessage(b));
+			
+			toRmComQueue.put(msg);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
