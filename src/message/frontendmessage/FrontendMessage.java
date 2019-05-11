@@ -44,11 +44,18 @@ public class FrontendMessage extends Message {
 		}
 		
 	}
+	
+	/*
+	 * All replicaManager types want to do the same thing so avoiding duplicate code.
+	 */
+	private void executeForRM(ReplicaManagerState state) {
+		state.frontendAddress = this.address;
+	}
 
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
 		if(state.role instanceof ReplicaManagerRole) {
-			
+			executeForRM(state);
 		}
 		else {
 			throw new IllegalStateException();
@@ -59,7 +66,7 @@ public class FrontendMessage extends Message {
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
 		if(state.role instanceof ReplicaManagerBackupRole) {
-			
+			executeForRM(state);
 		}
 		else {
 			throw new IllegalStateException();
@@ -70,7 +77,7 @@ public class FrontendMessage extends Message {
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
 		if(state.role instanceof ReplicaManagerPrimaryRole) {
-			
+			executeForRM(state);
 		}
 		else {
 			throw new IllegalStateException();
