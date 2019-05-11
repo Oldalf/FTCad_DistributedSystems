@@ -27,7 +27,7 @@ public class DissconnectMessageRequest extends DissconnectMessage {
 	@Override
 	public void executeForFrontend(FrontendState state) {
 		if(state.role instanceof FrontendRole) {
-			
+			state.connectedClients.remove(this.getSenderUUID());
 		}
 		else {
 			throw new IllegalStateException();
