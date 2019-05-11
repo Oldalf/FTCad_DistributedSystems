@@ -12,7 +12,7 @@ public class RequestContainer {
 	}
 
 	enum RequestStage {
-		Received, AddedToMyState, SentToBackup, ConfrimedByBackup, SentToFrontEnd
+		Received, AddedToMyState, SentToBackup, ConfrimedByBackup, ConfirmedToFrontEnd
 	}
 
 	private GObject object;

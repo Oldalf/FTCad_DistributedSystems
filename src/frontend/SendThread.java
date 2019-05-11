@@ -8,7 +8,6 @@ import java.util.UUID;
 import State.FrontendState;
 import message.Message;
 import message.drawmessage.DrawMessageReply;
-import message.removedrawmessage.RemoveDrawMessageReply;
 
 public class SendThread implements Runnable{
 
@@ -16,8 +15,6 @@ public class SendThread implements Runnable{
 	private UUID ID;
 	private OutputStream output;
 
-	private volatile boolean isAlive = true;
-	
 	private Message message;
 
 	public SendThread(Socket clientSocket, UUID clientID)
@@ -34,7 +31,7 @@ public class SendThread implements Runnable{
 
 	public void run() 
 	{
-		while(isAlive)
+		while(true)
 		{
 			// Plocka bort ett meddelande från clientens meddelandekö
 			try {
@@ -42,33 +39,35 @@ public class SendThread implements Runnable{
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
-			if(message instanceof DrawMessageReply)
+			
+			// Draw reply
+			if(message.getUuid().equals(UUID.fromString("77bf05fc-40f5-11e9-b210-d663bd873d93")))
 			{
+				// Kolla om det är OK eller ICKE-OK, alltså om det ska eller inte ska ritas ut,
+				// om det ska skicka till alla klienter annars skicka endast tillbaka ett meddelande
+				// till klienten om att det blev ett avslag eller nått.
 
-				if(ID.equals(message.getSenderUUID())) // För att se till att man inte konstant skickar broadcasts även fast man inte var klienten som skickade requesten
+				DrawMessageReply dmr = (DrawMessageReply)message;
+				
+				if(!ID.equals(message.getSenderUUID())) // För att se till att man inte konstant skickar broadcasts även fast man inte var klienten som skickade requesten
 				{
 					broadcast();
 				}
 
+				// Skicka endast meddelandet till sig själv!
 				else
 				{
 					sendMessageToSelf();
 				}
 			}
 
-			else if(message instanceof RemoveDrawMessageReply)
-			{
-				broadcast();
-			}
-			
 			// Om det är någon annan typ av meddelande än Draw så ska det endast skickas till klienten som skickade det, tror jag?
-			/*else
+			else
 			{
 				// Kanske att man behöver kolla på meddelandet och utföra vissa ändringar innan man skickar det?
-
+				
 				sendMessageToSelf();
-			}*/
+			}
 		}
 	}
 
@@ -92,7 +91,7 @@ public class SendThread implements Runnable{
 	private void sendMessageToSelf()
 	{
 		try {
-			output.write(Message.serializeMessage(message));
+			output.write(message.serialize());
 			output.flush();
 		} catch (IOException e) {
 			e.printStackTrace();

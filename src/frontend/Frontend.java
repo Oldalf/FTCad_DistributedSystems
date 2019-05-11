@@ -53,15 +53,17 @@ public class Frontend {
 
 			receiveMessage();
 			
+			// Unmarshal Message
 			Message message = Message.deserializeMessage(inputByte);
 			
 			ConnectMessageRequest rm = (ConnectMessageRequest)message;
 			
-			if(!FrontendState.connectedClients.containsKey(rm.getSenderUUID()))//UUID.fromString(rm.getID())))
+			if(!FrontendState.connectedClients.containsKey(UUID.fromString(rm.getID())))
 			{
-				FrontendState.connectedClients.put(rm.getSenderUUID(), new ClientConnection(rm.getSenderUUID(), clientSocket.getInetAddress(), clientSocket.getPort()));
-				Thread r = new Thread(new ReceiveThread(clientSocket, rm.getSenderUUID(), queueBetweenRThreadAndRmCom));
-				Thread s = new Thread(new SendThread(clientSocket, rm.getSenderUUID()));
+				FrontendState.connectedClients.put(UUID.fromString(rm.getID()), new ClientConnection(UUID.fromString(rm.getID()), clientSocket.getInetAddress(), clientSocket.getPort()));
+				//Thread r = new Thread(new ReceiveThread(clientSocket, UUID.fromString(rm.getID())), queueBetweenRThreadAndRmCom);
+				Thread r = new Thread(new ReceiveThread(clientSocket, message.getSenderUUID(), queueBetweenRThreadAndRmCom));
+				Thread s = new Thread(new SendThread(clientSocket, UUID.fromString(rm.getID())));
 
 				connectMessage = new ConnectMessageReply(Reply.OK);
 
@@ -76,6 +78,7 @@ public class Frontend {
 				s.start();
 			}
 
+			
 			// Annars skicka bara tillbaka ett meddelande att "id är upptaget" / får inte ansluta
 			else
 			{
