@@ -68,6 +68,7 @@ public class RequestContainer {
 	public void setLastTouched(long lastTouched) {
 		this.lastTouched = lastTouched;
 	}
+	
 	public void startTimer() {
 		this.timer = new Timer();
 		this.timer.schedule(new RequestCleaner(this), REQUEST_TIMEOUT_MS);

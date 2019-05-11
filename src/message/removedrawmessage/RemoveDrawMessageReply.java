@@ -3,6 +3,8 @@ package message.removedrawmessage;
 import java.util.UUID;
 
 import DCAD.GObject;
+import State.FrontendState;
+import State.ReplicaManagerState;
 import message.MessagePayload;
 import message.Reply;
 
@@ -58,5 +60,24 @@ public class RemoveDrawMessageReply extends RemoveDrawMessage
 	public Reply getReply()
 	{
 		return this.reply;
+	}
+	@Override
+	public void executeForFrontend(FrontendState state) {
+
+	}
+
+	@Override
+	public void executeForReplicaManager(ReplicaManagerState state) {
+
+	}
+
+	@Override
+	public void executeForBackupReplicaManager(ReplicaManagerState state) {
+
+	}
+
+	@Override
+	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
+
 	}
 }

@@ -18,10 +18,5 @@ public class RequestCleaner extends TimerTask {
 		if(state.Object2Request_state.containsKey(rc.getObject())) {
 			state.Object2Request_state.remove(rc.getObject());
 		}
-		
-		
-		
 	}
-	
-
 }

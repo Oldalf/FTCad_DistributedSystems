@@ -41,4 +41,5 @@ public class rmReplicableState implements Serializable{
 			single_instance = new rmReplicableState();
 		return single_instance;
 	}
+	
 }
