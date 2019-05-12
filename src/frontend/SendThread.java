@@ -7,8 +7,6 @@ import java.util.UUID;
 
 import State.FrontendState;
 import message.Message;
-import message.drawmessage.DrawMessageReply;
-import message.removedrawmessage.RemoveDrawMessageReply;
 
 public class SendThread implements Runnable{
 

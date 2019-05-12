@@ -3,12 +3,14 @@ package message.removedrawmessage;
 import java.util.UUID;
 
 import DCAD.GObject;
+import Role.ClientRole;
 import Role.FrontendRole;
 import Role.ReplicaManagerBackupRole;
 import Role.ReplicaManagerPrimaryRole;
 import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
+import State.clientState;
 import message.MessagePayload;
 
 public class RemoveDrawMessageRequest extends RemoveDrawMessage
@@ -93,4 +95,16 @@ public class RemoveDrawMessageRequest extends RemoveDrawMessage
 			throw new IllegalStateException();
 		}
 	}
+	
+	@Override
+	public void executeForClient(clientState state) {
+		if(state.role instanceof ClientRole) {
+			state.myObjects.remove(this.object);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
+	}
+
 }

@@ -4,12 +4,14 @@ import java.util.UUID;
 
 import org.jgroups.Address;
 
+import Role.ClientRole;
 import Role.FrontendRole;
 import Role.ReplicaManagerBackupRole;
 import Role.ReplicaManagerPrimaryRole;
 import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
+import State.clientState;
 import message.Message;
 
 public class FrontendMessage extends Message {
@@ -78,6 +80,16 @@ public class FrontendMessage extends Message {
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
 		if(state.role instanceof ReplicaManagerPrimaryRole) {
 			executeForRM(state);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
+	}
+	@Override
+	public void executeForClient(clientState state) {
+		if(state.role instanceof ClientRole) {
+			
 		}
 		else {
 			throw new IllegalStateException();

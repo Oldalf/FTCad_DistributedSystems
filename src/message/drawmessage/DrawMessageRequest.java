@@ -8,8 +8,10 @@ import java.awt.Shape;
 import java.util.UUID;
 
 import DCAD.GObject;
+import Role.ClientRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
+import State.clientState;
 import message.MessagePayload;
 
 public class DrawMessageRequest extends DrawMessage {
@@ -123,6 +125,16 @@ public class DrawMessageRequest extends DrawMessage {
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
 		// TODO Auto-generated method stub
 
+	}
+	@Override
+	public void executeForClient(clientState state) {
+		if(state.role instanceof ClientRole) {
+			state.myObjects.add(this.object);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
 	}
 
 }
