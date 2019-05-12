@@ -23,11 +23,6 @@ public class rmReplicableState implements Serializable {
 	 * Object state
 	 */
 	public LinkedList<GObject> cadState = new LinkedList<GObject>();
-
-	/*
-	 * Request state
-	 */
-	public LinkedList<RequestContainer> requestState = new LinkedList<RequestContainer>();
 	
 	// All requests added here, once time is X ahead of current time they will be removed
 	public ConcurrentHashMap<GObject, RequestContainer> Object2Request_state = new ConcurrentHashMap<GObject, RequestContainer>();

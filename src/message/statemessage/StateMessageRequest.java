@@ -9,6 +9,9 @@ import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
 import message.MessagePayload;
+import replicaManager.RequestContainer;
+import replicaManager.RequestContainer.RequestStage;
+import replicaManager.RequestContainer.requestType;
 
 
 public class StateMessageRequest extends StateMessage {
@@ -62,6 +65,11 @@ public class StateMessageRequest extends StateMessage {
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
 		if(state.role instanceof ReplicaManagerPrimaryRole) {
+			// create requestContainer with type state (no object needed)
+			RequestContainer rq = new RequestContainer(null, requestType.State, RequestStage.ConfrimedByBackup);
+			// set requester to the messageSenderUUID.
+			rq.setRequester(this.getSenderUUID());
+			state.rpState.ReadyToSendRequests.add(rq);
 			
 		}
 		else {

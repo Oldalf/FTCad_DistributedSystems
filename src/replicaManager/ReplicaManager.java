@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.SynchronousQueue;
 
 import org.jgroups.Address;
 import org.jgroups.JChannel;
@@ -19,12 +18,12 @@ import org.jgroups.util.Util;
 
 import State.ReplicaManagerState;
 import State.rmReplicableState;
-import message.MessagePayload;
 import message.bullymessage.AnswerMessage;
 import message.bullymessage.CoordinatorMessage;
 import message.bullymessage.ElectionMessage;
 import message.drawmessage.DrawMessageReply;
 import message.removedrawmessage.RemoveDrawMessageReply;
+import message.statemessage.StateMessageReply;
 import replicaManager.RequestContainer.RequestStage;
 import replicaManager.RequestContainer.requestType;
 
@@ -37,6 +36,9 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 	private volatile LinkedBlockingQueue<ReplicaManagerMessageContainer> messageQueue = new LinkedBlockingQueue<ReplicaManagerMessageContainer>();
 	private volatile LinkedBlockingQueue<ReplicaManagerMessageContainer> messageOutputQueue = new LinkedBlockingQueue<ReplicaManagerMessageContainer>();
 
+	/*
+	 * My id/address
+	 */
 	private Address id;
 
 	public ReplicaManager() {
@@ -201,17 +203,42 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 			if (state.rpState.ReadyToSendRequests.size() > 0) {
 				RequestContainer requestReply = state.rpState.ReadyToSendRequests.poll();
 				if (requestReply != null) {
-					requestReply.setStage(RequestStage.ConfirmedToFrontEnd);
 					if (requestReply.getType() == requestType.Draw) {
+						// its a draw type.
 						// FIXME byt konstruktor när den nya finns
+						
+						// is it request or reply? reply ska vi skicka saker direkt till front end annars gör det där under.
+						//  maybe a new type of list in state for sending internally and one for sending to front end.
+						
 						DrawMessageReply reply = new DrawMessageReply();
-						messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.frontendAddress));
-					} else {
+						if (state.primaryAddress == id) {
+							messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, null));
+						} else {
+							messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.primaryAddress));
+						}
+					} else if (requestReply.getType() == requestType.Remove) {
 						// its a remove type.
 						// FIXME byt konstruktor när den nya finns
 						RemoveDrawMessageReply reply = new RemoveDrawMessageReply();
-						messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.frontendAddress));
+						if (state.primaryAddress == id) {
+							messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, null));
+						} else {
+							messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.primaryAddress));
+						}
+					} else {
+						// It's a state request.
+						// create a state message, add a receiverUUID as its a unicast and add state +
+						// send to frontEnd.
+						StateMessageReply reply = new StateMessageReply();
+						reply.setReceiverUUID(requestReply.getRequester());
+						reply.setState(state.rpState.cadState);
+						if (state.primaryAddress == id) {
+							messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.frontendAddress));
+						} else {
+							messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.primaryAddress));
+						}
 					}
+
 				}
 			}
 

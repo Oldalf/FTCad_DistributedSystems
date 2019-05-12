@@ -1,16 +1,16 @@
 package message.drawmessage;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.awt.Color;
-import java.awt.Shape;
 import java.util.UUID;
 
 import DCAD.GObject;
 import State.FrontendState;
 import State.ReplicaManagerState;
 import message.MessagePayload;
+import replicaManager.ReplicaManagerMessageContainer;
+import replicaManager.RequestContainer;
+import replicaManager.RequestContainer.RequestStage;
+import replicaManager.RequestContainer.requestType;
 
 public class DrawMessageRequest extends DrawMessage {
 	/**
@@ -27,18 +27,21 @@ public class DrawMessageRequest extends DrawMessage {
 	private DCAD.Shape s;
 	private Color c;
 
-	private GObject object = new GObject();
+	private GObject object = null;
 
 	public DrawMessageRequest() {
 		super(DrawMessageRequest.messageUUID);
+		createGObject();
 	}
 
 	protected DrawMessageRequest(UUID uuid) {
 		super(uuid);
+		createGObject();
 	}
 
 	protected DrawMessageRequest(MessagePayload message) {
 		super(message);
+		createGObject();
 	}
 
 	public int getX() {
@@ -101,6 +104,10 @@ public class DrawMessageRequest extends DrawMessage {
 	public GObject getObject() {
 		return this.object; // new GObject(s,c,x,y,width,height);
 	}
+	
+	private void createGObject() {
+		this.object = new GObject(s,c,x,y,width,height);
+	}
 
 	@Override
 	public void executeForFrontend(FrontendState state) {
@@ -109,20 +116,34 @@ public class DrawMessageRequest extends DrawMessage {
 
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
+	
 
 	}
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
+		RequestContainer rq = new RequestContainer(object,requestType.Draw, RequestStage.ConfrimedByBackup);
+		if(!state.rpState.Object2Request_state.contains(object)) {
+			// the object does not exist in our state, add it
+			state.rpState.Object2Request_state.put(object, rq);
+		}
+		// Send a return to primary that we're okey with the object existing.(ack)
+		state.rpState.ReadyToSendRequests.add(rq);
 
 	}
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
-
+		RequestContainer rq = new RequestContainer(object,requestType.Draw, RequestStage.Received);
+		if(state.rpState.Object2Request_state.contains(object)) {
+			// the request already existed.
+			rq = state.rpState.Object2Request_state.get(object);
+		} else {
+			state.rpState.cadState.add(object);
+			rq.setStage(RequestStage.AddedToMyState);			
+		}
+		state.responseList.add(new ReplicaManagerMessageContainer(this,null,"DrawMessageRequest"));
+		rq.setStage(RequestStage.SentToBackup);
 	}
 
 }

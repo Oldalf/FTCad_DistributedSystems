@@ -1,6 +1,7 @@
 package message.drawmessage;
 
 import java.awt.Color;
+import java.net.Authenticator.RequestorType;
 import java.util.UUID;
 
 import DCAD.GObject;
@@ -10,6 +11,9 @@ import State.ReplicaManagerState;
 import frontend.ClientConnection;
 import message.MessagePayload;
 import message.Reply;
+import replicaManager.RequestContainer;
+import replicaManager.RequestContainer.RequestStage;
+import replicaManager.RequestContainer.requestType;
 
 public class DrawMessageReply extends DrawMessage {
 	/**
@@ -32,14 +36,17 @@ public class DrawMessageReply extends DrawMessage {
 
 	public DrawMessageReply() {
 		super(DrawMessageReply.messageUUID);
+		createGObject();
 	}
 
 	protected DrawMessageReply(UUID uuid) {
 		super(uuid);
+		createGObject();
 	}
 
 	protected DrawMessageReply(MessagePayload message) {
 		super(message);
+		createGObject();
 	}
 
 	public DrawMessageReply(GObject object, Reply reply) {
@@ -112,10 +119,14 @@ public class DrawMessageReply extends DrawMessage {
 		return this.object;// new GObject(s,c,x,y,width,height);
 	}
 
+	private void createGObject() {
+		this.object = new GObject(s, c, x, y, width, height);
+	}
+
 	@Override
 	public void executeForFrontend(FrontendState state) {
-		if(state.role instanceof FrontendRole) {
-			for(ClientConnection cc: state.connectedClients.values()) {
+		if (state.role instanceof FrontendRole) {
+			for (ClientConnection cc : state.connectedClients.values()) {
 				cc.getMessageQueue().add(this);
 			}
 		}
@@ -129,14 +140,39 @@ public class DrawMessageReply extends DrawMessage {
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
+		// check if it exists in our state (it should do)
+		RequestContainer rq = null;
+		if (state.rpState.Object2Request_state.containsKey(object)) {
+			// get request container
+			rq = state.rpState.Object2Request_state.get(object);
+			// update stage.
+			rq.setStage(RequestStage.ConfirmedToFrontEnd);
+		} else {
+			// somehow it doesn't exists, add it and update it
+			rq = new RequestContainer(object, requestType.Draw, RequestStage.ConfirmedToFrontEnd);
+			state.rpState.Object2Request_state.put(object, rq);
+		}
+		// add it to the queue that sends it back to primary.
+		state.rpState.ReadyToSendRequests.add(rq);
 
 	}
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
-
+		// check if it exists in our state (it should do)
+		RequestContainer rq = null;
+		if (state.rpState.Object2Request_state.containsKey(object)) {
+			// get request container
+			rq = state.rpState.Object2Request_state.get(object);
+			// update stage.
+			rq.setStage(RequestStage.ConfirmedToFrontEnd);
+		} else {
+			// somehow it doesn't exists, add it and update it
+			rq = new RequestContainer(object, requestType.Draw, RequestStage.ConfirmedToFrontEnd);
+			state.rpState.Object2Request_state.put(object, rq);
+		}
+		// add it to the queue that sends it back to primary.
+		state.rpState.ReadyToSendRequests.add(rq);
 	}
 
 }

@@ -26,7 +26,10 @@ public class ReplicaManagerState {
 	public View previousView;
 	public Long electionTimeout;
 	public ReplicaManagerRole role = ReplicaManagerRole.getInstance();
+	
+	// election related answer messages, who should we send answer messages to.
 	public LinkedBlockingQueue<Address> answerMessageReplyList = new LinkedBlockingQueue<>();
+	
 	public LinkedBlockingQueue<ReplicaManagerMessageContainer> responseList = new LinkedBlockingQueue<ReplicaManagerMessageContainer>();
 
 	public rmReplicableState rpState = rmReplicableState.getInstance();

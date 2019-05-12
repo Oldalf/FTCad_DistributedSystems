@@ -1,7 +1,9 @@
 package message.statemessage;
 
+import java.util.LinkedList;
 import java.util.UUID;
 
+import DCAD.GObject;
 import Role.FrontendRole;
 import Role.ReplicaManagerBackupRole;
 import Role.ReplicaManagerPrimaryRole;
@@ -13,7 +15,8 @@ import message.MessagePayload;
 public class StateMessageReply extends StateMessage {
 	private static final long serialVersionUID = 1L;
 	private static UUID messageUUID = UUID.fromString("1950588a-40f6-11e9-b210-d663bd873d93");
-
+	private LinkedList<GObject> cadState = new LinkedList<GObject>();
+	
 	public StateMessageReply() {
 		super(StateMessageReply.messageUUID);
 	}
@@ -24,6 +27,11 @@ public class StateMessageReply extends StateMessage {
 	protected StateMessageReply(MessagePayload message) {
 		super(message);
 	}
+	
+	public void setState(LinkedList<GObject> cadState) {
+		this.cadState = cadState;
+	}
+	
 	@Override
 	public void executeForFrontend(FrontendState state) {
 		if(state.role instanceof FrontendRole) {
