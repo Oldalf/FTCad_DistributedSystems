@@ -7,13 +7,11 @@ import java.util.UUID;
 
 import State.FrontendState;
 import message.Message;
-import message.drawmessage.DrawMessageReply;
-import message.removedrawmessage.RemoveDrawMessageReply;
 
 public class SendThread implements Runnable{
 
 	private Socket clientSocket = null;
-	private UUID clientID;
+	private UUID clientId;
 	private OutputStream output;
 
 	private volatile boolean isAlive = true;
@@ -23,7 +21,7 @@ public class SendThread implements Runnable{
 	public SendThread(Socket clientSocket, UUID clientID)
 	{
 		this.clientSocket = clientSocket;
-		clientID = clientID;
+		this.clientId = clientID;
 
 		try {
 			output = this.clientSocket.getOutputStream();
@@ -38,8 +36,9 @@ public class SendThread implements Runnable{
 		{
 			// Plocka bort ett meddelande från clientens meddelandekö
 			try {
-				FrontendState state = FrontendState.getInstance();
-				Message message = state.connectedClients.get(clientID).getMessageQueue().take();
+				//FrontendState state = FrontendState.getInstance();
+				System.out.println("clientID: " + clientId);
+				Message message = FrontendState.connectedClients.get(clientId).getMessageQueue().take();
 				sendMessageToSelf(message);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

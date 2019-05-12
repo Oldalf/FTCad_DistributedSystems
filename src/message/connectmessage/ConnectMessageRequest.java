@@ -2,8 +2,14 @@ package message.connectmessage;
 
 import java.util.UUID;
 
+import Role.ClientRole;
+import Role.FrontendRole;
+import Role.ReplicaManagerBackupRole;
+import Role.ReplicaManagerPrimaryRole;
+import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
+import State.clientState;
 import message.MessagePayload;
 
 public class ConnectMessageRequest extends ConnectMessage {
@@ -38,42 +44,55 @@ public class ConnectMessageRequest extends ConnectMessage {
 
 	@Override
 	public void executeForFrontend(FrontendState state) {
-		// TODO Auto-generated method stub
-		try {
-			throw new IllegalAccessException();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(state.role instanceof FrontendRole) {
+			
+		}else {
+			throw new IllegalStateException();
 		}
-
+		
 	}
 
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
-		try {
-			throw new IllegalAccessException();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(state.role instanceof ReplicaManagerRole) {
+			
 		}
+		else {
+			throw new IllegalStateException();
+		}
+		
 	}
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
-		try {
-			throw new IllegalAccessException();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(state.role instanceof ReplicaManagerBackupRole) {
+			
 		}
+		else {
+			throw new IllegalStateException();
+		}
+		
 	}
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		// TODO Auto-generated method stub
-
+		if(state.role instanceof ReplicaManagerPrimaryRole) {
+			
+		}
+		else {
+			throw new IllegalStateException();
+		}
+	}
+	@Override
+	public void executeForClient(clientState state) {
+		if(state.role instanceof ClientRole) {
+			
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
 	}
 
+	
 }

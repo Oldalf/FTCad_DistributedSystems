@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.util.UUID;
 
 import DCAD.GObject;
+import Role.ClientRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
+import State.clientState;
 import message.MessagePayload;
 import replicaManager.ReplicaManagerMessageContainer;
 import replicaManager.RequestContainer;
@@ -144,6 +146,16 @@ public class DrawMessageRequest extends DrawMessage {
 		}
 		state.responseList.add(new ReplicaManagerMessageContainer(this,null,"DrawMessageRequest"));
 		rq.setStage(RequestStage.SentToBackup);
+	}
+	@Override
+	public void executeForClient(clientState state) {
+		if(state.role instanceof ClientRole) {
+			state.myObjects.add(this.object);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
 	}
 
 }

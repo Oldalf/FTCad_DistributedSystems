@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.UUID;
 
+import State.clientState;
 import message.Message;
 import message.Reply;
 import message.connectmessage.ConnectMessageReply;
@@ -18,14 +19,14 @@ import message.removedrawmessage.RemoveDrawMessageReply;
 public class FrontEndConnection 
 {
 	// Client
-	private Socket clientSocket = null;
-	private InetAddress clientAddress = null;
-	private int clientPort = 0;
-	private UUID clientID;
+//	private Socket clientSocket = null;
+//	private InetAddress clientAddress = null;
+//	private int clientPort = 0;
+//	private UUID clientID;
 
 	// FrontEnd
-	private InetAddress serverAddress = null;
-	private int serverPort = 0;
+//	private InetAddress serverAddress = null;
+//	private int serverPort = 0;
 
 	// Variables
 	private boolean gotJoinMessage = false;
@@ -35,7 +36,9 @@ public class FrontEndConnection
 	private InputStream input;
 	private OutputStream output;
 	private byte[] inputByte;
-
+	private clientState state;
+	
+	
 	public FrontEndConnection() 
 	{
 
@@ -43,20 +46,21 @@ public class FrontEndConnection
 
 	public FrontEndConnection(String hostName, int clientPort) 
 	{
-		this.clientPort = clientPort;
-		serverPort = 25001;
+		state = clientState.getInstance();
+		state.clientPort = clientPort;
+		state.serverPort = 25001;
 
 		try {
-			clientAddress = InetAddress.getLocalHost();
-			serverAddress = InetAddress.getByName(hostName);
+			state.clientAddress = InetAddress.getLocalHost();
+			state.serverAddress = InetAddress.getByName(hostName);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 
 		try {
-			clientSocket = new Socket(hostName, serverPort);
-			input = clientSocket.getInputStream();
-			output = clientSocket.getOutputStream();
+			state.clientSocket = new Socket(hostName, state.serverPort);
+			input = state.clientSocket.getInputStream();
+			output = state.clientSocket.getOutputStream();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -66,12 +70,13 @@ public class FrontEndConnection
 
 	public boolean handShake(UUID id, GUI gui)
 	{
-		clientID = id;
+		state = clientState.getInstance();
+		state.clientId = id;
 
 		// Skapa ett JoinMessage
-		ConnectMessageRequest connectMessage = new ConnectMessageRequest(clientID.toString());
-		connectMessage.setSenderUUID(clientID);
-		connectMessage.setReceiverUUID(clientID);
+		ConnectMessageRequest connectMessage = new ConnectMessageRequest(state.clientId.toString());
+		connectMessage.setSenderUUID(state.clientId);
+		connectMessage.setReceiverUUID(state.clientId);
 
 		// Marhsal Message och Skicka ett JoinMessage
 		try {
@@ -115,6 +120,7 @@ public class FrontEndConnection
 
 	public void receiveMessages(GUI gui)
 	{	
+		state = clientState.getInstance();
 		/*
 
 		inputByte = new byte[8192];
@@ -158,39 +164,44 @@ public class FrontEndConnection
 		System.out.println("KLIENTEN FICK ETT MEDDELANDE!");
 
 		message = Message.deserializeMessage(inputByte);
+		
+		message.executeForClient(clientState.getInstance());
+		gui.callRepaint();
+		
+//		if(message instanceof DrawMessageReply)
+//		{
+//
+//			DrawMessageReply m = (DrawMessageReply)message;
+//
+//			if(m.getReply().equals(Reply.OK))
+//			{
+//				
+//				//gui.addObjectToState(m.getObject());
+//
+//				if(m.getSenderUUID().equals(clientId))
+//					//gui.addMyObject(m.getObject());
+//			}
+//		}
 
-		if(message instanceof DrawMessageReply)
-		{
-
-			DrawMessageReply m = (DrawMessageReply)message;
-
-			if(m.getReply().equals(Reply.OK))
-			{
-				gui.addObjectToState(m.getObject());
-
-				if(m.getSenderUUID().equals(clientID))
-					gui.addMyObject(m.getObject());
-			}
-		}
-
-		else if(message instanceof RemoveDrawMessageReply)
-		{
-
-			RemoveDrawMessageReply m = (RemoveDrawMessageReply)message;
-
-			if(m.getReply().equals(Reply.OK))
-				gui.removeObject(m.getObject());
-
-			gui.repaint();
-		}
+//		else if(message instanceof RemoveDrawMessageReply)
+//		{
+//
+//			RemoveDrawMessageReply m = (RemoveDrawMessageReply)message;
+//
+//			if(m.getReply().equals(Reply.OK))
+//				gui.removeObject(m.getObject());
+//
+//			gui.repaint();
+//		}
 
 	}
 
 	public void sendMessage(Message message)
 	{
+		state = clientState.getInstance();
 		System.out.println(message.toString());
 
-		message.setSenderUUID(clientID);
+		message.setSenderUUID(state.clientId);
 
 		try {
 			output.write(Message.serializeMessage(message));

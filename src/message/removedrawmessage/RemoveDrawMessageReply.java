@@ -1,15 +1,18 @@
 package message.removedrawmessage;
 
 import java.security.KeyStore.Entry;
+import java.util.LinkedList;
 import java.util.UUID;
 
 import DCAD.GObject;
+import Role.ClientRole;
 import Role.FrontendRole;
 import Role.ReplicaManagerBackupRole;
 import Role.ReplicaManagerPrimaryRole;
 import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
+import State.clientState;
 import frontend.ClientConnection;
 import message.MessagePayload;
 import message.Reply;
@@ -23,7 +26,7 @@ public class RemoveDrawMessageReply extends RemoveDrawMessage
 	private static final long serialVersionUID = 1L;
 	private static UUID messageUUID = UUID.fromString("1934207e-489f-11e9-8646-d663bd873d93");
 	
-	private GObject object;
+	private LinkedList<GObject> newObjectState;
 	private Reply reply;
 
 	protected RemoveDrawMessageReply(MessagePayload message) 
@@ -41,21 +44,21 @@ public class RemoveDrawMessageReply extends RemoveDrawMessage
 		super(RemoveDrawMessageReply.messageUUID);
 	}
 	
-	public RemoveDrawMessageReply(GObject object, Reply reply)
+	public RemoveDrawMessageReply(LinkedList<GObject> newObjectState, Reply reply)
 	{
 		super(RemoveDrawMessageReply.messageUUID);
 		this.reply = reply;
-		this.object = object;
+		this.newObjectState = newObjectState;
 	}
 	
-	public void setObject(GObject object)
+	public void setObject(LinkedList<GObject>  newObjectState)
 	{
-		this.object = object;
+		this.newObjectState = newObjectState;
 	}
 	
-	public GObject getObject()
+	public LinkedList<GObject> getObject()
 	{
-		return this.object;
+		return this.newObjectState;
 	}
 	
 	public void setReply(Reply reply)
@@ -110,4 +113,15 @@ public class RemoveDrawMessageReply extends RemoveDrawMessage
 			throw new IllegalStateException();
 		}
 	}
+	@Override
+	public void executeForClient(clientState state) {
+		if(state.role instanceof ClientRole) {
+			state.globalObjectList = this.newObjectState;
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
+	}
+
 }

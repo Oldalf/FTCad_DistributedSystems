@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import State.FrontendState;
 import State.ReplicaManagerState;
+import State.clientState;
 
 
 public abstract class Message extends MessagePayload implements Serializable {
@@ -85,6 +86,10 @@ public abstract class Message extends MessagePayload implements Serializable {
 	 *Unique execute for primary 
 	 */
 	public abstract void executeForPrimaryReplicaManager(ReplicaManagerState state);
+	/*
+	 *Unique execute for Client
+	 */
+	public abstract void executeForClient(clientState state);
 
 	public UUID getSenderUUID() {
 		return senderUUID;

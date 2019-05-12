@@ -5,9 +5,11 @@ import java.net.Authenticator.RequestorType;
 import java.util.UUID;
 
 import DCAD.GObject;
+import Role.ClientRole;
 import Role.FrontendRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
+import State.clientState;
 import frontend.ClientConnection;
 import message.MessagePayload;
 import message.Reply;
@@ -173,6 +175,16 @@ public class DrawMessageReply extends DrawMessage {
 		}
 		// add it to the queue that sends it back to primary.
 		state.rpState.ReadyToSendRequests.add(rq);
+	}
+	@Override
+	public void executeForClient(clientState state) {
+		if(state.role instanceof ClientRole) {
+			state.globalObjectList.add(this.object);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
 	}
 
 }

@@ -2,12 +2,14 @@ package message.statemessage;
 
 import java.util.UUID;
 
+import Role.ClientRole;
 import Role.FrontendRole;
 import Role.ReplicaManagerBackupRole;
 import Role.ReplicaManagerPrimaryRole;
 import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
+import State.clientState;
 import message.MessagePayload;
 import replicaManager.RequestContainer;
 import replicaManager.RequestContainer.RequestStage;
@@ -70,6 +72,17 @@ public class StateMessageRequest extends StateMessage {
 			// set requester to the messageSenderUUID.
 			rq.setRequester(this.getSenderUUID());
 			state.rpState.ReadyToSendRequests.add(rq);
+			
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
+	}
+	
+	@Override
+	public void executeForClient(clientState state) {
+		if(state.role instanceof ClientRole) {
 			
 		}
 		else {

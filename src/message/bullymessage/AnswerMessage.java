@@ -2,12 +2,14 @@ package message.bullymessage;
 
 import java.util.UUID;
 
+import Role.ClientRole;
 import Role.FrontendRole;
 import Role.ReplicaManagerBackupRole;
 import Role.ReplicaManagerPrimaryRole;
 import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
+import State.clientState;
 import replicaManager.AddressConverter;
 
 public class AnswerMessage extends BullyMessage {
@@ -73,6 +75,17 @@ public class AnswerMessage extends BullyMessage {
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
 		if(state.role instanceof ReplicaManagerPrimaryRole) {
+			
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
+	}
+
+	@Override
+	public void executeForClient(clientState state) {
+		if(state.role instanceof ClientRole) {
 			
 		}
 		else {

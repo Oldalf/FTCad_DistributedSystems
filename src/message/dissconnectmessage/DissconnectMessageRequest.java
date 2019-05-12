@@ -2,12 +2,14 @@ package message.dissconnectmessage;
 
 import java.util.UUID;
 
+import Role.ClientRole;
 import Role.FrontendRole;
 import Role.ReplicaManagerBackupRole;
 import Role.ReplicaManagerPrimaryRole;
 import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
+import State.clientState;
 import message.MessagePayload;
 
 public class DissconnectMessageRequest extends DissconnectMessage {
@@ -60,6 +62,16 @@ public class DissconnectMessageRequest extends DissconnectMessage {
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
 		if(state.role instanceof ReplicaManagerPrimaryRole) {
+			
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
+	}
+	@Override
+	public void executeForClient(clientState state) {
+		if(state.role instanceof ClientRole) {
 			
 		}
 		else {

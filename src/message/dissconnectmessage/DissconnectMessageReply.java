@@ -2,15 +2,20 @@ package message.dissconnectmessage;
 
 import java.util.UUID;
 
+import Role.ClientRole;
 import Role.FrontendRole;
 import Role.ReplicaManagerBackupRole;
 import Role.ReplicaManagerPrimaryRole;
 import Role.ReplicaManagerRole;
 import State.FrontendState;
 import State.ReplicaManagerState;
+import State.clientState;
 import message.MessagePayload;
 
-
+/*
+ * THIS CLASS SHOULD NOT BE NEEDED BUT WE GOT IT HERE IN CASE!
+ * 
+ * */
 public class DissconnectMessageReply extends DissconnectMessage{
 	private static final long serialVersionUID = 1L;
 	private static UUID messageUUID = UUID.fromString("77befc38-40f5-11e9-b210-d663bd873d93");
@@ -66,6 +71,16 @@ public class DissconnectMessageReply extends DissconnectMessage{
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
 		if(state.role instanceof ReplicaManagerPrimaryRole) {
+			
+		}
+		else {
+			throw new IllegalStateException();
+		}
+		
+	}
+	@Override
+	public void executeForClient(clientState state) {
+		if(state.role instanceof ClientRole) {
 			
 		}
 		else {

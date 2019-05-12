@@ -22,6 +22,7 @@ import java.util.ListIterator;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import State.clientState;
 import message.drawmessage.DrawMessageRequest;
 import message.removedrawmessage.RemoveDrawMessageRequest;
 
@@ -136,10 +137,13 @@ public class GUI extends JFrame implements WindowListener, ActionListener, Mouse
 	public void mouseClicked(MouseEvent e) {
 		// User clicks the right mouse button:
 		// undo an operation by removing the most recently added object.
-		if (e.getButton() == MouseEvent.BUTTON3 && objectList.size() > 0) {
-			client.getFrontendConnection().sendMessage(new RemoveDrawMessageRequest(myObjects.remove(myObjects.size()-1)));
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			clientState state = clientState.getInstance();
+			if(state.myObjects.size()>0) {
+				client.getFrontendConnection().sendMessage(new RemoveDrawMessageRequest(state.myObjects.getLast()));
+			}
 		}
-		repaint();
+		//repaint();
 	}
 
 	public void mouseReleased(MouseEvent e) {
@@ -196,8 +200,8 @@ public class GUI extends JFrame implements WindowListener, ActionListener, Mouse
 		g.fillRect(0, 60, getSize().width, getSize().height - 60);
 
 		template.draw(g);
-
-		for (ListIterator<GObject> itr = objectList.listIterator(); itr.hasNext();) {
+		clientState state = clientState.getInstance();
+		for (ListIterator<GObject> itr = state.globalObjectList.listIterator(); itr.hasNext();) {
 			itr.next().draw(g);
 		}
 
@@ -216,43 +220,43 @@ public class GUI extends JFrame implements WindowListener, ActionListener, Mouse
 		repaint();
 	}
 
-	public void setCadState(LinkedList<GObject> state) {
-		this.objectList = state;
-		repaint();
-	}
-
-	public LinkedList<GObject> getCadState() {
-		return this.objectList;
-	}
-
-	public void addObjectToState(GObject newObject) {
-		this.objectList.add(newObject);
-		repaint();
-	}
-	
-	public void setObjectList(LinkedList<GObject> objectList)
-	{
-		this.objectList = objectList;
-	}
-	
-	public void addMyObject(GObject object)
-	{
-		myObjects.add(object);
-	}
-	
-	public LinkedList<GObject> getMyObjects()
-	{
-		return myObjects;
-	}
-	
-	public void removeObject(GObject object)
-	{
-		for(int i = 0; i < objectList.size(); i++)
-		{
-			if(objectList.get(i).getObjectID().equals(object.getObjectID()))
-			{
-				objectList.remove(i);
-			}
-		}
-	}
+//	public void setCadState(LinkedList<GObject> state) {
+//		this.objectList = state;
+//		repaint();
+//	}
+//
+//	public LinkedList<GObject> getCadState() {
+//		return this.objectList;
+//	}
+//
+//	public void addObjectToState(GObject newObject) {
+//		this.objectList.add(newObject);
+//		repaint();
+//	}
+//	
+//	public void setObjectList(LinkedList<GObject> objectList)
+//	{
+//		this.objectList = objectList;
+//	
+//	
+//	public void addMyObject(GObject object)
+//	{
+//		myObjects.add(object);
+//	}
+//	
+//	public LinkedList<GObject> getMyObjects()
+//	{
+//		return myObjects;
+//	}
+//	
+//	public void removeObject(GObject object)
+//	{
+//		for(int i = 0; i < objectList.size(); i++)
+//		{
+//			if(objectList.get(i).getObjectID().equals(object.getObjectID()))
+//			{
+//				objectList.remove(i);
+//			}
+//		}
+//	}
 }
