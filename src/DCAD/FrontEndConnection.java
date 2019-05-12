@@ -166,6 +166,7 @@ public class FrontEndConnection
 		message = Message.deserializeMessage(inputByte);
 		
 		message.executeForClient(clientState.getInstance());
+		gui.callRepaint();
 		
 //		if(message instanceof DrawMessageReply)
 //		{

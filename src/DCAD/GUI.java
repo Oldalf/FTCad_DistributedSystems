@@ -200,8 +200,8 @@ public class GUI extends JFrame implements WindowListener, ActionListener, Mouse
 		g.fillRect(0, 60, getSize().width, getSize().height - 60);
 
 		template.draw(g);
-
-		for (ListIterator<GObject> itr = objectList.listIterator(); itr.hasNext();) {
+		clientState state = clientState.getInstance();
+		for (ListIterator<GObject> itr = state.globalObjectList.listIterator(); itr.hasNext();) {
 			itr.next().draw(g);
 		}
 
