@@ -18,11 +18,14 @@ import org.jgroups.util.Util;
 
 import State.ReplicaManagerState;
 import State.rmReplicableState;
+import message.Reply;
 import message.bullymessage.AnswerMessage;
 import message.bullymessage.CoordinatorMessage;
 import message.bullymessage.ElectionMessage;
 import message.drawmessage.DrawMessageReply;
+import message.drawmessage.DrawMessageRequest;
 import message.removedrawmessage.RemoveDrawMessageReply;
+import message.removedrawmessage.RemoveDrawMessageRequest;
 import message.statemessage.StateMessageReply;
 import replicaManager.RequestContainer.RequestStage;
 import replicaManager.RequestContainer.requestType;
@@ -205,25 +208,48 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 				if (requestReply != null) {
 					if (requestReply.getType() == requestType.Draw) {
 						// its a draw type.
-						// FIXME byt konstruktor när den nya finns
-						
-						// is it request or reply? reply ska vi skicka saker direkt till front end annars gör det där under.
-						//  maybe a new type of list in state for sending internally and one for sending to front end.
-						
-						DrawMessageReply reply = new DrawMessageReply();
-						if (state.primaryAddress == id) {
-							messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, null));
+
+						DrawMessageReply reply = new DrawMessageReply(requestReply.getObject(), Reply.OK);
+						if (requestReply.getStage() != RequestStage.ConfrimedByBackup
+								|| requestReply.getStage() != RequestStage.ConfirmedToFrontEnd) {
+							// Should it be sent to front end or primary
+							if (state.primaryAddress == id) {
+								messageOutputQueue
+										.add(new ReplicaManagerMessageContainer(reply, state.frontendAddress));
+							} else {
+								messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.primaryAddress));
+								System.out.println("confirming to frontend: " + reply);
+							}
+
 						} else {
-							messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.primaryAddress));
+							// Send to backups
+							if (state.primaryAddress == id) {
+								// im the primary and need to confirm/let the backups know about the request
+								sendToBackups(requestReply);
+							}
 						}
+
 					} else if (requestReply.getType() == requestType.Remove) {
 						// its a remove type.
-						// FIXME byt konstruktor när den nya finns
-						RemoveDrawMessageReply reply = new RemoveDrawMessageReply();
-						if (state.primaryAddress == id) {
-							messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, null));
+						RemoveDrawMessageReply reply = new RemoveDrawMessageReply(state.rpState.cadState, Reply.OK);
+						reply.setRemovedObject(requestReply.getObject()); // Setting what object is being removed.
+						if (requestReply.getStage() != RequestStage.ConfrimedByBackup
+								|| requestReply.getStage() != RequestStage.ConfirmedToFrontEnd) {
+							// Should it be sent to front end or primary
+							if (state.primaryAddress == id) {
+								messageOutputQueue
+										.add(new ReplicaManagerMessageContainer(reply, state.frontendAddress));
+							} else {
+								messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.primaryAddress));
+								System.out.println("confirming to frontend: " + reply);
+							}
+
 						} else {
-							messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.primaryAddress));
+							// Send to backups
+							if (state.primaryAddress == id) {
+								// im the primary and need to confirm/let the backups know about the request
+								sendToBackups(requestReply);
+							}
 						}
 					} else {
 						// It's a state request.
@@ -235,7 +261,10 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 						if (state.primaryAddress == id) {
 							messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.frontendAddress));
 						} else {
-							messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.primaryAddress));
+							// This shouldn't be possible.
+							System.err.println(
+									"Backup got a state request, should not happen, replying with state to FE anyways");
+							messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, state.frontendAddress));
 						}
 					}
 
@@ -261,6 +290,31 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 			}
 		}
 
+	}
+
+	private void sendToBackups(RequestContainer requestReply) {
+		List<Address> members = state.previousView.getMembers();
+		for (int i = 0; i < members.size(); i++) {
+			if (members.get(i).compareTo(state.frontendAddress) != 0 || members.get(i).compareTo(id) != 0) {
+				// if the address isn't myself or the frontend.
+
+				if (requestReply.getType() == requestType.Draw) {
+					// Create a DrawMessageRequest with the object
+					DrawMessageRequest reply = new DrawMessageRequest(requestReply.getObject());
+					reply.setSenderUUID(reply.getSenderUUID());
+					messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, members.get(i)));
+
+				} else if (requestReply.getType() == requestType.Remove) {
+					// Create a RemoveDrawMessageRequest with the object
+					RemoveDrawMessageRequest reply = new RemoveDrawMessageRequest(requestReply.getObject());
+					reply.setSenderUUID(reply.getSenderUUID());
+					messageOutputQueue.add(new ReplicaManagerMessageContainer(reply, members.get(i)));
+				}
+
+			}
+		}
+		// Set the correct stage for the request.
+		requestReply.setStage(RequestStage.SentToBackup);
 	}
 
 	private void callElection() {

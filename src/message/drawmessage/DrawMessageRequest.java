@@ -106,9 +106,9 @@ public class DrawMessageRequest extends DrawMessage {
 	public GObject getObject() {
 		return this.object; // new GObject(s,c,x,y,width,height);
 	}
-	
+
 	private void createGObject() {
-		this.object = new GObject(s,c,x,y,width,height);
+		this.object = new GObject(s, c, x, y, width, height);
 	}
 
 	@Override
@@ -118,14 +118,13 @@ public class DrawMessageRequest extends DrawMessage {
 
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
-	
 
 	}
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		RequestContainer rq = new RequestContainer(object,requestType.Draw, RequestStage.ConfrimedByBackup);
-		if(!state.rpState.Object2Request_state.contains(object)) {
+		RequestContainer rq = new RequestContainer(object, requestType.Draw, RequestStage.ConfrimedByBackup);
+		if (!state.rpState.Object2Request_state.contains(object)) {
 			// the object does not exist in our state, add it
 			state.rpState.Object2Request_state.put(object, rq);
 		}
@@ -136,26 +135,34 @@ public class DrawMessageRequest extends DrawMessage {
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		RequestContainer rq = new RequestContainer(object,requestType.Draw, RequestStage.Received);
-		if(state.rpState.Object2Request_state.contains(object)) {
+		RequestContainer rq = new RequestContainer(object, requestType.Draw, RequestStage.Received);
+		if (state.rpState.Object2Request_state.contains(object)) {
 			// the request already existed.
 			rq = state.rpState.Object2Request_state.get(object);
 		} else {
+			// add request to my stage
 			state.rpState.cadState.add(object);
-			rq.setStage(RequestStage.AddedToMyState);			
+			rq.setStage(RequestStage.AddedToMyState);
 		}
-		state.responseList.add(new ReplicaManagerMessageContainer(this,null,"DrawMessageRequest"));
-		rq.setStage(RequestStage.SentToBackup);
+		if (rq.getStage() == RequestStage.ConfrimedByBackup || rq.getStage() == RequestStage.ConfirmedToFrontEnd) {
+			// we have already confirmed this request respond without asking backups again
+			state.rpState.ReadyToSendRequests.add(rq);
+		} else {
+			// Add it to our response list
+			state.rpState.ReadyToSendRequests.add(rq);
+			// update the stage
+			rq.setStage(RequestStage.SentToBackup);
+		}
 	}
+
 	@Override
 	public void executeForClient(clientState state) {
-		if(state.role instanceof ClientRole) {
+		if (state.role instanceof ClientRole) {
 			state.myObjects.add(this.object);
-		}
-		else {
+		} else {
 			throw new IllegalStateException();
 		}
-		
+
 	}
 
 }

@@ -173,7 +173,7 @@ public class DrawMessageReply extends DrawMessage {
 			rq = new RequestContainer(object, requestType.Draw, RequestStage.ConfirmedToFrontEnd);
 			state.rpState.Object2Request_state.put(object, rq);
 		}
-		// add it to the queue that sends it back to primary.
+		// add it to the queue that sends it back to frontend.
 		state.rpState.ReadyToSendRequests.add(rq);
 	}
 	@Override
