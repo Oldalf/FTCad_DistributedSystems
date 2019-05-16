@@ -39,6 +39,7 @@ public class ElectionMessage extends BullyMessage {
 	private void CoordinatorExecuteForRM(ReplicaManagerState state) {
 		state.callElection = true;
 		state.onGoingElection = true;
+		state.role = ReplicaManagerBackupRole.getInstance();
 	}
 
 
@@ -55,38 +56,39 @@ public class ElectionMessage extends BullyMessage {
 
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
-		if(state.role instanceof ReplicaManagerRole) {
+		//if(state.role instanceof ReplicaManagerRole) {
 			CoordinatorExecuteForRM(state);
-		}
-		else {
-			throw new IllegalStateException();
-		}
+		// }
+		// else {
+		// throw new IllegalStateException();
+		// }
 		
 	}
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		if(state.role instanceof ReplicaManagerBackupRole) {
+		//if(state.role instanceof ReplicaManagerBackupRole) {
 			CoordinatorExecuteForRM(state);
-		}
-		else {
-			throw new IllegalStateException();
-		}
-		
+		// }
+		// else {
+		// throw new IllegalStateException();
+		// }
+		//
 	}
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		if(state.role instanceof ReplicaManagerPrimaryRole) {
+		//if(state.role instanceof ReplicaManagerPrimaryRole) {
 			state.primaryAddress = null;
 			state.onGoingElection = true;
 			state.callElection = true;
 			state.primaryMissing = true;
-		}
-		else {
-			throw new IllegalStateException();
-		}
-		
+			state.role = ReplicaManagerBackupRole.getInstance();
+		// }
+		// else {
+		// throw new IllegalStateException();
+		// }
+		//
 	}
 	@Override
 	public void executeForClient(clientState state) {

@@ -44,39 +44,39 @@ public class StateMessageRequest extends StateMessage {
 
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
-		if(state.role instanceof ReplicaManagerRole) {
-			
-		}
-		else {
-			throw new IllegalStateException();
-		}
+//		if(state.role instanceof ReplicaManagerRole) {
+//			
+//		}
+//		else {
+//			throw new IllegalStateException();
+//		}
 		
 	}
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		if(state.role instanceof ReplicaManagerBackupRole) {
-			
-		}
-		else {
-			throw new IllegalStateException();
-		}
+		// if(state.role instanceof ReplicaManagerBackupRole) {
+		//
+		// }
+		// else {
+		// throw new IllegalStateException();
+		// }
 		
 	}
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		if(state.role instanceof ReplicaManagerPrimaryRole) {
+		//if(state.role instanceof ReplicaManagerPrimaryRole) {
 			// create requestContainer with type state (no object needed)
 			RequestContainer rq = new RequestContainer(null, requestType.State, RequestStage.ConfrimedByBackup);
 			// set requester to the messageSenderUUID.
 			rq.setRequester(this.getSenderUUID());
 			state.rpState.ReadyToSendRequests.add(rq);
-			
-		}
-		else {
-			throw new IllegalStateException();
-		}
+	
+//		}
+//		else {
+//			throw new IllegalStateException();
+//		}
 		
 	}
 	

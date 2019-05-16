@@ -83,25 +83,25 @@ public class RemoveDrawMessageReply extends RemoveDrawMessage {
 
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
-		if (state.role instanceof ReplicaManagerRole) {
-
-		} else {
-			throw new IllegalStateException();
-		}
+		// if (state.role instanceof ReplicaManagerRole) {
+		//
+		// } else {
+		// throw new IllegalStateException();
+		// }
 	}
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		if (state.role instanceof ReplicaManagerBackupRole) {
-			// can't think of anything that needs to be done here.
-		} else {
-			throw new IllegalStateException();
-		}
+		// if (state.role instanceof ReplicaManagerBackupRole) {
+		// // can't think of anything that needs to be done here.
+		// } else {
+		// throw new IllegalStateException();
+		// }
 	}
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		if (state.role instanceof ReplicaManagerPrimaryRole) {
+		//if (state.role instanceof ReplicaManagerPrimaryRole) {
 			// check if it exists in our state (it should do)
 			RequestContainer rq = null;
 			if (state.rpState.Object2Request_state.containsKey(removedObject)) {
@@ -116,18 +116,18 @@ public class RemoveDrawMessageReply extends RemoveDrawMessage {
 			}
 			// add it to the queue that sends it back to frontend.
 			state.rpState.ReadyToSendRequests.add(rq);
-		} else {
-			throw new IllegalStateException();
-		}
+		// } else {
+		// throw new IllegalStateException();
+		// }
 	}
 
 	@Override
 	public void executeForClient(clientState state) {
-		if (state.role instanceof ClientRole) {
+		//if (state.role instanceof ClientRole) {
 			state.globalObjectList = this.newObjectState;
-		} else {
-			throw new IllegalStateException();
-		}
+		// } else {
+		// throw new IllegalStateException();
+		// }
 
 	}
 

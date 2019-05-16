@@ -33,65 +33,61 @@ public class AnswerMessage extends BullyMessage {
 		this.addressC = addressC;
 	}
 
-
 	private void CoordinatorExecuteForRM(ReplicaManagerState state) {
 		state.electionTimeout = null;
 	}
 
-	
 	@Override
 	public void executeForFrontend(FrontendState state) {
-		if(state.role instanceof FrontendRole) {
-			
-		}
-		else {
+		if (state.role instanceof FrontendRole) {
+
+		} else {
 			throw new IllegalStateException();
 		}
-		
+
 	}
 
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
-		if(state.role instanceof ReplicaManagerRole) {
-			CoordinatorExecuteForRM(state);
-		}
-		else {
-			throw new IllegalStateException();
-		}
-		
+		// if(state.role instanceof ReplicaManagerRole) {
+		CoordinatorExecuteForRM(state);
+		// }
+		// else {
+		// throw new IllegalStateException();
+		// }
+
 	}
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		if(state.role instanceof ReplicaManagerBackupRole) {
-			CoordinatorExecuteForRM(state);
-		}
-		else {
-			throw new IllegalStateException();
-		}
-		
+		// if(state.role instanceof ReplicaManagerBackupRole) {
+		CoordinatorExecuteForRM(state);
+		// }
+		// else {
+		// throw new IllegalStateException();
+		// }
+		//
 	}
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		if(state.role instanceof ReplicaManagerPrimaryRole) {
-			
-		}
-		else {
-			throw new IllegalStateException();
-		}
-		
+		// if(state.role instanceof ReplicaManagerPrimaryRole) {
+
+		// }
+		// else {
+		// throw new IllegalStateException();
+		// }
+		//
 	}
 
 	@Override
 	public void executeForClient(clientState state) {
-		if(state.role instanceof ClientRole) {
-			
-		}
-		else {
+		if (state.role instanceof ClientRole) {
+
+		} else {
 			throw new IllegalStateException();
 		}
-		
+
 	}
 
 }

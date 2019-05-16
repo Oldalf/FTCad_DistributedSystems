@@ -16,6 +16,8 @@ import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
 import org.jgroups.util.Util;
 
+import Role.ReplicaManagerPrimaryRole;
+import Role.ReplicaManagerRole;
 import State.ReplicaManagerState;
 import State.rmReplicableState;
 import message.Reply;
@@ -155,6 +157,7 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 				state.electionTimeout = null;
 				state.primaryAddress = id;
 				state.primaryMissing = false;
+				state.role = ReplicaManagerPrimaryRole.getInstance();
 
 				org.jgroups.util.UUID JGroupUUID = (org.jgroups.util.UUID) id;
 				messageOutputQueue.add(new ReplicaManagerMessageContainer(new CoordinatorMessage(new AddressConverter(
@@ -349,6 +352,7 @@ public class ReplicaManager extends ReceiverAdapter implements Runnable {
 			// No other replicaManger has a higher id, announce myself as the electionWinner
 			state.primaryAddress = id;
 			state.primaryMissing = false;
+			state.role = ReplicaManagerPrimaryRole.getInstance();
 			org.jgroups.util.UUID JGroupUUID = (org.jgroups.util.UUID) id;
 			messageOutputQueue.add(new ReplicaManagerMessageContainer(new CoordinatorMessage(
 					new AddressConverter(JGroupUUID.getMostSignificantBits(), JGroupUUID.getLeastSignificantBits())),

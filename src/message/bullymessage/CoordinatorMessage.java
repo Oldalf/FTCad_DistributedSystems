@@ -33,8 +33,6 @@ public class CoordinatorMessage extends BullyMessage {
 		this.addressC = addressC;
 	}
 
-
-
 	private void CoordinatorExecuteForRM(ReplicaManagerState state) {
 		state.electionTimeout = null;
 		state.onGoingElection = false;
@@ -42,63 +40,58 @@ public class CoordinatorMessage extends BullyMessage {
 		state.primaryAddress = JGroupUUID;
 	}
 
-	
 	@Override
 	public void executeForFrontend(FrontendState state) {
-		if(state.role instanceof FrontendRole) {
+		if (state.role instanceof FrontendRole) {
 			state.primaryMissing = false;
 			org.jgroups.util.UUID JGroupUUID = addressC.PossiblyCreateAndGetJGroupsUUID();
 			state.primaryAddress = JGroupUUID;
-		}
-		else {
+		} else {
 			throw new IllegalStateException();
 		}
-		
+
 	}
 
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
-		if(state.role instanceof ReplicaManagerRole) {
-			CoordinatorExecuteForRM(state);
-		}
-		else {
-			throw new IllegalStateException();
-		}
-		
+		// if(state.role instanceof ReplicaManagerRole) {
+		CoordinatorExecuteForRM(state);
+		// }
+		// else {
+		// throw new IllegalStateException();
+		// }
+
 	}
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		if(state.role instanceof ReplicaManagerBackupRole) {
-			CoordinatorExecuteForRM(state);
-		}
-		else {
-			throw new IllegalStateException();
-		}
-		
+		// if(state.role instanceof ReplicaManagerBackupRole) {
+		CoordinatorExecuteForRM(state);
+		// }
+		// else {
+		// throw new IllegalStateException();
+		// }
+
 	}
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		if(state.role instanceof ReplicaManagerPrimaryRole) {
+		//if (state.role instanceof ReplicaManagerPrimaryRole) {
 			CoordinatorExecuteForRM(state);
-		}
-		else {
-			throw new IllegalStateException();
-		}
-		
-	}
-	@Override
-	public void executeForClient(clientState state) {
-		if(state.role instanceof ClientRole) {
-			
-		}
-		else {
-			throw new IllegalStateException();
-		}
-		
+		// } else {
+		// throw new IllegalStateException();
+		// }
+
 	}
 
-	
+	@Override
+	public void executeForClient(clientState state) {
+		if (state.role instanceof ClientRole) {
+
+		} else {
+			throw new IllegalStateException();
+		}
+
+	}
 
 }

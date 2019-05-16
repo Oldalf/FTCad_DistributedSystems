@@ -63,61 +63,61 @@ public class RemoveDrawMessageRequest extends RemoveDrawMessage {
 
 	@Override
 	public void executeForReplicaManager(ReplicaManagerState state) {
-		if (state.role instanceof ReplicaManagerRole) {
-
-		} else {
-			throw new IllegalStateException();
-		}
+		// if (state.role instanceof ReplicaManagerRole) {
+		
+		// } else {
+		// throw new IllegalStateException();
+		// }
 	}
 
 	@Override
 	public void executeForBackupReplicaManager(ReplicaManagerState state) {
-		if (state.role instanceof ReplicaManagerBackupRole) {
-			RequestContainer rq = new RequestContainer(object, requestType.Remove, RequestStage.ConfrimedByBackup);
-			if (!state.rpState.Object2Request_state.contains(object)) {
-				// the object does not exist in our requestmap, add it
-				state.rpState.Object2Request_state.put(object, rq);
-			} else {
-				rq = state.rpState.Object2Request_state.get(object);
-				// make sure the type is correct.
-				rq.setType(requestType.Remove);
-				// update stage.
-				rq.setStage(RequestStage.ConfrimedByBackup);
-			}
-			if (state.rpState.cadState.contains(object)) {
-				// if we had the object in our state remove it.
-				state.rpState.cadState.remove(object);
-			}
-			// Send a return to primary that we're okey with being removed (ack).
-			state.rpState.ReadyToSendRequests.add(rq);
+		// if (state.role instanceof ReplicaManagerBackupRole) {
+		RequestContainer rq = new RequestContainer(object, requestType.Remove, RequestStage.ConfrimedByBackup);
+		if (!state.rpState.Object2Request_state.contains(object)) {
+			// the object does not exist in our requestmap, add it
+			state.rpState.Object2Request_state.put(object, rq);
 		} else {
-			throw new IllegalStateException();
+			rq = state.rpState.Object2Request_state.get(object);
+			// make sure the type is correct.
+			rq.setType(requestType.Remove);
+			// update stage.
+			rq.setStage(RequestStage.ConfrimedByBackup);
 		}
+		if (state.rpState.cadState.contains(object)) {
+			// if we had the object in our state remove it.
+			state.rpState.cadState.remove(object);
+		}
+		// Send a return to primary that we're okey with being removed (ack).
+		state.rpState.ReadyToSendRequests.add(rq);
+		// } else {
+		// throw new IllegalStateException();
+		// }
 	}
 
 	@Override
 	public void executeForPrimaryReplicaManager(ReplicaManagerState state) {
-		if (state.role instanceof ReplicaManagerPrimaryRole) {
-			RequestContainer rq = new RequestContainer(object, requestType.Remove, RequestStage.ConfrimedByBackup);
-			if (!state.rpState.Object2Request_state.contains(object)) {
-				// the object does not exist in our requestmap, add it
-				state.rpState.Object2Request_state.put(object, rq);
-			} else {
-				rq = state.rpState.Object2Request_state.get(object);
-				// make sure the type is correct.
-				rq.setType(requestType.Remove);
-				// update stage.
-				rq.setStage(RequestStage.ConfrimedByBackup);
-			}
-			if (state.rpState.cadState.contains(object)) {
-				// if we had the object in our state remove it.
-				state.rpState.cadState.remove(object);
-			}
-			// Send a return to primary that we're okey with the object existing.(ack)
-			state.rpState.ReadyToSendRequests.add(rq);
+		// if (state.role instanceof ReplicaManagerPrimaryRole) {
+		RequestContainer rq = new RequestContainer(object, requestType.Remove, RequestStage.ConfrimedByBackup);
+		if (!state.rpState.Object2Request_state.contains(object)) {
+			// the object does not exist in our requestmap, add it
+			state.rpState.Object2Request_state.put(object, rq);
 		} else {
-			throw new IllegalStateException();
+			rq = state.rpState.Object2Request_state.get(object);
+			// make sure the type is correct.
+			rq.setType(requestType.Remove);
+			// update stage.
+			rq.setStage(RequestStage.ConfrimedByBackup);
 		}
+		if (state.rpState.cadState.contains(object)) {
+			// if we had the object in our state remove it.
+			state.rpState.cadState.remove(object);
+		}
+		// Send a return to primary that we're okey with the object existing.(ack)
+		state.rpState.ReadyToSendRequests.add(rq);
+		// } else {
+		// throw new IllegalStateException();
+		// }
 	}
 
 	@Override
